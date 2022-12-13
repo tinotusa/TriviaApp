@@ -47,4 +47,12 @@ struct TriviaQuestion: Codable, Hashable {
     var incorrectAnswers: [String] {
         _incorrectAnswers.compactMap { $0.removingPercentEncoding }
     }
+    
+    /// All the answers (correct and incorrect).
+    var allAnswers: [String] {
+        var answers = incorrectAnswers
+        answers.append(correctAnswer)
+        answers.shuffle()
+        return answers
+    }
 }
