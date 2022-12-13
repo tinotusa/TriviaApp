@@ -8,35 +8,53 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var token: String?
-    
+    @EnvironmentObject private var viewModel: HomeViewModel
+    @State private var showingQuestionsView = false
     var body: some View {
-        VStack {
-            Text("Trivia")
-                .font(.custom("Caveat", size: 80, relativeTo: .title))
-            if let token {
-                Text("Token: \(token)")
-            }
-        }
-        .padding()
-        .onAppear {
-            let api = TriviaAPI.shared
-            api.triviaConfig = .init(
-                numberOfQuestions: 10,
-                category: .anyCategory,
-                difficulty: .easy,
-                triviaType: .multipleChoice
-            )
-            Task {
-                do {
-                    let questions = try await api.getQuestions()
-                    print("number of questions: ", questions.count)
-                    for question in questions {
-                        print(question.question)
+        NavigationStack {
+            VStack {
+                Spacer()
+                
+                Text("Trivia")
+                    .font(.custom("Caveat", size: 80, relativeTo: .title))
+                
+                Spacer()
+                
+                Picker("Category", selection: $viewModel.category) {
+                    ForEach(TriviaAPI.TriviaCategory.allCases) { category in
+                        Text(category.title)
+                            .tag(category)
                     }
-                    token = api.sessionToken
-                } catch {
-                    print(error)
+                }
+                Stepper("Number of questions \(viewModel.numberOfQuestions)", value: $viewModel.numberOfQuestions)
+                Picker("Difficulty", selection: $viewModel.difficulty) {
+                    ForEach(TriviaAPI.TriviaDifficulty.allCases) { difficulty in
+                        Text(difficulty.rawValue)
+                    }
+                }
+                
+                Button {
+                    Task {
+                        await viewModel.generateQuestions()
+                    }
+                } label: {
+                    Text("Generate questions")
+                }
+                
+                Spacer()
+                NavigationLink(value: viewModel.questions) {
+                    Text("Start quiz")
+                }
+                .disabled(viewModel.questions.isEmpty)
+                
+                Spacer()
+            }
+            .padding()
+            .navigationDestination(for: [TriviaQuestion].self) { questions in
+                VStack {
+                    ForEach(questions, id: \.self) { question in
+                        Text(question.question)
+                    }
                 }
             }
         }
@@ -46,5 +64,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(HomeViewModel())
     }
 }

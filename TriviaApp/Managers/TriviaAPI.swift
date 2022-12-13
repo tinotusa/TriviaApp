@@ -45,8 +45,16 @@ final class TriviaAPI {
         case tokenEmpty
     }
     
-    enum TriviaCategory {
-        enum Entertainment {
+    // TODO: Move me.
+    enum TriviaCategory: CaseIterable, Identifiable, Hashable {
+        static var allCases: [TriviaAPI.TriviaCategory] = [
+            .anyCategory, .generalKnowledge, .mythology, .sports, .geography, .history, .politics,
+            .art, .celebrities, .animals, .vehicles
+        ]
+        + TriviaCategory.Entertainment.allCases.map { TriviaCategory.entertainment($0) }
+        + TriviaCategory.Science.allCases.map { TriviaCategory.science($0) }
+        
+        enum Entertainment: CaseIterable, Identifiable, Hashable {
             case books
             case film
             case music
@@ -82,9 +90,24 @@ final class TriviaAPI {
                     return 32
                 }
             }
+            
+            var title: String {
+                switch self {
+                case .books: return "Books"
+                case .film: return "Film"
+                case .music: return "Music"
+                case .musicalsAndTheatres: return "Musicals and Theatres"
+                case .television: return "Television"
+                case .videoGames: return "Video games"
+                case .boardGames: return "Boardgames"
+                case .comics: return "Comics"
+                case .japaneseAnimeAndManga: return "Japanese Anime and Manga"
+                case .cartoonAndAnimations: return "Cartoon and Animations"
+                }
+            }
         }
         
-        enum Science {
+        enum Science: CaseIterable, Identifiable, Hashable {
             case scienceAndNature
             case computers
             case mathematics
@@ -100,6 +123,15 @@ final class TriviaAPI {
                     return 19
                 case .gadgets:
                     return 30
+                }
+            }
+            
+            var title: String {
+                switch self {
+                case .scienceAndNature: return "Science and Nature"
+                case .computers: return "Computers"
+                case .mathematics: return "Mathematics"
+                case .gadgets: return "Gadgets"
                 }
             }
         }
@@ -118,10 +150,10 @@ final class TriviaAPI {
         case entertainment(Entertainment)
         case science(Science)
         
-        var id: Int? {
+        var id: Int {
             switch self {
             case .anyCategory:
-                return nil
+                return 0
             case .generalKnowledge:
                 return 9
             case .mythology:
@@ -148,13 +180,33 @@ final class TriviaAPI {
                 return science.id
             }
         }
+        
+        var title: String {
+            switch self {
+            case .anyCategory: return "Any Category"
+            case .generalKnowledge: return "General Knowledge"
+            case .mythology: return "Mythology"
+            case .sports: return "Sports"
+            case .geography: return "Geography"
+            case .history: return "History"
+            case .politics: return "Politics"
+            case .art: return "Art"
+            case .celebrities: return "Celebrities"
+            case .animals: return "Animals"
+            case .vehicles: return "Vehicles"
+            case .entertainment(let entertainment): return entertainment.title
+            case .science(let science): return science.title
+            }
+        }
     }
     
-    enum TriviaDifficulty: String {
+    enum TriviaDifficulty: String, CaseIterable, Identifiable {
         case any
         case easy
         case medium
         case hard
+        
+        var id: Self { self }
     }
     
     enum TriviaType: String {
@@ -193,7 +245,7 @@ final class TriviaAPI {
             """
             config settings:
             number of questions: \(numberOfQuestions)
-            category: \(category.id != nil ? "\(category.id!)" : "any category")
+            category: \(category.id != 0 ? "\(category.id)" : "any category")
             difficulty: \(difficulty.rawValue)
             trivia type: \(triviaType.rawValue)
             """
@@ -220,7 +272,7 @@ extension TriviaAPI {
         components.path = "/api.php"
         components.queryItems = [
             .init(name: "amount", value: "\(triviaConfig.numberOfQuestions)"),
-            .init(name: "category", value: triviaConfig.category.id != nil ? "\(triviaConfig.category.id!)" : nil),
+            .init(name: "category", value: triviaConfig.category.id != 0 ? "\(triviaConfig.category.id)" : nil),
             .init(name: "difficulty", value: triviaConfig.difficulty != .any ? triviaConfig.difficulty.rawValue : nil),
             .init(name: "type", value: triviaConfig.triviaType != .any ? triviaConfig.triviaType.rawValue : nil),
             .init(name: "token", value: sessionToken),
@@ -299,7 +351,7 @@ struct QuestionsResponse: Codable {
     let results: [TriviaQuestion]
 }
 
-struct TriviaQuestion: Codable {
+struct TriviaQuestion: Codable, Hashable {
     private let _category: String
     let type: String
     let difficulty: String
