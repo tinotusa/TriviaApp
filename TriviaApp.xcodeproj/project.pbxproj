@@ -18,6 +18,14 @@
 		21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB4C19293CBE40005865BE /* HomeView.swift */; };
 		21D47A4C29481E6A00D10E18 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 21D47A4B29481E6A00D10E18 /* TODO.md */; };
 		21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A4D29481EFC00D10E18 /* HomeViewModel.swift */; };
+		21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A502948309000D10E18 /* TriviaAPI+Error.swift */; };
+		21D47A53294830E600D10E18 /* TriviaAPI+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */; };
+		21D47A552948312200D10E18 /* TriviaAPI+Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */; };
+		21D47A572948313C00D10E18 /* TriviaAPI+TriviaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */; };
+		21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */; };
+		21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5A2948319900D10E18 /* TriviaQuestion.swift */; };
+		21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5D294831CF00D10E18 /* TokenResponse.swift */; };
+		21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5F294831E800D10E18 /* QuestionsResponse.swift */; };
 		21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EE4D2E293EEC030032711E /* TriviaAPI.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +61,14 @@
 		21CB4C19293CBE40005865BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		21D47A4B29481E6A00D10E18 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		21D47A4D29481EFC00D10E18 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		21D47A502948309000D10E18 /* TriviaAPI+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Error.swift"; sourceTree = "<group>"; };
+		21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Category.swift"; sourceTree = "<group>"; };
+		21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Difficulty.swift"; sourceTree = "<group>"; };
+		21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+TriviaType.swift"; sourceTree = "<group>"; };
+		21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Config.swift"; sourceTree = "<group>"; };
+		21D47A5A2948319900D10E18 /* TriviaQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestion.swift; sourceTree = "<group>"; };
+		21D47A5D294831CF00D10E18 /* TokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponse.swift; sourceTree = "<group>"; };
+		21D47A5F294831E800D10E18 /* QuestionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsResponse.swift; sourceTree = "<group>"; };
 		21EE4D2E293EEC030032711E /* TriviaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,10 +182,34 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		21D47A4F2948306E00D10E18 /* TriviaAPI */ = {
+			isa = PBXGroup;
+			children = (
+				21D47A5C294831B600D10E18 /* Opentdb models */,
+				21EE4D2E293EEC030032711E /* TriviaAPI.swift */,
+				21D47A502948309000D10E18 /* TriviaAPI+Error.swift */,
+				21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */,
+				21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */,
+				21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */,
+				21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */,
+				21D47A5A2948319900D10E18 /* TriviaQuestion.swift */,
+			);
+			path = TriviaAPI;
+			sourceTree = "<group>";
+		};
+		21D47A5C294831B600D10E18 /* Opentdb models */ = {
+			isa = PBXGroup;
+			children = (
+				21D47A5D294831CF00D10E18 /* TokenResponse.swift */,
+				21D47A5F294831E800D10E18 /* QuestionsResponse.swift */,
+			);
+			path = "Opentdb models";
+			sourceTree = "<group>";
+		};
 		21EE4D2D293EEBF40032711E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				21EE4D2E293EEC030032711E /* TriviaAPI.swift */,
+				21D47A4F2948306E00D10E18 /* TriviaAPI */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -306,10 +346,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21D47A572948313C00D10E18 /* TriviaAPI+TriviaType.swift in Sources */,
 				21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */,
 				21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */,
 				21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */,
 				21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */,
+				21D47A552948312200D10E18 /* TriviaAPI+Difficulty.swift in Sources */,
+				21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */,
+				21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */,
+				21D47A53294830E600D10E18 /* TriviaAPI+Category.swift in Sources */,
+				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,
+				21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */,
+				21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */,
 				21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
