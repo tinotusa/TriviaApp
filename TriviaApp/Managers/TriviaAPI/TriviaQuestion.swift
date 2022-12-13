@@ -7,10 +7,14 @@
 
 import Foundation
 
+/// Model for the questions of the trivia.
 struct TriviaQuestion: Codable, Hashable {
-    private let _category: String
+    /// The type of question.
     let type: String
+    /// The difficulty of the question.
     let difficulty: String
+    
+    private let _category: String
     private let _question: String
     private let _correctAnswer: String
     private let _incorrectAnswers: [String]
@@ -24,18 +28,22 @@ struct TriviaQuestion: Codable, Hashable {
         case _incorrectAnswers = "incorrectAnswers"
     }
     
+    /// The category of the question.
     var category: String {
         _category.removingPercentEncoding!
     }
     
+    /// The question.
     var question: String {
         _question.removingPercentEncoding!
     }
     
+    /// The correct answer.
     var correctAnswer: String {
         _correctAnswer.removingPercentEncoding!
     }
     
+    /// The incorrect answers.
     var incorrectAnswers: [String] {
         _incorrectAnswers.compactMap { $0.removingPercentEncoding }
     }

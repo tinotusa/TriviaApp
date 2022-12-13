@@ -8,6 +8,7 @@
 import Foundation
 
 extension TriviaAPI {
+    /// Settings for the trivia.
     struct TriviaConfig: CustomStringConvertible {
         let numberOfQuestions: Int
         let category: TriviaCategory

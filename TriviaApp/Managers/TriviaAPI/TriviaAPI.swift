@@ -8,16 +8,21 @@
 import Foundation
 import os
 
+/// API wrapper for [Opentdb](https://opentdb.com)
 final class TriviaAPI {
+    /// The current sessions token.
     var sessionToken: String?
+    /// Settings for the trivia questions.
     var triviaConfig: TriviaConfig
     
     static var shared = TriviaAPI()
     
-    private let apiURL = URL(string: "https://opentdb.com")!
+    /// Decoder for the wrapper.
     private let decoder: JSONDecoder
-    private let logger = Logger(subsystem: "com.tinotusa.TriviaApp", category: "TriviaAPI")
+    /// Logger for the class
+    private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "TriviaAPI")
     
+    /// Creates a TriviaAPI.
     private init() {
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -26,15 +31,18 @@ final class TriviaAPI {
 }
 
 extension TriviaAPI {
+    /// A boolean value indicating whether or not there is a session.
     var hasSessionToken: Bool {
         sessionToken != nil
     }
-
+    
+    /// Gets questions from opentdb based on the config settings.
+    /// - Returns: An array of questions.
     func getQuestions() async throws -> [TriviaQuestion] {
-        logger.debug("Getting questions using the config settings: \(self.triviaConfig)")
+        log.debug("Getting questions using the config settings: \(self.triviaConfig)")
         
         if !hasSessionToken {
-            logger.debug("No session token. Requesting a new one.")
+            log.debug("No session token. Requesting a new one.")
             self.sessionToken = try await requestToken()
         }
         
@@ -51,7 +59,7 @@ extension TriviaAPI {
             .init(name: "encode", value: "url3986") // TODO: does this need to be changed?
         ]
         guard let url = components.url else {
-            logger.error("Failed to get questions. URL is invalid.")
+            log.error("Failed to get questions. URL is invalid.")
             throw TriviaAPIError.invalidURL
         }
         
@@ -61,26 +69,33 @@ extension TriviaAPI {
         if let response = response as? HTTPURLResponse,
            !(200 ..< 300).contains(response.statusCode)
         {
-            logger.error("Failed to get questions. Invalid server response: \(response.statusCode)")
+            log.error("Failed to get questions. Invalid server response: \(response.statusCode)")
             throw TriviaAPIError.serverError(code: response.statusCode)
         }
         
         let questionsResponse = try decoder.decode(QuestionsResponse.self, from: data)
         guard questionsResponse.responseCode == 0 else {
             guard let responseCode = ResponseCode(rawValue: questionsResponse.responseCode) else {
-                logger.error("Failed to get questions. Unknown response code: \(questionsResponse.responseCode)")
+                log.error("Failed to get questions. Unknown response code: \(questionsResponse.responseCode)")
                 throw TriviaAPIError.unknownError
             }
-            logger.error("Failed to get questions. Invalid api response code: \(questionsResponse.responseCode)")
+            log.error("Failed to get questions. Invalid api response code: \(questionsResponse.responseCode)")
             throw TriviaAPIError.responseError(code: responseCode)
         }
         
-        logger.debug("Successfully got \(questionsResponse.results.count) questions from the api.")
+        log.debug("Successfully got \(questionsResponse.results.count) questions from the api.")
         return questionsResponse.results
     }
 }
 
 private extension TriviaAPI {
+    /// Requests opentdb for a session token.
+    ///
+    /// This token is used to keep track of the questions that have already been asked.
+    /// This token will also help indicate when the user has exhausted all questions and
+    /// needs to the refreshed.
+    ///
+    /// - Returns: A session token.
     func requestToken() async throws -> String {
         var components = URLComponents()
         components.scheme = "https"

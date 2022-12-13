@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// Model for opentdb's questions
 struct QuestionsResponse: Codable {
+    /// The response code.
     let responseCode: Int
+    /// The questions and answers.
     let results: [TriviaQuestion]
 }
