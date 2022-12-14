@@ -43,7 +43,12 @@ struct QuestionsView: View {
 }
 
 struct QuestionsView_Previews: PreviewProvider {
+    static var questions: [TriviaQuestion] {
+        let result: QuestionsResponse = Bundle.main.loadJSON(filename: "exampleQuestions")
+        return result.results
+    }
+    
     static var previews: some View {
-        QuestionsView(questions: [])
+        QuestionsView(questions: questions)
     }
 }
