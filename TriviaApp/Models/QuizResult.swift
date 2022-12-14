@@ -18,6 +18,7 @@ struct QuizResult {
     
     /// The score as a percentage.
     var percentage: Int {
-        questions.count / score
+        if score == 0 { return 0 }
+        return questions.count / score
     }
 }
