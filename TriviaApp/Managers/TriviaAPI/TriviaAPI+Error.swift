@@ -12,6 +12,7 @@ extension TriviaAPI {
         case invalidURL
         case serverError(code: Int)
         case responseError(code: ResponseCode)
+        case noSessonToken
         case unknownError
     }
     
