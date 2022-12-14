@@ -23,6 +23,7 @@ final class HomeViewModel: ObservableObject {
 
 extension HomeViewModel {
     /// Gets the trivia questions based on the given settings.
+    @MainActor
     func generateQuestions() async {
         triviaAPI.triviaConfig = .init(numberOfQuestions: numberOfQuestions, category: category, difficulty: difficulty, triviaType: triviaType)
         do {
