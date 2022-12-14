@@ -32,6 +32,14 @@ struct HomeView: View {
                         Text(difficulty.rawValue)
                     }
                 }
+                .pickerStyle(.segmented)
+                
+                Picker("Question type", selection: $viewModel.triviaType) {
+                    ForEach(TriviaAPI.TriviaType.allCases) { type in
+                        Text(type.title)
+                    }
+                }
+                .pickerStyle(.segmented)
                 
                 Button {
                     Task {
@@ -47,8 +55,6 @@ struct HomeView: View {
                     showingQuestionsView = true
                 }
                 .disabled(viewModel.questions.isEmpty)
-                
-                Spacer()
             }
             .disabled(viewModel.isLoading)
             .fullScreenCover(isPresented: $showingQuestionsView) {
