@@ -17,8 +17,8 @@ struct QuizResult {
     let wrongQuestions: [TriviaQuestion]
     
     /// The score as a percentage.
-    var percentage: Int {
+    var percentage: Double {
         if score == 0 { return 0 }
-        return questions.count / score
+        return Double(score) / Double(questions.count)
     }
 }
