@@ -10,6 +10,7 @@ import SwiftUI
 struct QuestionsView: View {
     @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedAnswer = ""
     
     init(questions: [TriviaQuestion]) {
         _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
@@ -35,13 +36,19 @@ struct QuestionsView: View {
                         // TODO: add question card view
                         ForEach(question.allAnswers, id: \.self) { answer in
                             Button {
-                                _ = viewModel.checkAnswer(answer: answer)
-                                viewModel.nextQuestion()
+                                selectedAnswer = answer
                             } label: {
                                 Text(answer)
                             }
                         }
+                        
                         Spacer()
+                        
+                        Button("Continue") {
+                            _ = viewModel.checkAnswer(answer: selectedAnswer)
+                            viewModel.nextQuestion()
+                        }
+                        .disabled(selectedAnswer.isEmpty)
                     }
                     .padding()
                 }
