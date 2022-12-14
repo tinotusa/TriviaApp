@@ -42,15 +42,18 @@ struct HomeView: View {
                 }
                 
                 Spacer()
-                // TODO: Make in to fullscreen cover
-                NavigationLink(value: viewModel.questions) {
-                    Text("Start quiz")
+                
+                Button("Start quiz") {
+                    showingQuestionsView = true
                 }
                 .disabled(viewModel.questions.isEmpty)
                 
                 Spacer()
             }
             .disabled(viewModel.isLoading)
+            .fullScreenCover(isPresented: $showingQuestionsView) {
+                QuestionsView(questions: viewModel.questions)
+            }
             .padding()
             .navigationDestination(for: [TriviaQuestion].self) { questions in
                 QuestionsView(questions: questions)
