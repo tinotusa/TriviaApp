@@ -80,7 +80,7 @@ extension TriviaAPI {
                 throw TriviaAPIError.unknownError
             }
             log.error("Failed to get questions. Invalid api response code: \(questionsResponse.responseCode)")
-            throw TriviaAPIError.responseError(code: responseCode)
+            throw TriviaAPIError.invalidAPIResponse(code: responseCode)
         }
         
         if let responseCode = ResponseCode(rawValue: questionsResponse.responseCode), responseCode == .tokenEmpty {
@@ -104,31 +104,34 @@ private extension TriviaAPI {
     ///
     /// - Returns: A session token.
     func requestToken() async throws -> String {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "opentdb.com"
-        components.path = "/api_token.php"
-        components.queryItems = [
-            .init(name: "command", value: "request")
-        ]
+        log.debug("Requesting token.")
+        let url = createOpenTriviaDatabaseURL(
+            path: "/api_token.php",
+            queryItems: [.init(name: "command", value: "request")]
+        )
         
-        guard let url = components.url else {
+        guard let url else {
+            log.error("Failed to request token. URL is invalid.")
             throw TriviaAPIError.invalidURL
         }
+        
         let request = URLRequest(url: url)
         let (data, response) = try await URLSession.shared.data(for: request)
         if let response = response as? HTTPURLResponse,
-           !(200 ..< 300).contains(response.statusCode)
+           !isSuccessfulStatusCode(response)
         {
+            log.error("Invalid server status code: \(response.statusCode)")
             throw TriviaAPIError.serverError(code: response.statusCode)
         }
+        
         let tokenResponse = try decoder.decode(TokenResponse.self, from: data)
-        if tokenResponse.responseCode != 0 {
-            guard let responseCode = ResponseCode(rawValue: tokenResponse.responseCode) else {
-                throw TriviaAPIError.unknownError
-            }
-            throw TriviaAPIError.responseError(code: responseCode)
+        if let responseCode = ResponseCode(rawValue: tokenResponse.responseCode),
+            responseCode != .success
+        {
+            log.error("Invalid api response code: \(responseCode)")
+            throw TriviaAPIError.invalidAPIResponse(code: responseCode)
         }
+        
         log.debug("The token is: \(tokenResponse.token)")
         return tokenResponse.token
     }
@@ -176,15 +179,15 @@ private extension TriviaAPI {
             log.error("Failed to cast url response and http url response.")
             throw TriviaAPIError.unknownError
         }
-        if !isSuccessfulResponse(httpResponse) {
+        if !isSuccessfulStatusCode(httpResponse) {
             log.error("Invalid server response status code: \(httpResponse.statusCode)")
             throw TriviaAPIError.serverError(code: httpResponse.statusCode)
         }
         
         let tokenResponse = try decoder.decode(TokenResponse.self, from: data)
-        if !isValidServerResponse(tokenResponse.responseCode) {
+        if !isValidAPIResponse(tokenResponse.responseCode) {
             log.error("Failed to reset token. Got invalid server response code: \(tokenResponse.responseCode)")
-            throw TriviaAPIError.responseError(code: ResponseCode(rawValue: tokenResponse.responseCode)!)
+            throw TriviaAPIError.invalidAPIResponse(code: ResponseCode(rawValue: tokenResponse.responseCode)!)
         }
         
         log.debug("Successfully reset token.")
@@ -199,14 +202,14 @@ private extension TriviaAPI {
     ///
     /// - Parameter code: The code from the server
     /// - Returns: True if the code is valid, false otherwise.
-    func isValidServerResponse(_ code: Int) -> Bool {
+    func isValidAPIResponse(_ code: Int) -> Bool {
         code == 0
     }
     
     /// Returns whether or not the given response has a successful status code.
     /// - Parameter response: The response to check.
     /// - Returns: True if the response's status code is valid, false otherwise.
-    func isSuccessfulResponse(_ response: HTTPURLResponse) -> Bool {
+    func isSuccessfulStatusCode(_ response: HTTPURLResponse) -> Bool {
         (200 ..< 300).contains(response.statusCode)
     }
 }
