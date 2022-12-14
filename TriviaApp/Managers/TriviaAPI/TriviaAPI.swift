@@ -52,19 +52,19 @@ extension TriviaAPI {
             self.sessionToken = try await requestToken()
         }
         
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "opentdb.com"
-        components.path = "/api.php"
-        components.queryItems = [
-            .init(name: "amount", value: "\(triviaConfig.numberOfQuestions)"),
-            .init(name: "category", value: triviaConfig.category.id != 0 ? "\(triviaConfig.category.id)" : nil),
-            .init(name: "difficulty", value: triviaConfig.difficulty != .any ? triviaConfig.difficulty.rawValue : nil),
-            .init(name: "type", value: triviaConfig.triviaType != .any ? triviaConfig.triviaType.rawValue : nil),
-            .init(name: "token", value: sessionToken),
-            .init(name: "encode", value: "url3986") // TODO: does this need to be changed?
-        ]
-        guard let url = components.url else {
+        let url = createOpenTriviaDatabaseURL(
+            endpoint: .api,
+            queryItems: [
+                .init(name: "amount", value: "\(triviaConfig.numberOfQuestions)"),
+                .init(name: "category", value: triviaConfig.category.id != 0 ? "\(triviaConfig.category.id)" : nil),
+                .init(name: "difficulty", value: triviaConfig.difficulty != .any ? triviaConfig.difficulty.rawValue : nil),
+                .init(name: "type", value: triviaConfig.triviaType != .any ? triviaConfig.triviaType.rawValue : nil),
+                .init(name: "token", value: sessionToken),
+                .init(name: "encode", value: "url3986")
+            ]
+        )
+        
+        guard let url else {
             log.error("Failed to get questions. URL is invalid.")
             throw TriviaAPIError.invalidURL
         }
@@ -73,23 +73,23 @@ extension TriviaAPI {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         if let response = response as? HTTPURLResponse,
-           !(200 ..< 300).contains(response.statusCode)
+           !isSuccessfulStatusCode(response)
         {
             log.error("Failed to get questions. Invalid server response: \(response.statusCode)")
-            throw TriviaAPIError.serverError(code: response.statusCode)
+            throw TriviaAPIError.serverStatus(code: response.statusCode)
         }
         
         let questionsResponse = try decoder.decode(QuestionsResponse.self, from: data)
-        guard questionsResponse.responseCode == 0 else {
-            guard let responseCode = ResponseCode(rawValue: questionsResponse.responseCode) else {
-                log.error("Failed to get questions. Unknown response code: \(questionsResponse.responseCode)")
-                throw TriviaAPIError.unknownError
-            }
+        guard let responseCode = ResponseCode(rawValue: questionsResponse.responseCode) else {
+            log.error("Failed to get questions. Unknown response code: \(questionsResponse.responseCode)")
+            throw TriviaAPIError.unknownError
+        }
+        if responseCode != .success {
             log.error("Failed to get questions. Invalid api response code: \(questionsResponse.responseCode)")
             throw TriviaAPIError.invalidAPIResponse(code: responseCode)
         }
         
-        if let responseCode = ResponseCode(rawValue: questionsResponse.responseCode), responseCode == .tokenEmpty {
+        if responseCode == .tokenEmpty {
             log.debug("The token is empty. Will try to reset the token.")
             self.sessionToken = try await resetToken()
             log.debug("Successfully reset the token.")
@@ -127,7 +127,7 @@ private extension TriviaAPI {
            !isSuccessfulStatusCode(response)
         {
             log.error("Invalid server status code: \(response.statusCode)")
-            throw TriviaAPIError.serverError(code: response.statusCode)
+            throw TriviaAPIError.serverStatus(code: response.statusCode)
         }
         
         let tokenResponse = try decoder.decode(TokenResponse.self, from: data)
@@ -186,7 +186,7 @@ private extension TriviaAPI {
         }
         if !isSuccessfulStatusCode(httpResponse) {
             log.error("Invalid server response status code: \(httpResponse.statusCode)")
-            throw TriviaAPIError.serverError(code: httpResponse.statusCode)
+            throw TriviaAPIError.serverStatus(code: httpResponse.statusCode)
         }
         
         let tokenResponse = try decoder.decode(TokenResponse.self, from: data)

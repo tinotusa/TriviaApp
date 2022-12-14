@@ -10,7 +10,7 @@ import Foundation
 extension TriviaAPI {
     enum TriviaAPIError: Error {
         case invalidURL
-        case serverError(code: Int)
+        case serverStatus(code: Int)
         case invalidAPIResponse(code: ResponseCode)
         case noSessonToken
         case unknownError
