@@ -84,16 +84,27 @@ extension TriviaAPI {
             log.error("Failed to get questions. Unknown response code: \(questionsResponse.responseCode)")
             throw TriviaAPIError.unknownError
         }
-        if responseCode != .success {
-            log.error("Failed to get questions. Invalid api response code: \(questionsResponse.responseCode)")
-            throw TriviaAPIError.invalidAPIResponse(code: responseCode)
-        }
         
-        if responseCode == .tokenEmpty {
-            log.debug("The token is empty. Will try to reset the token.")
+        switch responseCode {
+        case .noResults:
+            log.error("Failed to get questions. There were no results.")
+            throw TriviaAPIError.noResults
+        case .invalidParameter:
+            log.error("Failed to get questions. A parameter was invalid.")
+            throw TriviaAPIError.invalidParameter
+        case .tokenNotFound:
+            log.error("Failed to get questions. No token found.")
+            throw TriviaAPIError.noSessonToken
+        case .tokenEmpty:
+            if self.sessionToken != nil && questionsResponse.results.isEmpty {
+                log.error("No results found. Might have seen all questions.")
+                self.sessionToken = try await resetToken()
+                throw TriviaAPIError.seenAllQuestions
+            }
             self.sessionToken = try await resetToken()
-            log.debug("Successfully reset the token.")
             return try await getQuestions()
+        default:
+            break
         }
         
         log.debug("Successfully got \(questionsResponse.results.count) questions from the api.")
@@ -138,6 +149,7 @@ private extension TriviaAPI {
             throw TriviaAPIError.invalidAPIResponse(code: responseCode)
         }
         
+        log.debug("Successfully got session token.")
         return tokenResponse.token
     }
     
