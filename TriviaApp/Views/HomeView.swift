@@ -51,11 +51,7 @@ struct HomeView: View {
             }
             .padding()
             .navigationDestination(for: [TriviaQuestion].self) { questions in
-                VStack {
-                    ForEach(questions, id: \.self) { question in
-                        Text(question.question)
-                    }
-                }
+                QuestionsView(questions: questions)
             }
         }
     }

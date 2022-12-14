@@ -8,6 +8,7 @@
 import Foundation
 import os
 
+/// View model for HomeView.
 final class HomeViewModel: ObservableObject {
     @Published var numberOfQuestions = 10
     @Published var category: TriviaAPI.TriviaCategory = .anyCategory
@@ -21,6 +22,7 @@ final class HomeViewModel: ObservableObject {
 }
 
 extension HomeViewModel {
+    /// Gets the trivia questions based on the given settings.
     func generateQuestions() async {
         triviaAPI.triviaConfig = .init(numberOfQuestions: numberOfQuestions, category: category, difficulty: difficulty, triviaType: triviaType)
         do {

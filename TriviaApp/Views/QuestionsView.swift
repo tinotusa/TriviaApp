@@ -8,10 +8,27 @@
 import SwiftUI
 
 struct QuestionsView: View {
-    var questions: [TriviaQuestion] = []
+    @StateObject private var viewModel: QuestionsViewModel
+    
+    init(questions: [TriviaQuestion]) {
+        _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
+    }
     
     var body: some View {
-        Text("testing")
+        if let question = viewModel.currentQuestion {
+            VStack {
+                Text(question.question)
+                // TODO: add question card view
+                ForEach(question.allAnswers, id: \.self) { answer in
+                    Button {
+                        _ = viewModel.checkAnswer(answer: answer)
+                        viewModel.nextQuestion()
+                    } label: {
+                        Text(answer)
+                    }
+                }
+            }
+        }
     }
 }
 
