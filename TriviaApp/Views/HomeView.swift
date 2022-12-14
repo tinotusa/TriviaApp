@@ -60,6 +60,18 @@ struct HomeView: View {
             .fullScreenCover(isPresented: $showingQuestionsView) {
                 QuestionsView(questions: viewModel.questions)
             }
+            .alert("Oops something went wrong", isPresented: $viewModel.showSeenAllAlert) {
+                Button("Reset questions") {
+                    Task {
+                        await viewModel.resetToken()
+                    }
+                }
+                Button("Cancel", role: .cancel) {
+                    
+                }
+            } message: {
+                Text("You have seen all the questions for this category.")
+            }
             .padding()
             .navigationDestination(for: [TriviaQuestion].self) { questions in
                 QuestionsView(questions: questions)

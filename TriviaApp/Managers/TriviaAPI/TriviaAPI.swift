@@ -98,7 +98,6 @@ extension TriviaAPI {
         case .tokenEmpty:
             if self.sessionToken != nil && questionsResponse.results.isEmpty {
                 log.error("No results found. Might have seen all questions.")
-                self.sessionToken = try await resetToken()
                 throw TriviaAPIError.seenAllQuestions
             }
             self.sessionToken = try await resetToken()
@@ -110,6 +109,50 @@ extension TriviaAPI {
         log.debug("Successfully got \(questionsResponse.results.count) questions from the api.")
         return questionsResponse.results
     }
+    
+    /// Resets the token and returns a new one.
+    /// - Returns: A new session token.
+    func resetToken() async throws -> String {
+        if sessionToken == nil {
+            log.error("Failed to reset the token. The token is nil.")
+            throw TriviaAPIError.noSessonToken
+        }
+        
+        log.debug("Reseting the token")
+        let url = createOpenTriviaDatabaseURL(
+            endpoint: .apiToken,
+            queryItems: [
+                .init(name: "command", value: "reset"),
+                .init(name: "token", value: self.sessionToken)
+            ]
+        )
+        guard let url else {
+            log.error("Failed to reset token. Invalid url.")
+            throw TriviaAPIError.invalidURL
+        }
+        
+        let request = URLRequest(url: url)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            log.error("Failed to cast url response and http url response.")
+            throw TriviaAPIError.unknownError
+        }
+        if !isSuccessfulStatusCode(httpResponse) {
+            log.error("Invalid server response status code: \(httpResponse.statusCode)")
+            throw TriviaAPIError.serverStatus(code: httpResponse.statusCode)
+        }
+        
+        let tokenResponse = try decoder.decode(TokenResponse.self, from: data)
+        if !isValidAPIResponse(tokenResponse.responseCode) {
+            log.error("Failed to reset token. Got invalid server response code: \(tokenResponse.responseCode)")
+            throw TriviaAPIError.invalidAPIResponse(code: ResponseCode(rawValue: tokenResponse.responseCode)!)
+        }
+        
+        log.debug("Successfully reset token.")
+        return tokenResponse.token
+    }
+    
 }
 
 private extension TriviaAPI {
@@ -166,49 +209,6 @@ private extension TriviaAPI {
         components.queryItems = queryItems
         
         return components.url
-    }
-    
-    /// Resets the token and returns a new one.
-    /// - Returns: A new session token.
-    func resetToken() async throws -> String {
-        if sessionToken == nil {
-            log.error("Failed to reset the token. The token is nil.")
-            throw TriviaAPIError.noSessonToken
-        }
-        
-        log.debug("Reseting the token")
-        let url = createOpenTriviaDatabaseURL(
-            endpoint: .apiToken,
-            queryItems: [
-                .init(name: "command", value: "reset"),
-                .init(name: "token", value: self.sessionToken)
-            ]
-        )
-        guard let url else {
-            log.error("Failed to reset token. Invalid url.")
-            throw TriviaAPIError.invalidURL
-        }
-        
-        let request = URLRequest(url: url)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            log.error("Failed to cast url response and http url response.")
-            throw TriviaAPIError.unknownError
-        }
-        if !isSuccessfulStatusCode(httpResponse) {
-            log.error("Invalid server response status code: \(httpResponse.statusCode)")
-            throw TriviaAPIError.serverStatus(code: httpResponse.statusCode)
-        }
-        
-        let tokenResponse = try decoder.decode(TokenResponse.self, from: data)
-        if !isValidAPIResponse(tokenResponse.responseCode) {
-            log.error("Failed to reset token. Got invalid server response code: \(tokenResponse.responseCode)")
-            throw TriviaAPIError.invalidAPIResponse(code: ResponseCode(rawValue: tokenResponse.responseCode)!)
-        }
-        
-        log.debug("Successfully reset token.")
-        return tokenResponse.token
     }
     
     /// Returns whether or not the given code is valid.
