@@ -15,30 +15,33 @@ struct QuestionsView: View {
     }
     
     var body: some View {
-        if !viewModel.isQuizOver {
-            if let question = viewModel.currentQuestion {
-                VStack {
-                    Text(question.question)
-                    // TODO: add question card view
-                    ForEach(question.allAnswers, id: \.self) { answer in
-                        Button {
-                            _ = viewModel.checkAnswer(answer: answer)
-                            viewModel.nextQuestion()
-                        } label: {
-                            Text(answer)
+        Group {
+            if !viewModel.isQuizOver {
+                if let question = viewModel.currentQuestion {
+                    VStack {
+                        Text(question.question)
+                        // TODO: add question card view
+                        ForEach(question.allAnswers, id: \.self) { answer in
+                            Button {
+                                _ = viewModel.checkAnswer(answer: answer)
+                                viewModel.nextQuestion()
+                            } label: {
+                                Text(answer)
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            QuizResultsView(quizResult: .init(
-                score: viewModel.score,
-                questions: viewModel.questions,
-                wrongQuestions: viewModel.wrongQuestions
+            } else {
+                QuizResultsView(quizResult: .init(
+                    score: viewModel.score,
+                    questions: viewModel.questions,
+                    wrongQuestions: viewModel.wrongQuestions
                 )
-            )
-            .transition(.move(edge: .bottom))
+                )
+                .transition(.move(edge: .bottom))
+            }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
