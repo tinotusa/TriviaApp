@@ -28,6 +28,12 @@ final class TriviaAPI {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         triviaConfig = .default
     }
+    
+    /// Endpoints for opentdb
+    enum TriviaAPIEndpoint: String {
+        case api = "/api.php"
+        case apiToken = "/api_token.php"
+    }
 }
 
 extension TriviaAPI {
@@ -106,7 +112,7 @@ private extension TriviaAPI {
     func requestToken() async throws -> String {
         log.debug("Requesting token.")
         let url = createOpenTriviaDatabaseURL(
-            path: "/api_token.php",
+            endpoint: .apiToken,
             queryItems: [.init(name: "command", value: "request")]
         )
         
@@ -132,7 +138,6 @@ private extension TriviaAPI {
             throw TriviaAPIError.invalidAPIResponse(code: responseCode)
         }
         
-        log.debug("The token is: \(tokenResponse.token)")
         return tokenResponse.token
     }
     
@@ -141,11 +146,11 @@ private extension TriviaAPI {
     ///   - path: The path for the api.
     ///   - queryItems: The query items for the api.
     /// - Returns: A url if the path is valid, nil otherwise.
-    func createOpenTriviaDatabaseURL(path: String, queryItems: [URLQueryItem]) -> URL? {
+    func createOpenTriviaDatabaseURL(endpoint: TriviaAPIEndpoint, queryItems: [URLQueryItem]) -> URL? {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "opentdb.com"
-        components.path = path
+        components.path = endpoint.rawValue
         components.queryItems = queryItems
         
         return components.url
@@ -161,7 +166,7 @@ private extension TriviaAPI {
         
         log.debug("Reseting the token")
         let url = createOpenTriviaDatabaseURL(
-            path: "/api_token.php",
+            endpoint: .apiToken,
             queryItems: [
                 .init(name: "command", value: "reset"),
                 .init(name: "token", value: self.sessionToken)
