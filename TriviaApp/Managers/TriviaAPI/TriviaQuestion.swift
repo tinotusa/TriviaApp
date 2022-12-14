@@ -13,46 +13,31 @@ struct TriviaQuestion: Codable, Hashable {
     let type: String
     /// The difficulty of the question.
     let difficulty: String
-    
-    private let _category: String
-    private let _question: String
-    private let _correctAnswer: String
-    private let _incorrectAnswers: [String]
-    
-    enum CodingKeys: String, CodingKey {
-        case _category = "category"
-        case type
-        case difficulty
-        case _question = "question"
-        case _correctAnswer = "correctAnswer"
-        case _incorrectAnswers = "incorrectAnswers"
-    }
-    
     /// The category of the question.
-    var category: String {
-        _category.removingPercentEncoding!
-    }
-    
+    let category: String
     /// The question.
-    var question: String {
-        _question.removingPercentEncoding!
-    }
-    
+    let question: String
     /// The correct answer.
-    var correctAnswer: String {
-        _correctAnswer.removingPercentEncoding!
-    }
-    
+    let correctAnswer: String
     /// The incorrect answers.
-    var incorrectAnswers: [String] {
-        _incorrectAnswers.compactMap { $0.removingPercentEncoding }
-    }
+    let incorrectAnswers: [String]
     
-    /// All the answers (correct and incorrect).
-    var allAnswers: [String] {
-        var answers = incorrectAnswers
-        answers.append(correctAnswer)
-        answers.shuffle()
-        return answers
+    /// All of the answers to the question
+    let allAnswers: [String]
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.category = try container.decode(String.self, forKey: .category).removingPercentEncoding!
+        self.type = try container.decode(String.self, forKey: .type)
+        self.difficulty = try container.decode(String.self, forKey: .difficulty)
+        self.question = try container.decode(String.self, forKey: .question).removingPercentEncoding!
+        self.correctAnswer = try container.decode(String.self, forKey: .correctAnswer).removingPercentEncoding!
+        self.incorrectAnswers = try container.decode([String].self, forKey: .incorrectAnswers).compactMap { $0.removingPercentEncoding! }
+        
+        var allAnswers = incorrectAnswers
+        allAnswers.append(correctAnswer)
+        allAnswers.shuffle()
+        
+        self.allAnswers = allAnswers
     }
 }
