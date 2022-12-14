@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuestionsView: View {
     @StateObject private var viewModel: QuestionsViewModel
+    @Environment(\.dismiss) private var dismiss
     
     init(questions: [TriviaQuestion]) {
         _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
@@ -19,6 +20,17 @@ struct QuestionsView: View {
             if !viewModel.isQuizOver {
                 if let question = viewModel.currentQuestion {
                     VStack {
+                        // TODO: move to own view
+                        HStack {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.title3)
+                            }
+                            Spacer()
+                        }
+                        Spacer()
                         Text(question.question)
                         // TODO: add question card view
                         ForEach(question.allAnswers, id: \.self) { answer in
@@ -29,14 +41,16 @@ struct QuestionsView: View {
                                 Text(answer)
                             }
                         }
+                        Spacer()
                     }
+                    .padding()
                 }
             } else {
                 QuizResultsView(quizResult: .init(
                     score: viewModel.score,
                     questions: viewModel.questions,
                     wrongQuestions: viewModel.wrongQuestions
-                )
+                    )
                 )
                 .transition(.move(edge: .bottom))
             }
