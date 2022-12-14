@@ -14,7 +14,7 @@ final class HomeViewModel: ObservableObject {
     @Published var category: TriviaAPI.TriviaCategory = .anyCategory
     @Published var difficulty: TriviaAPI.TriviaDifficulty = .any
     @Published var triviaType: TriviaAPI.TriviaType = .any
-
+    @Published private(set) var isLoading = false
     @Published private(set) var questions: [TriviaQuestion] = []
     
     private lazy var triviaAPI = TriviaAPI.shared
@@ -25,6 +25,8 @@ extension HomeViewModel {
     /// Gets the trivia questions based on the given settings.
     @MainActor
     func generateQuestions() async {
+        isLoading = true
+        defer { isLoading = false }
         triviaAPI.triviaConfig = .init(numberOfQuestions: numberOfQuestions, category: category, difficulty: difficulty, triviaType: triviaType)
         do {
             questions = try await triviaAPI.getQuestions()

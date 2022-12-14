@@ -42,6 +42,7 @@ struct HomeView: View {
                 }
                 
                 Spacer()
+                // TODO: Make in to fullscreen cover
                 NavigationLink(value: viewModel.questions) {
                     Text("Start quiz")
                 }
@@ -49,6 +50,7 @@ struct HomeView: View {
                 
                 Spacer()
             }
+            .disabled(viewModel.isLoading)
             .padding()
             .navigationDestination(for: [TriviaQuestion].self) { questions in
                 QuestionsView(questions: questions)
