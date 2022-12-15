@@ -11,56 +11,61 @@ struct HomeView: View {
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var showingQuestionsView = false
     var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer()
-                
-                Text("Trivia")
-                    .font(.custom("Caveat", size: 80, relativeTo: .title))
-                
-                Spacer()
-                
-                Picker("Category", selection: $viewModel.category) {
-                    ForEach(TriviaAPI.TriviaCategory.allCases) { category in
-                        Text(category.title)
-                            .tag(category)
-                    }
+        VStack {
+            Spacer()
+            
+            Text("Trivia")
+                .font(.custom("Caveat", size: 80, relativeTo: .title))
+            
+            Spacer()
+            
+            Picker("Category", selection: $viewModel.category) {
+                ForEach(TriviaAPI.TriviaCategory.allCases) { category in
+                    Text(category.title)
+                        .tag(category)
                 }
-                Stepper("Number of questions \(viewModel.numberOfQuestions)", value: $viewModel.numberOfQuestions)
-                Picker("Difficulty", selection: $viewModel.difficulty) {
-                    ForEach(TriviaAPI.TriviaDifficulty.allCases) { difficulty in
-                        Text(difficulty.rawValue)
-                    }
-                }
-                .pickerStyle(.segmented)
-                
-                Picker("Question type", selection: $viewModel.triviaType) {
-                    ForEach(TriviaAPI.TriviaType.allCases) { type in
-                        Text(type.title)
-                    }
-                }
-                .pickerStyle(.segmented)
-                
-                Button {
-                    Task {
-                        await viewModel.generateQuestions()
-                    }
-                } label: {
-                    Text("Generate questions")
-                }
-                
-                Spacer()
-                
-                Button("Start quiz") {
-                    showingQuestionsView = true
-                }
-                .disabled(viewModel.questions.isEmpty)
             }
-            .disabled(viewModel.isLoading)
-            .fullScreenCover(isPresented: $showingQuestionsView) {
-                QuestionsView(questions: viewModel.questions)
+            Stepper("Number of questions \(viewModel.numberOfQuestions)", value: $viewModel.numberOfQuestions)
+            Picker("Difficulty", selection: $viewModel.difficulty) {
+                ForEach(TriviaAPI.TriviaDifficulty.allCases) { difficulty in
+                    Text(difficulty.title)
+                }
             }
-            .alert("Oops something went wrong", isPresented: $viewModel.showSeenAllAlert) {
+            .pickerStyle(.segmented)
+            
+            Picker("Question type", selection: $viewModel.triviaType) {
+                ForEach(TriviaAPI.TriviaType.allCases) { type in
+                    Text(type.title)
+                }
+            }
+            .pickerStyle(.segmented)
+            
+            Button {
+                Task {
+                    await viewModel.generateQuestions()
+                }
+            } label: {
+                Text("Generate questions")
+            }
+            
+            Spacer()
+            
+            Button("Start quiz") {
+                showingQuestionsView = true
+            }
+            .disabled(viewModel.questions.isEmpty)
+        }
+        .disabled(viewModel.isLoading)
+        .fullScreenCover(isPresented: $showingQuestionsView) {
+            QuestionsView(questions: viewModel.questions)
+        }
+        .alert(
+            "Something went wrong.",
+            isPresented: $viewModel.showingAlert,
+            presenting: viewModel.alert
+        ) { alertDetails in
+            switch alertDetails.type {
+            case .seenAllQuestions:
                 Button("Reset questions") {
                     Task {
                         await viewModel.resetToken()
@@ -69,14 +74,31 @@ struct HomeView: View {
                 Button("Cancel", role: .cancel) {
                     
                 }
-            } message: {
-                Text("You have seen all the questions for this category.")
+            case .noResults:
+                Button("Cancel", role: .cancel) {
+                    
+                }
+            case .serverStatus:
+                Button("Retry") {
+                    Task {
+                        await viewModel.generateQuestions()
+                    }
+                }
+                Button("Cancel", role: .cancel) {
+                    
+                }
+            default:
+                Button("Cancel", role: .cancel) {
+                    
+                }
             }
-            .padding()
-            .navigationDestination(for: [TriviaQuestion].self) { questions in
-                QuestionsView(questions: questions)
-            }
+        } message: { alertDetails in
+            Text(alertDetails.message)
         }
+        .padding()
+        .navigationDestination(for: [TriviaQuestion].self) { questions in
+            QuestionsView(questions: questions)
+        }   
     }
 }
 
