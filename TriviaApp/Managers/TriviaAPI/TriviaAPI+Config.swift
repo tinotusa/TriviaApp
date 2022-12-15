@@ -10,10 +10,10 @@ import Foundation
 extension TriviaAPI {
     /// Settings for the trivia.
     struct TriviaConfig: CustomStringConvertible {
-        let numberOfQuestions: Int
-        let category: TriviaCategory
-        let difficulty: TriviaDifficulty
-        let triviaType: TriviaType
+        var numberOfQuestions: Int
+        var category: TriviaCategory
+        var difficulty: TriviaDifficulty
+        var triviaType: TriviaType
         
         /// The max number of questions allowed by the api.
         private static var maxQuestions = 50

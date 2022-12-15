@@ -19,21 +19,26 @@ struct HomeView: View {
             
             Spacer()
             
-            Picker("Category", selection: $viewModel.category) {
+            Picker("Category", selection: $viewModel.triviaConfig.category) {
                 ForEach(TriviaAPI.TriviaCategory.allCases) { category in
                     Text(category.title)
                         .tag(category)
                 }
             }
-            Stepper("Number of questions \(viewModel.numberOfQuestions)", value: $viewModel.numberOfQuestions)
-            Picker("Difficulty", selection: $viewModel.difficulty) {
+            
+            Stepper(
+                "Number of questions \(viewModel.triviaConfig.numberOfQuestions)",
+                value: $viewModel.triviaConfig.numberOfQuestions
+            )
+            
+            Picker("Difficulty", selection: $viewModel.triviaConfig.difficulty) {
                 ForEach(TriviaAPI.TriviaDifficulty.allCases) { difficulty in
                     Text(difficulty.title)
                 }
             }
             .pickerStyle(.segmented)
             
-            Picker("Question type", selection: $viewModel.triviaType) {
+            Picker("Question type", selection: $viewModel.triviaConfig.triviaType) {
                 ForEach(TriviaAPI.TriviaType.allCases) { type in
                     Text(type.title)
                 }
@@ -96,9 +101,6 @@ struct HomeView: View {
             Text(alertDetails.message)
         }
         .padding()
-        .navigationDestination(for: [TriviaQuestion].self) { questions in
-            QuestionsView(questions: questions)
-        }   
     }
 }
 

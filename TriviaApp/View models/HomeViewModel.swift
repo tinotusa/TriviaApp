@@ -10,10 +10,7 @@ import os
 
 /// View model for HomeView.
 final class HomeViewModel: ObservableObject {
-    @Published var numberOfQuestions = 10
-    @Published var category: TriviaAPI.TriviaCategory = .anyCategory
-    @Published var difficulty: TriviaAPI.TriviaDifficulty = .any
-    @Published var triviaType: TriviaAPI.TriviaType = .any
+    @Published var triviaConfig = TriviaAPI.TriviaConfig.default
     @Published private(set) var isLoading = false
     @Published private(set) var questions: [TriviaQuestion] = []
     @Published var showingAlert = false
@@ -50,7 +47,7 @@ extension HomeViewModel {
         log.debug("Generating questions.")
         isLoading = true
         defer { isLoading = false }
-        triviaAPI.triviaConfig = .init(numberOfQuestions: numberOfQuestions, category: category, difficulty: difficulty, triviaType: triviaType)
+        triviaAPI.triviaConfig = triviaConfig
         do {
             questions = try await triviaAPI.getQuestions()
             log.debug("Successfully generated \(self.questions.count) questions.")
