@@ -62,6 +62,8 @@ struct HomeView: View {
         }
         .disabled(viewModel.isLoading)
         .fullScreenCover(isPresented: $showingQuestionsView) {
+            viewModel.clearQuestions()
+        } content: {
             QuestionsView(questions: viewModel.questions)
         }
         .alert(

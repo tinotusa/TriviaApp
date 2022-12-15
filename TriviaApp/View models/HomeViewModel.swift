@@ -75,4 +75,9 @@ extension HomeViewModel {
             log.error("Failed to reset the token. \(error)")
         }
     }
+    
+    /// Removes all of the questions that are currently loaded.
+    func clearQuestions() {
+        self.questions = []
+    }
 }
