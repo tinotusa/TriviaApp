@@ -10,7 +10,7 @@ import SwiftUI
 struct QuestionsView: View {
     @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedAnswer = ""
+    @State private var selectedAnswer: String? = nil
     
     init(questions: [TriviaQuestion]) {
         _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
@@ -45,10 +45,14 @@ struct QuestionsView: View {
                         Spacer()
                         
                         Button("Continue") {
+                            guard let selectedAnswer else {
+                                return
+                            }
                             _ = viewModel.checkAnswer(answer: selectedAnswer)
                             viewModel.nextQuestion()
+                            self.selectedAnswer = nil
                         }
-                        .disabled(selectedAnswer.isEmpty)
+                        .disabled(selectedAnswer == nil)
                     }
                     .padding()
                 }
