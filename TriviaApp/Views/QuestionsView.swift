@@ -29,6 +29,10 @@ struct QuestionsView: View {
                                     .font(.title3)
                             }
                             Spacer()
+                            Button("Hint") {
+                                viewModel.showHint()
+                            }
+                            .disabled(question.type == "boolean" || viewModel.hintsDisabled)
                         }
                         Spacer()
                         Text(question.question)
@@ -39,6 +43,7 @@ struct QuestionsView: View {
                             } label: {
                                 Text(answer)
                             }
+                            .disabled(viewModel.isAnswerHidden(answer: answer))
                         }
                         
                         Spacer()

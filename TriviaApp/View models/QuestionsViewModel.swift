@@ -17,6 +17,8 @@ final class QuestionsViewModel: ObservableObject {
     @Published private(set) var wrongQuestions = [TriviaQuestion]()
     @Published private(set) var score = 0
     @Published var selectedAnswer: String? = nil
+    @Published private(set) var hiddenAnswers = [String]()
+    private var shuffledIncorrectAnswers: [String]?
     
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "QuestionsViewModel")
     
@@ -35,7 +37,13 @@ extension QuestionsViewModel {
             log.debug("Current question index is out of bounds. index: \(self.currentQuestionIndex)")
             return nil
         }
-        return questions[currentQuestionIndex]
+        let question = questions[currentQuestionIndex]
+        if shuffledIncorrectAnswers == nil {
+            // This is so that its set once.
+            // This will be set to nil after submitAnswer is called.
+            shuffledIncorrectAnswers = question.incorrectAnswers.shuffled()
+        }
+        return question
     }
     
     /// A boolean value indicating whether or not an answer has been selected.
@@ -54,7 +62,61 @@ extension QuestionsViewModel {
         checkAnswer(answer: selectedAnswer)
         nextQuestion()
         self.selectedAnswer = nil
+        clearHiddenAnswers()
+        clearIncorrectAnswers()
         log.debug("Successfully submitted an answer")
+    }
+    
+    /// Hides one of the incorrect answers
+    @MainActor
+    func showHint() {
+        log.debug("Showing a hint")
+        guard let shuffledIncorrectAnswers, !shuffledIncorrectAnswers.isEmpty else {
+            log.debug("Cannot have more than three hints.")
+            return
+        }
+        guard let question = currentQuestion else {
+            log.error("Error. No current question.")
+            return
+        }
+        if question.type == "boolean" {
+            log.debug("Cannot show hint for a boolean question.")
+            return
+        }
+        if let answerToHide = self.shuffledIncorrectAnswers?.removeFirst() {
+            hiddenAnswers.append(answerToHide)
+            if answerToHide == selectedAnswer {
+                selectedAnswer = nil
+            }
+            log.debug("Hidden the incorrect answer: \(answerToHide)")
+        } else {
+            log.error("There are no answers to hide.")
+        }
+    }
+    
+    /// Returns true if the given answer is hidden.
+    /// - Parameter answer: The answer to check.
+    /// - Returns: True if the answer is hidden, false otherwise.
+    func isAnswerHidden(answer: String) -> Bool {
+        hiddenAnswers.contains(answer)
+    }
+    
+    /// Sets the current incorrect answers to nil.
+    ///
+    ///  This is called after a question is submitted, so that the next
+    ///  question can set its own incorrect answers.
+    @MainActor
+    func clearIncorrectAnswers() {
+        log.debug("Clearing the shuffled incorrect answers.")
+        shuffledIncorrectAnswers = nil
+    }
+    
+    /// Returns true if there are already three hidden answers
+    var hintsDisabled: Bool {
+        if let shuffledIncorrectAnswers, shuffledIncorrectAnswers.isEmpty {
+            return true
+        }
+        return false
     }
 }
 
@@ -85,6 +147,7 @@ private extension QuestionsViewModel {
     /// Updates to the next question.
     @MainActor
     func nextQuestion() {
+        log.debug("Updating to next question.")
         guard currentQuestionIndex < questions.count - 1 else {
             withAnimation {
                 isQuizOver = true
@@ -94,5 +157,13 @@ private extension QuestionsViewModel {
         }
         currentQuestionIndex += 1
         log.debug("Current question index is: \(self.currentQuestionIndex)")
+    }
+    
+    
+    /// Resets the hidden answers for the next question.
+    @MainActor
+    func clearHiddenAnswers() {
+        log.debug("Clearing the hidden answers.")
+        hiddenAnswers = []
     }
 }
