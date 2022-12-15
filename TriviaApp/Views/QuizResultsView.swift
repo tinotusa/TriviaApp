@@ -24,6 +24,6 @@ struct QuizResultsView: View {
 
 struct QuizResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        QuizResultsView(quizResult: .init(score: 0, questions: [], wrongQuestions: []))
+        QuizResultsView(quizResult: .init(questions: []))
     }
 }

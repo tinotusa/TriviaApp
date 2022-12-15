@@ -14,17 +14,18 @@ final class QuestionsViewModel: ObservableObject {
     @Published private(set) var currentQuestionIndex = 0
     @Published private(set) var isQuizOver = false
     @Published private(set) var questions: [TriviaQuestion]
-    @Published private(set) var wrongQuestions = [TriviaQuestion]()
-    @Published private(set) var score = 0
+    @Published private(set) var quizResult: QuizResult
     @Published var selectedAnswer: String? = nil
     @Published private(set) var hiddenAnswers = [String]()
-    private var shuffledIncorrectAnswers: [String]?
+    /// Answers to hide when hint is pressed.
+    private var answersLeftToHide: [String]?
     
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "QuestionsViewModel")
     
     /// Creates the QuestionViewModel.
     init(questions: [TriviaQuestion]) {
         self.questions = questions
+        quizResult = .init(questions: questions)
     }
 }
 
@@ -38,10 +39,10 @@ extension QuestionsViewModel {
             return nil
         }
         let question = questions[currentQuestionIndex]
-        if shuffledIncorrectAnswers == nil {
+        if answersLeftToHide == nil {
             // This is so that its set once.
             // This will be set to nil after submitAnswer is called.
-            shuffledIncorrectAnswers = question.incorrectAnswers.shuffled()
+            answersLeftToHide = question.incorrectAnswers.shuffled()
         }
         return question
     }
@@ -71,8 +72,8 @@ extension QuestionsViewModel {
     @MainActor
     func showHint() {
         log.debug("Showing a hint")
-        guard let shuffledIncorrectAnswers, !shuffledIncorrectAnswers.isEmpty else {
-            log.debug("Cannot have more than three hints.")
+        guard let answersLeftToHide, !answersLeftToHide.isEmpty else {
+            log.debug("Cannot have more hints.")
             return
         }
         guard let question = currentQuestion else {
@@ -83,7 +84,7 @@ extension QuestionsViewModel {
             log.debug("Cannot show hint for a boolean question.")
             return
         }
-        if let answerToHide = self.shuffledIncorrectAnswers?.removeFirst() {
+        if let answerToHide = self.answersLeftToHide?.removeFirst() {
             hiddenAnswers.append(answerToHide)
             if answerToHide == selectedAnswer {
                 selectedAnswer = nil
@@ -108,12 +109,12 @@ extension QuestionsViewModel {
     @MainActor
     func clearIncorrectAnswers() {
         log.debug("Clearing the shuffled incorrect answers.")
-        shuffledIncorrectAnswers = nil
+        answersLeftToHide = nil
     }
     
     /// Returns true if there are already three hidden answers
     var hintsDisabled: Bool {
-        if let shuffledIncorrectAnswers, shuffledIncorrectAnswers.isEmpty {
+        if let answersLeftToHide, answersLeftToHide.isEmpty {
             return true
         }
         return false
@@ -137,11 +138,11 @@ private extension QuestionsViewModel {
         let isCorrect = currentQuestion.correctAnswer == answer
         if isCorrect {
             log.debug("The answer was correct.")
-            score += 1
+            quizResult.score += 1
             return
         }
         log.debug("The answer was incorrect.")
-        wrongQuestions.append(currentQuestion)
+        quizResult.wrongQuestions.append(currentQuestion)
     }
     
     /// Updates to the next question.

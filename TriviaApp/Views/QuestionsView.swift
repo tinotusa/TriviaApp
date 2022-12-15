@@ -56,12 +56,7 @@ struct QuestionsView: View {
                     .padding()
                 }
             } else {
-                QuizResultsView(quizResult: .init(
-                    score: viewModel.score,
-                    questions: viewModel.questions,
-                    wrongQuestions: viewModel.wrongQuestions
-                    )
-                )
+                QuizResultsView(quizResult: viewModel.quizResult)
                 .transition(.move(edge: .bottom))
             }
         }

@@ -10,11 +10,11 @@ import Foundation
 /// Results of a particular quiz round.
 struct QuizResult {
     /// The amount of correctly answered questions
-    let score: Int
+    var score: Int = 0
     /// All the questions that were asked.
     let questions: [TriviaQuestion]
     /// The questions that were answered incorrectly.
-    let wrongQuestions: [TriviaQuestion]
+    var wrongQuestions: [TriviaQuestion] = []
     
     /// The score as a percentage.
     var percentage: Double {
