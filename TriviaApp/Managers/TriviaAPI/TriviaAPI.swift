@@ -8,18 +8,19 @@
 import Foundation
 import os
 
-/// API wrapper for [Opentdb](https://opentdb.com)
+/// API wrapper for [Opentdb](https://opentdb.com).
 final class TriviaAPI {
     /// The current sessions token.
-    var sessionToken: String?
+    private(set) var sessionToken: String?
     /// Settings for the trivia questions.
     var triviaConfig: TriviaConfig
     
+    /// The shared TriviaAPI instance.
     static var shared = TriviaAPI()
     
     /// Decoder for the wrapper.
     private let decoder: JSONDecoder
-    /// Logger for the class
+    /// Logger for the class.
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "TriviaAPI")
     
     /// Creates a TriviaAPI.
@@ -29,7 +30,7 @@ final class TriviaAPI {
         triviaConfig = .default
     }
     
-    /// Endpoints for opentdb
+    /// Endpoints for opentdb.
     enum TriviaAPIEndpoint: String {
         case api = "/api.php"
         case apiToken = "/api_token.php"
@@ -49,7 +50,7 @@ extension TriviaAPI {
         
         if !hasSessionToken {
             log.debug("No session token. Requesting a new one.")
-            self.sessionToken = try await requestToken()
+            try await requestToken()
         }
         
         let url = createOpenTriviaDatabaseURL(
@@ -94,14 +95,14 @@ extension TriviaAPI {
             throw TriviaAPIError.invalidParameter
         case .tokenNotFound:
             log.debug("Failed to get questions. No token found. Will try to request for a new token.")
-            self.sessionToken = try await requestToken()
+            try await requestToken()
             return try await getQuestions()
         case .tokenEmpty:
             if self.sessionToken != nil && questionsResponse.results.isEmpty {
                 log.error("No results found. Might have seen all questions.")
                 throw TriviaAPIError.seenAllQuestions
             }
-            self.sessionToken = try await resetToken()
+            try await resetToken()
             return try await getQuestions()
         default:
             break
@@ -111,9 +112,8 @@ extension TriviaAPI {
         return questionsResponse.results
     }
     
-    /// Resets the token and returns a new one.
-    /// - Returns: A new session token.
-    func resetToken() async throws -> String {
+    /// Resets the current session token.
+    func resetToken() async throws {
         if sessionToken == nil {
             log.error("Failed to reset the token. The token is nil.")
             throw TriviaAPIError.noSessonToken
@@ -151,9 +151,8 @@ extension TriviaAPI {
         }
         
         log.debug("Successfully reset token.")
-        return tokenResponse.token
+        self.sessionToken = tokenResponse.token
     }
-    
 }
 
 private extension TriviaAPI {
@@ -162,9 +161,7 @@ private extension TriviaAPI {
     /// This token is used to keep track of the questions that have already been asked.
     /// This token will also help indicate when the user has exhausted all questions and
     /// needs to the refreshed.
-    ///
-    /// - Returns: A session token.
-    func requestToken() async throws -> String {
+    func requestToken() async throws {
         log.debug("Requesting token.")
         let url = createOpenTriviaDatabaseURL(
             endpoint: .apiToken,
@@ -194,7 +191,7 @@ private extension TriviaAPI {
         }
         
         log.debug("Successfully got session token.")
-        return tokenResponse.token
+        self.sessionToken = tokenResponse.token
     }
     
     /// Creates a url for opentdb with the given path and query items.

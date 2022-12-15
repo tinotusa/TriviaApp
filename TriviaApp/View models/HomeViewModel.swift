@@ -73,7 +73,7 @@ extension HomeViewModel {
     /// Tries to reset the api token.
     func resetToken() async {
         do {
-            triviaAPI.sessionToken = try await triviaAPI.resetToken()
+            try await triviaAPI.resetToken()
         } catch {
             log.error("Failed to reset the token. \(error)")
         }
