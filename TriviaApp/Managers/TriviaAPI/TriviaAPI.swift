@@ -93,8 +93,9 @@ extension TriviaAPI {
             log.error("Failed to get questions. A parameter was invalid.")
             throw TriviaAPIError.invalidParameter
         case .tokenNotFound:
-            log.error("Failed to get questions. No token found.")
-            throw TriviaAPIError.noSessonToken
+            log.debug("Failed to get questions. No token found. Will try to request for a new token.")
+            self.sessionToken = try await requestToken()
+            return try await getQuestions()
         case .tokenEmpty:
             if self.sessionToken != nil && questionsResponse.results.isEmpty {
                 log.error("No results found. Might have seen all questions.")
