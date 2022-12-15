@@ -6,12 +6,19 @@
 //
 
 import Foundation
+import SwiftUI
 import os
 
 /// API wrapper for [Opentdb](https://opentdb.com).
 final class TriviaAPI {
     /// The current sessions token.
-    private(set) var sessionToken: String?
+    var sessionToken: String? {
+        didSet {
+            if let sessionToken {
+                UserDefaults.standard.set(sessionToken, forKey: "sessionToken")
+            }
+        }
+    }
     /// Settings for the trivia questions.
     var triviaConfig: TriviaConfig
     
