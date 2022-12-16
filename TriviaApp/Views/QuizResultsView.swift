@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuizResultsView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var hapticsManager: HapticsManager
     let quizResult: QuizResult
     
     var body: some View {
@@ -19,11 +20,15 @@ struct QuizResultsView: View {
                 dismiss()
             }
         }
+        .onAppear {
+            hapticsManager.triviaOverHaptics()
+        }
     }
 }
 
 struct QuizResultsView_Previews: PreviewProvider {
     static var previews: some View {
         QuizResultsView(quizResult: .init(questions: []))
+            .environmentObject(HapticsManager())
     }
 }

@@ -14,6 +14,7 @@ final class HapticsManager: ObservableObject {
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "HapticManager")
     private var restartAttempts = 0
     private let maxRestartAttempts = 3
+    private var audioManager = AudioManager()
     
     /// Creates the haptic manager.
     init() {
@@ -83,9 +84,10 @@ final class HapticsManager: ObservableObject {
 
 extension HapticsManager {
     /// Creates and plays a success haptic.
-    func questionSuccessHaptic() {
+    func correctAnswerHaptic() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {
             log.debug("The device doesn't support haptics.")
+            audioManager.playSound(.correctAnswer)
             return
         }
         log.debug("Creating questions success haptic.")
@@ -122,6 +124,7 @@ extension HapticsManager {
     func buttonPressHaptic() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {
             log.debug("The device doesn't support haptics.")
+            audioManager.playSound(.defaultButton)
             return
         }
         log.debug("Creating questions success haptic.")
@@ -139,6 +142,41 @@ extension HapticsManager {
             log.debug("Successfully played the answer selection haptic.")
         } catch {
             log.error("Failed to play answer selection haptic. \(error)")
+        }
+    }
+    
+    /// Plays haptics when the trivia round is over
+    func triviaOverHaptics() {
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {
+            log.debug("Device doesn't support haptics. Playing audio instead.")
+            audioManager.playSound(.triviaRoundComplete)
+            return
+        }
+        log.debug("Creating trivia over haptic.")
+        var events = [CHHapticEvent]()
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.3)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.2)
+        guard let url = Bundle.main.url(forResource: AudioManager.AudioFile.triviaRoundComplete.filename, withExtension: AudioManager.AudioFile.triviaRoundComplete.extension) else {
+            log.error("Failed to get audio url.")
+            return
+        }
+        
+        do {
+            guard let audioID = try engine?.registerAudioResource(url) else {
+                log.error("Failed to register audio resource.")
+                return
+            }
+            let audioEvent = CHHapticEvent(audioResourceID: audioID, parameters: [], relativeTime: 0)
+            let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [intensity, sharpness], relativeTime: 0, duration: 0.6)
+            events.append(event)
+            events.append(audioEvent)
+            
+            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let player = try engine?.makePlayer(with: pattern)
+            try player?.start(atTime: 0)
+            log.debug("Successfully played the trivia over haptic.")
+        } catch {
+            log.error("Failed to play trivia over  haptic. \(error)")
         }
     }
     

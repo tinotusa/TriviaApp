@@ -54,7 +54,7 @@ struct QuestionsView: View {
                         Button("Continue") {
                             let isCorrect = viewModel.submitAnswer()
                             if isCorrect {
-                                hapticsManager.questionSuccessHaptic()
+                                hapticsManager.correctAnswerHaptic()
                             }
                         }
                         .disabled(!viewModel.hasSelectedAnswer)
