@@ -53,19 +53,21 @@ extension QuestionsViewModel {
     }
     
     /// Checks the current answer and moves on to the next question.
+    /// - Returns: True if the submitted answer was correct, false otherwise.
     @MainActor
-    func submitAnswer() {
+    func submitAnswer() -> Bool {
         log.debug("Submitting answer.")
         guard let selectedAnswer else {
             log.error("Error tried to submit a nil answer")
-            return
+            return false
         }
-        checkAnswer(answer: selectedAnswer)
+        let isCorrect = checkAnswer(answer: selectedAnswer)
         nextQuestion()
         self.selectedAnswer = nil
         clearHiddenAnswers()
         clearIncorrectAnswers()
         log.debug("Successfully submitted an answer")
+        return isCorrect
     }
     
     /// Hides one of the incorrect answers
@@ -126,12 +128,12 @@ private extension QuestionsViewModel {
     /// - Parameter answer: The answer to check with.
     /// - Returns: True if the answer is correct, false otherwise.
     @MainActor
-    func checkAnswer(answer: String) {
+    func checkAnswer(answer: String) -> Bool {
         log.debug("Checking the answer.")
         guard currentQuestionIndex < questions.count else {
             isQuizOver = true
             log.debug("Tried to check answer when question index was out of bounds. index: \(self.currentQuestionIndex)")
-            return
+            return false
         }
         
         let currentQuestion = questions[currentQuestionIndex]
@@ -139,10 +141,11 @@ private extension QuestionsViewModel {
         if isCorrect {
             log.debug("The answer was correct.")
             quizResult.score += 1
-            return
+            return true
         }
         log.debug("The answer was incorrect.")
         quizResult.wrongQuestions.append(currentQuestion)
+        return false
     }
     
     /// Updates to the next question.

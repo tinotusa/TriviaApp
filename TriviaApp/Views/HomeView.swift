@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject private var hapticsManger: HapticsManager
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var showingQuestionsView = false
+    
     var body: some View {
         VStack {
             Spacer()
@@ -48,6 +50,7 @@ struct HomeView: View {
             Button {
                 Task {
                     await viewModel.generateQuestions()
+                    hapticsManger.buttonPressHaptic()
                 }
             } label: {
                 Text("Generate questions")

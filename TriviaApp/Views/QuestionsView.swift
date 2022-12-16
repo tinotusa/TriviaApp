@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct QuestionsView: View {
+    @EnvironmentObject private var hapticsManager: HapticsManager
     @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
     
@@ -40,6 +41,7 @@ struct QuestionsView: View {
                         ForEach(question.allAnswers, id: \.self) { answer in
                             Button {
                                 viewModel.selectedAnswer = answer
+                                hapticsManager.buttonPressHaptic()
                             } label: {
                                 Text(answer)
                             }
@@ -49,7 +51,10 @@ struct QuestionsView: View {
                         Spacer()
                         
                         Button("Continue") {
-                            viewModel.submitAnswer()
+                            let isCorrect = viewModel.submitAnswer()
+                            if isCorrect {
+                                hapticsManager.questionSuccessHaptic()
+                            }
                         }
                         .disabled(!viewModel.hasSelectedAnswer)
                     }
@@ -72,5 +77,6 @@ struct QuestionsView_Previews: PreviewProvider {
     
     static var previews: some View {
         QuestionsView(questions: questions)
+            .environmentObject(HapticsManager())
     }
 }

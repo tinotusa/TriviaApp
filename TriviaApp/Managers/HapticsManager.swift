@@ -92,11 +92,23 @@ extension HapticsManager {
         var events = [CHHapticEvent]()
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.6)
         let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.2)
-        
-        let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
-        events.append(event)
+
+        guard let url = Bundle.main.url(forResource: "correct-choice", withExtension: "wav") else {
+            log.error("Failed to find audio path.")
+            return
+        }
         
         do {
+            let audioID = try engine?.registerAudioResource(url)
+            guard let audioID else {
+                log.error("Invalid audio id.")
+                return
+            }
+            let audio = CHHapticEvent(audioResourceID: audioID, parameters: [.init(parameterID: .audioVolume, value: 0.7)], relativeTime: 0)
+            let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
+            events.append(event)
+            events.append(audio)
+
             let pattern = try CHHapticPattern(events: events, parameters: [])
             let player = try engine?.makePlayer(with: pattern)
             try player?.start(atTime: 0)
@@ -106,16 +118,16 @@ extension HapticsManager {
         }
     }
     
-    /// Creates and plays a success haptic.
-    func answerSelectionHaptic() {
+    /// Creates and plays a basic haptic.
+    func buttonPressHaptic() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {
             log.debug("The device doesn't support haptics.")
             return
         }
         log.debug("Creating questions success haptic.")
         var events = [CHHapticEvent]()
-        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.2)
-        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.3)
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.25)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.2)
         
         let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
         events.append(event)
