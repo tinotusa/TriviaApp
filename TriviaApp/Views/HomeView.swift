@@ -11,11 +11,19 @@ struct HomeView: View {
     @EnvironmentObject private var hapticsManger: HapticsManager
     @EnvironmentObject private var viewModel: HomeViewModel
     @State private var showingQuestionsView = false
+    @State private var showingCreditsSheet = false
     
     var body: some View {
         VStack {
-            Spacer()
-            
+            Group {
+                HStack {
+                    Spacer()
+                    Button("Credits") {
+                        showingCreditsSheet = true
+                    }
+                }
+                Spacer()
+            }
             Text("Trivia")
                 .font(.custom("Caveat", size: 80, relativeTo: .title))
             
@@ -68,6 +76,29 @@ struct HomeView: View {
             viewModel.clearQuestions()
         } content: {
             QuestionsView(questions: viewModel.questions)
+        }
+        .sheet(isPresented: $showingCreditsSheet) {
+            VStack {
+                Text("Credits")
+                HStack {
+                    Text("Button tap sound")
+                    Spacer()
+                    Link("OpenGameArt.org", destination: URL(string: "https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks")!)
+                }
+                HStack {
+                    Text("Win sound")
+                    Spacer()
+                    Link("OpenGameArt.org", destination: URL(string: "https://opengameart.org/content/win-sound-effect")!)
+                }
+                HStack {
+                    Text("Correct answer sound")
+                    Spacer()
+                    Link("pixabay.com", destination: URL(string: "https://pixabay.com/sound-effects/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=43861")!)
+                }
+                Spacer()
+            }
+            .padding()
+            .presentationDragIndicator(.visible)
         }
         .alert(
             "Something went wrong.",
