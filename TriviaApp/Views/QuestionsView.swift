@@ -11,6 +11,7 @@ struct QuestionsView: View {
     @EnvironmentObject private var hapticsManager: HapticsManager
     @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var showingQuitConfirmationDialog = false
     
     init(questions: [TriviaQuestion]) {
         _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
@@ -24,7 +25,7 @@ struct QuestionsView: View {
                         // TODO: move to own view
                         HStack {
                             Button {
-                                dismiss()
+                                showingQuitConfirmationDialog = true
                             } label: {
                                 Image(systemName: "xmark")
                                     .font(.title3)
@@ -64,6 +65,16 @@ struct QuestionsView: View {
                 QuizResultsView(quizResult: viewModel.quizResult)
                 .transition(.move(edge: .bottom))
             }
+        }
+        .confirmationDialog("Quit trivia round", isPresented: $showingQuitConfirmationDialog) {
+            Button("Quit", role: .destructive) {
+                dismiss()
+            }
+            Button("Continue", role: .cancel) {
+                
+            }
+        } message: {
+            Text("Are you sure you want to quit this trivia round?")
         }
         .navigationBarBackButtonHidden()
     }
