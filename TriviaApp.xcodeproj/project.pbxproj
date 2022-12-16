@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
+		2162F3CE294C2C46004DEA9C /* correct-choice.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CD294C2C46004DEA9C /* correct-choice.mp3 */; };
 		21889C372949793E0044567D /* QuizResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21889C362949793E0044567D /* QuizResultsView.swift */; };
 		21889C3A29497D8F0044567D /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21889C3929497D8F0044567D /* QuizResult.swift */; };
 		21889C3C294984B10044567D /* exampleQuestions.json in Resources */ = {isa = PBXBuildFile; fileRef = 21889C3B294984B10044567D /* exampleQuestions.json */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2162F3CB294C17FF004DEA9C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
+		2162F3CD294C2C46004DEA9C /* correct-choice.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "correct-choice.mp3"; sourceTree = "<group>"; };
 		21889C362949793E0044567D /* QuizResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultsView.swift; sourceTree = "<group>"; };
 		21889C3929497D8F0044567D /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
 		21889C3B294984B10044567D /* exampleQuestions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleQuestions.json; sourceTree = "<group>"; };
@@ -210,6 +214,7 @@
 		21CB4C0B293CB516005865BE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2162F3CD294C2C46004DEA9C /* correct-choice.mp3 */,
 				21CB4C17293CBB65005865BE /* Caveat.ttf */,
 				21889C3B294984B10044567D /* exampleQuestions.json */,
 			);
@@ -244,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				21D47A4F2948306E00D10E18 /* TriviaAPI */,
+				2162F3CB294C17FF004DEA9C /* HapticsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -356,6 +362,7 @@
 				21D47A4C29481E6A00D10E18 /* TODO.md in Resources */,
 				21CB4C18293CBB65005865BE /* Caveat.ttf in Resources */,
 				21CB4BE7293CB4C9005865BE /* Preview Assets.xcassets in Resources */,
+				2162F3CE294C2C46004DEA9C /* correct-choice.mp3 in Resources */,
 				21CB4BE4293CB4C9005865BE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,6 +394,7 @@
 				21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */,
 				21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */,
 				21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */,
+				2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */,
 				21D47A552948312200D10E18 /* TriviaAPI+Difficulty.swift in Sources */,
 				21889C372949793E0044567D /* QuizResultsView.swift in Sources */,
 				21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */,
