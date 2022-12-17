@@ -12,7 +12,7 @@ struct QuizResult {
     /// The amount of correctly answered questions
     var score: Int = 0
     /// All the questions that were asked.
-    let questions: [TriviaQuestion]
+    var questions: [TriviaQuestion]
     /// The questions that were answered incorrectly.
     var wrongQuestions: [TriviaQuestion] = []
     
