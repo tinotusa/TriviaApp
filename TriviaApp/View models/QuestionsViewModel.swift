@@ -9,13 +9,6 @@ import Foundation
 import os
 import SwiftUI
 
-/// The loading state a view.
-enum ViewLoadingState {
-    case loading
-    case loaded
-    case error(error: Error)
-}
-
 /// View model for the QuestionsView.
 final class QuestionsViewModel: ObservableObject {
     /// The loading state of the view.
