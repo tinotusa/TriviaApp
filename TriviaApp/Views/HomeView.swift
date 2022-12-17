@@ -55,67 +55,18 @@ struct HomeView: View {
             }
             .pickerStyle(.segmented)
             
-            Button {
-                Task {
-                    await viewModel.generateQuestions()
-                    hapticsManger.buttonPressHaptic()
-                }
-            } label: {
-                Text("Generate questions")
-            }
-            
             Spacer()
             
             Button("Start quiz") {
                 showingQuestionsView = true
             }
-            .disabled(viewModel.questions.isEmpty)
         }
-        .disabled(viewModel.isLoading)
         .fullScreenCover(isPresented: $showingQuestionsView) {
-            viewModel.clearQuestions()
-        } content: {
-            QuestionsView(questions: viewModel.questions)
+            QuestionsView(triviaConfig: viewModel.triviaConfig)
         }
         .sheet(isPresented: $showingCreditsSheet) {
             CreditsView()
                 .presentationDragIndicator(.visible)
-        }
-        .alert(
-            "Something went wrong.",
-            isPresented: $viewModel.showingAlert,
-            presenting: viewModel.alert
-        ) { alertDetails in
-            switch alertDetails.type {
-            case .seenAllQuestions:
-                Button("Reset questions") {
-                    Task {
-                        await viewModel.resetToken()
-                    }
-                }
-                Button("Cancel", role: .cancel) {
-                    
-                }
-            case .noResults:
-                Button("Cancel", role: .cancel) {
-                    
-                }
-            case .serverStatus:
-                Button("Retry") {
-                    Task {
-                        await viewModel.generateQuestions()
-                    }
-                }
-                Button("Cancel", role: .cancel) {
-                    
-                }
-            default:
-                Button("Cancel", role: .cancel) {
-                    
-                }
-            }
-        } message: { alertDetails in
-            Text(alertDetails.message)
         }
         .padding()
     }

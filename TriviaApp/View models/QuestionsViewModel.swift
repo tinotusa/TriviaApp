@@ -9,23 +9,71 @@ import Foundation
 import os
 import SwiftUI
 
+/// The loading state a view.
+enum ViewLoadingState {
+    case loading
+    case loaded
+    case error(error: Error)
+}
+
 /// View model for the QuestionsView.
 final class QuestionsViewModel: ObservableObject {
+    /// The loading state of the view.
+    @Published private(set) var viewLoadingState = ViewLoadingState.loading
+    /// The current question's index.
     @Published private(set) var currentQuestionIndex = 0
+    /// A boolean value indicating whether the trivia quiz is over.
     @Published private(set) var isQuizOver = false
-    @Published private(set) var questions: [TriviaQuestion]
-    @Published private(set) var quizResult: QuizResult
+    /// The questions of the trivia quiz.
+    @Published private(set) var questions: [TriviaQuestion] = []
+    /// The results of the trivia round.
+    @Published private(set) var quizResult: QuizResult = .init(questions: [])
+    /// The currently selected answer.
     @Published var selectedAnswer: String? = nil
+    /// The answers that are currently hidden.
     @Published private(set) var hiddenAnswers = [String]()
+    /// The config for the trivia.
+    private let triviaConfig: TriviaAPI.TriviaConfig
     /// Answers to hide when hint is pressed.
     private var answersLeftToHide: [String]?
+    /// The trivia api.
+    private var triviaAPI = TriviaAPI.shared
+    
+    /// A boolean value indicating whether an alert is being shown.
+    @Published var showingAlert = false
+    /// The alert details used when alert is shown.
+    @Published private(set) var alert: Alert? = nil {
+        didSet {
+            showingAlert = true
+            print("showing alert is now \(showingAlert)")
+        }
+    }
     
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "QuestionsViewModel")
     
-    /// Creates the QuestionViewModel.
-    init(questions: [TriviaQuestion]) {
-        self.questions = questions
-        quizResult = .init(questions: questions)
+    /// Creates the view model.
+    /// - Parameter triviaConfig: The config for the trivia.
+    init(triviaConfig: TriviaAPI.TriviaConfig) {
+        self.triviaConfig = triviaConfig
+    }
+}
+
+extension QuestionsViewModel {
+    /// Alert details of the view.
+    struct Alert {
+        /// The error message of the alert
+        let message: String
+        /// The type of the alert
+        let type: AlertType
+        /// A unique id for the alert.
+        let id = UUID()
+        
+        enum AlertType {
+            case noResults
+            case seenAllQuestions
+            case serverStatus
+            case other
+        }
     }
 }
 
@@ -123,6 +171,52 @@ extension QuestionsViewModel {
     }
 }
 
+// MARK: - Trivia api functions
+extension QuestionsViewModel {
+    /// Fetches some questions of opentdb based on the given trivia config.
+    @MainActor
+    func getQuestions() async {
+        log.debug("Getting questions based on config \(self.triviaConfig)")
+        do {
+            triviaAPI.triviaConfig = triviaConfig
+            self.questions = try await triviaAPI.getQuestions()
+            quizResult.questions = self.questions
+            viewLoadingState = .loaded
+            log.debug("Successfully loaded \(self.questions.count) questions.")
+        } catch let error as TriviaAPI.TriviaAPIError {
+            switch error {
+            case .noResults:
+                alert = .init(message: "No results found.", type: .noResults)
+            case .seenAllQuestions:
+                alert = .init(message: "Seen all questions for this cateogry.", type: .seenAllQuestions)
+            case .serverStatus(let code):
+                alert = .init(message: "Invalid server status: \(code)", type: .serverStatus)
+            default:
+                alert = .init(message: "Something went wrong", type: .other)
+            }
+            viewLoadingState = .error(error: error)
+            log.error("TriviaAPI Error. Failed to get questions. \(error)")
+        } catch {
+            viewLoadingState = .error(error: error)
+            log.error("Failed to get questions. \(error)")
+        }
+    }
+    
+    /// Tries to reset the api token.
+    ///
+    ///  This will also reset the view's loading state to loading.
+    @MainActor
+    func resetQuestions() async {
+        do {
+            try await triviaAPI.resetToken()
+            viewLoadingState = .loading
+        } catch {
+            log.error("Failed to reset the token. \(error)")
+        }
+    }
+}
+
+// MARK: - Private
 private extension QuestionsViewModel {
     /// Checks the answer with the current question.
     /// - Parameter answer: The answer to check with.

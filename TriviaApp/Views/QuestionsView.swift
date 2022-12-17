@@ -13,11 +13,68 @@ struct QuestionsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showingQuitConfirmationDialog = false
     
-    init(questions: [TriviaQuestion]) {
-        _viewModel = StateObject(wrappedValue: QuestionsViewModel(questions: questions))
+    init(triviaConfig: TriviaAPI.TriviaConfig) {
+        _viewModel = StateObject(wrappedValue: QuestionsViewModel(triviaConfig: triviaConfig))
     }
     
     var body: some View {
+        switch viewModel.viewLoadingState {
+        case .loading:
+            // TODO: make loading view
+            VStack {
+                ProgressView()
+                    .task {
+                        await viewModel.getQuestions()
+                    }
+                Text("Loading questions...")
+            }
+        case .loaded:
+            loadedView
+        case .error(let error):
+            // TODO: error view
+            VStack {
+                Text(error.localizedDescription)
+            }
+            .alert(
+                "Something went wrong.",
+                isPresented: $viewModel.showingAlert,
+                presenting: viewModel.alert
+            ) { alertDetails in
+                switch alertDetails.type {
+                case .seenAllQuestions:
+                    Button("Reset questions") {
+                        Task {
+                            await viewModel.resetQuestions()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
+                case .noResults:
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
+                case .serverStatus:
+                    Button("Retry") {
+                        Task {
+                            await viewModel.getQuestions()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
+                default:
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
+                }
+            } message: { alertDetails in
+                Text(alertDetails.message)
+            }
+        }
+    }
+    
+    var loadedView: some View {
         Group {
             if !viewModel.isQuizOver {
                 if let question = viewModel.currentQuestion {
@@ -87,7 +144,7 @@ struct QuestionsView_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        QuestionsView(questions: questions)
+        QuestionsView(triviaConfig: .default)
             .environmentObject(HapticsManager())
     }
 }
