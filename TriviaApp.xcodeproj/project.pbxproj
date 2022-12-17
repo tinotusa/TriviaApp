@@ -35,6 +35,7 @@
 		21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5A2948319900D10E18 /* TriviaQuestion.swift */; };
 		21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5D294831CF00D10E18 /* TokenResponse.swift */; };
 		21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5F294831E800D10E18 /* QuestionsResponse.swift */; };
+		21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D7A745294D7ED900A9B8D2 /* CreditsView.swift */; };
 		21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EE4D2E293EEC030032711E /* TriviaAPI.swift */; };
 		21F045C5294834F300388F83 /* QuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C4294834F300388F83 /* QuestionsView.swift */; };
 		21F045C72948392A00388F83 /* QuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C62948392A00388F83 /* QuestionsViewModel.swift */; };
@@ -89,6 +90,7 @@
 		21D47A5A2948319900D10E18 /* TriviaQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestion.swift; sourceTree = "<group>"; };
 		21D47A5D294831CF00D10E18 /* TokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponse.swift; sourceTree = "<group>"; };
 		21D47A5F294831E800D10E18 /* QuestionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsResponse.swift; sourceTree = "<group>"; };
+		21D7A745294D7ED900A9B8D2 /* CreditsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsView.swift; sourceTree = "<group>"; };
 		21EE4D2E293EEC030032711E /* TriviaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaAPI.swift; sourceTree = "<group>"; };
 		21F045C4294834F300388F83 /* QuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsView.swift; sourceTree = "<group>"; };
 		21F045C62948392A00388F83 /* QuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsViewModel.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				21CB4C19293CBE40005865BE /* HomeView.swift */,
 				21F045C4294834F300388F83 /* QuestionsView.swift */,
 				21889C362949793E0044567D /* QuizResultsView.swift */,
+				21D7A745294D7ED900A9B8D2 /* CreditsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				21D47A53294830E600D10E18 /* TriviaAPI+Category.swift in Sources */,
 				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,
 				21889C3A29497D8F0044567D /* QuizResult.swift in Sources */,
+				21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */,
 				21F045C72948392A00388F83 /* QuestionsViewModel.swift in Sources */,
 				21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */,
 				21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */,
@@ -581,7 +585,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TriviaApp/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -611,7 +614,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TriviaApp/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
