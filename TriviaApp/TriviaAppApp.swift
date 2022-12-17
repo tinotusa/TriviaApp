@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct TriviaAppApp: App {
     @AppStorage("sessionToken") private var sessionToken: String = ""
-    @StateObject private var homeViewModel = HomeViewModel() // TODO: is it necessary to have this here ??
     @StateObject private var hapticManger = HapticsManager()
     
     init() {
@@ -22,7 +21,6 @@ struct TriviaAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(homeViewModel)
                 .environmentObject(hapticManger)
         }
     }

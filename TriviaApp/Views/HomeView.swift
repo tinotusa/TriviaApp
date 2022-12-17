@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var hapticsManger: HapticsManager
-    @EnvironmentObject private var viewModel: HomeViewModel
+    @StateObject private var viewModel = HomeViewModel()
     @State private var showingQuestionsView = false
     @State private var showingCreditsSheet = false
     
@@ -143,7 +143,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-            .environmentObject(HomeViewModel())
             .environmentObject(HapticsManager())
     }
 }
