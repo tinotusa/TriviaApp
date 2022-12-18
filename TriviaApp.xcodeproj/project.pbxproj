@@ -11,6 +11,9 @@
 		21077D7B294EACF5009581DF /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D7A294EACF5009581DF /* TextStyles.swift */; };
 		21077D87294EAFEE009581DF /* SF-Compact-Rounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21077D83294EAF8C009581DF /* SF-Compact-Rounded-Medium.otf */; };
 		21077D88294EB193009581DF /* SF-Compact-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */; };
+		21077D8B294EB873009581DF /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D8A294EB873009581DF /* ButtonStyles.swift */; };
+		21077D8E294EE193009581DF /* AnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D8D294EE193009581DF /* AnswerButton.swift */; };
+		21077D91294EE1D9009581DF /* ContinueButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D90294EE1D9009581DF /* ContinueButton.swift */; };
 		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
 		2162F3D0294C37E6004DEA9C /* correct-choice.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CF294C37E6004DEA9C /* correct-choice.wav */; };
 		2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3D4294C5E69004DEA9C /* AudioManager.swift */; };
@@ -68,6 +71,9 @@
 		21077D7A294EACF5009581DF /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Rounded-Regular.otf"; sourceTree = "<group>"; };
 		21077D83294EAF8C009581DF /* SF-Compact-Rounded-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Rounded-Medium.otf"; sourceTree = "<group>"; };
+		21077D8A294EB873009581DF /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		21077D8D294EE193009581DF /* AnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerButton.swift; sourceTree = "<group>"; };
+		21077D90294EE1D9009581DF /* ContinueButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueButton.swift; sourceTree = "<group>"; };
 		2162F3CB294C17FF004DEA9C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		2162F3CF294C37E6004DEA9C /* correct-choice.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct-choice.wav"; sourceTree = "<group>"; };
 		2162F3D4294C5E69004DEA9C /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -135,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				21077D7A294EACF5009581DF /* TextStyles.swift */,
+				21077D8A294EB873009581DF /* ButtonStyles.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -154,6 +161,23 @@
 				21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */,
 			);
 			path = "SF Compact Rounded";
+			sourceTree = "<group>";
+		};
+		21077D8C294EE182009581DF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				21077D8F294EE1CC009581DF /* Buttons */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		21077D8F294EE1CC009581DF /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				21077D8D294EE193009581DF /* AnswerButton.swift */,
+				21077D90294EE1D9009581DF /* ContinueButton.swift */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		21889C3829497D300044567D /* Models */ = {
@@ -240,6 +264,7 @@
 		21CB4C09293CB50A005865BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				21077D8C294EE182009581DF /* Components */,
 				21CB4BE1293CB4C6005865BE /* ContentView.swift */,
 				21CB4C19293CBE40005865BE /* HomeView.swift */,
 				21F045C4294834F300388F83 /* QuestionsView.swift */,
@@ -446,8 +471,10 @@
 				21D47A572948313C00D10E18 /* TriviaAPI+TriviaType.swift in Sources */,
 				21889C3F294984D20044567D /* Bundle+loadJSON.swift in Sources */,
 				21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */,
+				21077D8E294EE193009581DF /* AnswerButton.swift in Sources */,
 				21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */,
 				21077D78294EAC49009581DF /* Color+Extensions.swift in Sources */,
+				21077D91294EE1D9009581DF /* ContinueButton.swift in Sources */,
 				21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */,
 				21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */,
 				2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */,
@@ -461,6 +488,7 @@
 				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,
 				21889C3A29497D8F0044567D /* QuizResult.swift in Sources */,
 				21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */,
+				21077D8B294EB873009581DF /* ButtonStyles.swift in Sources */,
 				21F045C72948392A00388F83 /* QuestionsViewModel.swift in Sources */,
 				21D7A748294DE2EA00A9B8D2 /* ViewLoadingState.swift in Sources */,
 				21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */,

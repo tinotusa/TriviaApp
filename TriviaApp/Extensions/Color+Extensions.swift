@@ -15,8 +15,9 @@ extension Color {
     static let darkGray = Color("darkGray")
     static let darkGreen = Color("darkGreen")
     static let darkYellow = Color("darkYellow")
-    static let gray = Color("gray")
-    static let green = Color("green")
+    static let customGray = Color("customGray")
+    static let customGreen = Color("customGreen")
     static let text = Color("text")
-    static let yellow = Color("yellow")
+    static let customYellow = Color("customYellow")
+    static let buttonText = Color("buttonText")
 }
