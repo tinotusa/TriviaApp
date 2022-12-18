@@ -14,6 +14,8 @@
 		21077D8B294EB873009581DF /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D8A294EB873009581DF /* ButtonStyles.swift */; };
 		21077D8E294EE193009581DF /* AnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D8D294EE193009581DF /* AnswerButton.swift */; };
 		21077D91294EE1D9009581DF /* ContinueButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D90294EE1D9009581DF /* ContinueButton.swift */; };
+		21077D93294EE37F009581DF /* CustomStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D92294EE37F009581DF /* CustomStepper.swift */; };
+		21077D96294EFBDF009581DF /* CustomStepperButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D95294EFBDF009581DF /* CustomStepperButton.swift */; };
 		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
 		2162F3D0294C37E6004DEA9C /* correct-choice.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CF294C37E6004DEA9C /* correct-choice.wav */; };
 		2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3D4294C5E69004DEA9C /* AudioManager.swift */; };
@@ -74,6 +76,8 @@
 		21077D8A294EB873009581DF /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		21077D8D294EE193009581DF /* AnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerButton.swift; sourceTree = "<group>"; };
 		21077D90294EE1D9009581DF /* ContinueButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueButton.swift; sourceTree = "<group>"; };
+		21077D92294EE37F009581DF /* CustomStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepper.swift; sourceTree = "<group>"; };
+		21077D95294EFBDF009581DF /* CustomStepperButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepperButton.swift; sourceTree = "<group>"; };
 		2162F3CB294C17FF004DEA9C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		2162F3CF294C37E6004DEA9C /* correct-choice.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct-choice.wav"; sourceTree = "<group>"; };
 		2162F3D4294C5E69004DEA9C /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				21077D8F294EE1CC009581DF /* Buttons */,
+				21077D92294EE37F009581DF /* CustomStepper.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 			children = (
 				21077D8D294EE193009581DF /* AnswerButton.swift */,
 				21077D90294EE1D9009581DF /* ContinueButton.swift */,
+				21077D95294EFBDF009581DF /* CustomStepperButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -486,12 +492,14 @@
 				21F045C5294834F300388F83 /* QuestionsView.swift in Sources */,
 				21D47A53294830E600D10E18 /* TriviaAPI+Category.swift in Sources */,
 				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,
+				21077D96294EFBDF009581DF /* CustomStepperButton.swift in Sources */,
 				21889C3A29497D8F0044567D /* QuizResult.swift in Sources */,
 				21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */,
 				21077D8B294EB873009581DF /* ButtonStyles.swift in Sources */,
 				21F045C72948392A00388F83 /* QuestionsViewModel.swift in Sources */,
 				21D7A748294DE2EA00A9B8D2 /* ViewLoadingState.swift in Sources */,
 				21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */,
+				21077D93294EE37F009581DF /* CustomStepper.swift in Sources */,
 				21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */,
 				2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */,
 				21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */,
