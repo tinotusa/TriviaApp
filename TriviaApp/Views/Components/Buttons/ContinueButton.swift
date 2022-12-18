@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ContinueButton: View {
-    @Binding var isDisabled: Bool
+    let isDisabled: Bool
     let action: () -> Void
     
     var body: some View {
         Button {
             action()
         } label: {
-            Text("Continue quiz")
+            Text("Continue")
                 .continueButtonStyle(isDisabled: isDisabled)
                 .mediumBodyStyle()
         }
@@ -25,7 +25,7 @@ struct ContinueButton: View {
 
 struct ContinueButton_Previews: PreviewProvider {
     static var previews: some View {
-        ContinueButton(isDisabled: .constant(false)) {
+        ContinueButton(isDisabled: false) {
             
         }
     }

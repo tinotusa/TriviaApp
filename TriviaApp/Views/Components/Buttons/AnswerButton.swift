@@ -9,8 +9,8 @@ import SwiftUI
 
 struct AnswerButton: View {
     let answer: String
-    @Binding var isDisabled: Bool
-    @Binding var isSelected: Bool
+    var isDisabled: Bool
+    var isSelected: Bool
     
     let action: () -> Void
     
@@ -29,7 +29,7 @@ struct AnswerButton: View {
 
 struct AnswerButton_Previews: PreviewProvider {
     static var previews: some View {
-        AnswerButton(answer: "this is a test answer", isDisabled: .constant(false), isSelected: .constant(false)) {
+        AnswerButton(answer: "this is a test answer", isDisabled: false, isSelected: false) {
             
         }
     }
