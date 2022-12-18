@@ -24,7 +24,7 @@ struct ButtonStyles: View {
                     .mediumBodyStyle()
             }
     
-            ContinueButton(isDisabled: $isDisabled) {
+            ContinueButton(isDisabled: isDisabled) {
                 
             }
             
@@ -32,7 +32,7 @@ struct ButtonStyles: View {
                 isSelected.toggle()
             }
             
-            AnswerButton(answer: "this is a \n new line.", isDisabled: $isDisabled, isSelected: $isSelected) {
+            AnswerButton(answer: "this is a \n new line.", isDisabled: isDisabled, isSelected: isSelected) {
                 
             }
         }
