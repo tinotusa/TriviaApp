@@ -24,7 +24,7 @@ final class QuestionsViewModel: ObservableObject {
     /// The currently selected answer.
     @Published var selectedAnswer: String? = nil
     /// The answers that are currently hidden.
-    @Published private(set) var hiddenAnswers = [String]()
+    @Published var hiddenAnswers = [String]()
     /// The config for the trivia.
     private let triviaConfig: TriviaAPI.TriviaConfig
     /// Answers to hide when hint is pressed.
