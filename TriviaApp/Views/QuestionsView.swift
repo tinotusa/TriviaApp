@@ -20,14 +20,10 @@ struct QuestionsView: View {
     var body: some View {
         switch viewModel.viewLoadingState {
         case .loading:
-            // TODO: make loading view
-            VStack {
-                ProgressView()
-                    .task {
-                        await viewModel.getQuestions()
-                    }
-                Text("Loading questions...")
-            }
+            LoadingView()
+                .task {
+                    await viewModel.getQuestions()
+                }
         case .loaded:
             loadedView
         case .error(let error):
