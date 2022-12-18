@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		21077D78294EAC49009581DF /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D77294EAC49009581DF /* Color+Extensions.swift */; };
+		21077D7B294EACF5009581DF /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D7A294EACF5009581DF /* TextStyles.swift */; };
+		21077D87294EAFEE009581DF /* SF-Compact-Rounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21077D83294EAF8C009581DF /* SF-Compact-Rounded-Medium.otf */; };
+		21077D88294EB193009581DF /* SF-Compact-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */; };
 		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
 		2162F3D0294C37E6004DEA9C /* correct-choice.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CF294C37E6004DEA9C /* correct-choice.wav */; };
 		2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3D4294C5E69004DEA9C /* AudioManager.swift */; };
@@ -62,6 +65,9 @@
 
 /* Begin PBXFileReference section */
 		21077D77294EAC49009581DF /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		21077D7A294EACF5009581DF /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
+		21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Rounded-Regular.otf"; sourceTree = "<group>"; };
+		21077D83294EAF8C009581DF /* SF-Compact-Rounded-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Rounded-Medium.otf"; sourceTree = "<group>"; };
 		2162F3CB294C17FF004DEA9C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		2162F3CF294C37E6004DEA9C /* correct-choice.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct-choice.wav"; sourceTree = "<group>"; };
 		2162F3D4294C5E69004DEA9C /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -125,6 +131,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		21077D79294EACE0009581DF /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				21077D7A294EACF5009581DF /* TextStyles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		21077D7C294EAF6A009581DF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				21077D7D294EAF6D009581DF /* SF Compact Rounded */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		21077D7D294EAF6D009581DF /* SF Compact Rounded */ = {
+			isa = PBXGroup;
+			children = (
+				21077D83294EAF8C009581DF /* SF-Compact-Rounded-Medium.otf */,
+				21077D81294EAF8B009581DF /* SF-Compact-Rounded-Regular.otf */,
+			);
+			path = "SF Compact Rounded";
+			sourceTree = "<group>";
+		};
 		21889C3829497D300044567D /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +197,7 @@
 		21CB4BDE293CB4C6005865BE /* TriviaApp */ = {
 			isa = PBXGroup;
 			children = (
+				21077D79294EACE0009581DF /* Styles */,
 				21889C3D294984C10044567D /* Extensions */,
 				21889C3829497D300044567D /* Models */,
 				21D47A4B29481E6A00D10E18 /* TODO.md */,
@@ -229,6 +261,7 @@
 		21CB4C0B293CB516005865BE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				21077D7C294EAF6A009581DF /* Fonts */,
 				2162F3D8294C6781004DEA9C /* Win sound.wav */,
 				2162F3D6294C63D7004DEA9C /* click2.wav */,
 				2162F3CF294C37E6004DEA9C /* correct-choice.wav */,
@@ -376,6 +409,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21077D88294EB193009581DF /* SF-Compact-Rounded-Regular.otf in Resources */,
+				21077D87294EAFEE009581DF /* SF-Compact-Rounded-Medium.otf in Resources */,
 				2162F3D9294C6781004DEA9C /* Win sound.wav in Resources */,
 				21889C3C294984B10044567D /* exampleQuestions.json in Resources */,
 				21D47A4C29481E6A00D10E18 /* TODO.md in Resources */,
@@ -420,6 +455,7 @@
 				21889C372949793E0044567D /* QuizResultsView.swift in Sources */,
 				21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */,
 				21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */,
+				21077D7B294EACF5009581DF /* TextStyles.swift in Sources */,
 				21F045C5294834F300388F83 /* QuestionsView.swift in Sources */,
 				21D47A53294830E600D10E18 /* TriviaAPI+Category.swift in Sources */,
 				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,

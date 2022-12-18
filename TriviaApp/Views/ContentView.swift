@@ -25,6 +25,15 @@ struct ContentView: View {
                     print("unknown scene phase.")
                 }
             }
+            .onAppear {
+                for familyName in UIFont.familyNames {
+                    print(familyName)
+                    for name in UIFont.fontNames(forFamilyName: familyName) {
+                        print("\t", name)
+                    }
+                    print()
+                }
+            }
     }
 }
 
