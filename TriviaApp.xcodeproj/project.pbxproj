@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21077D78294EAC49009581DF /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D77294EAC49009581DF /* Color+Extensions.swift */; };
 		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
 		2162F3D0294C37E6004DEA9C /* correct-choice.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CF294C37E6004DEA9C /* correct-choice.wav */; };
 		2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3D4294C5E69004DEA9C /* AudioManager.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		21077D77294EAC49009581DF /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		2162F3CB294C17FF004DEA9C /* HapticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		2162F3CF294C37E6004DEA9C /* correct-choice.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "correct-choice.wav"; sourceTree = "<group>"; };
 		2162F3D4294C5E69004DEA9C /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				21889C3E294984D20044567D /* Bundle+loadJSON.swift */,
+				21077D77294EAC49009581DF /* Color+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				21889C3F294984D20044567D /* Bundle+loadJSON.swift in Sources */,
 				21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */,
 				21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */,
+				21077D78294EAC49009581DF /* Color+Extensions.swift in Sources */,
 				21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */,
 				21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */,
 				2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */,
