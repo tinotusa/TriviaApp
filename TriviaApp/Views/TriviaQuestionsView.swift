@@ -57,10 +57,6 @@ struct TriviaQuestionsView: View {
                             dismiss()
                         }
                     }
-                } else {
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
-                    }
                 }
             }
         }

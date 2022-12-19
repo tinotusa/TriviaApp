@@ -181,7 +181,7 @@ extension TriviaQuestionsViewModel {
             case .noResults:
                 alert = .init(message: "No results found.", type: .noResults)
             case .seenAllQuestions:
-                alert = .init(message: "Seen all questions for this cateogry.", type: .seenAllQuestions)
+                alert = .init(message: "Seen all questions for this category.", type: .seenAllQuestions)
             case .serverStatus(let code):
                 alert = .init(message: "Invalid server status: \(code)", type: .serverStatus)
             default:
@@ -192,6 +192,7 @@ extension TriviaQuestionsViewModel {
         } catch {
             viewLoadingState = .error(error: error)
             log.error("Failed to get questions. \(error)")
+            alert = .init(message: "Something went wrong\n\(error.localizedDescription)", type: .other)
         }
     }
     
