@@ -112,7 +112,7 @@ private extension QuestionsView {
                     .padding()
                 }
             } else {
-                QuizResultsView(quizResult: viewModel.quizResult)
+                TriviaResultsView(triviaResult: viewModel.quizResult)
                     .transition(.move(edge: .bottom))
             }
         }

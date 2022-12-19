@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A list of the questions the user answered incorrectly.
 ///
-/// This is shown in the QuizResultsView
+/// This is shown in the TriviaResultsView
 struct WrongQuestionsView: View {
     /// The incorrectly answered questions.
     var questions: [TriviaQuestion]
