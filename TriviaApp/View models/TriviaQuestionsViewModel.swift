@@ -30,7 +30,7 @@ final class TriviaQuestionsViewModel: ObservableObject {
     /// Answers to hide when hint is pressed.
     private var answersLeftToHide: [String]?
     /// The trivia api.
-    private var triviaAPI = TriviaAPI.shared
+    private var triviaAPI: TriviaAPIProtocol
     
     /// A boolean value indicating whether an alert is being shown.
     @Published var showingAlert = false
@@ -46,8 +46,9 @@ final class TriviaQuestionsViewModel: ObservableObject {
     
     /// Creates the view model.
     /// - Parameter triviaConfig: The config for the trivia.
-    init(triviaConfig: TriviaAPI.TriviaConfig) {
+    init(triviaConfig: TriviaAPI.TriviaConfig, triviaAPI: TriviaAPIProtocol = TriviaAPI.shared) {
         self.triviaConfig = triviaConfig
+        self.triviaAPI = triviaAPI
     }
 }
 
@@ -105,8 +106,7 @@ extension TriviaQuestionsViewModel {
         let isCorrect = checkAnswer(answer: selectedAnswer)
         nextQuestion()
         self.selectedAnswer = nil
-        clearHiddenAnswers()
-        clearIncorrectAnswers()
+        resetQuestionState()
         log.debug("Successfully submitted an answer")
         return isCorrect
     }
@@ -145,14 +145,14 @@ extension TriviaQuestionsViewModel {
         hiddenAnswers.contains(answer)
     }
     
-    /// Sets the current incorrect answers to nil.
-    ///
-    ///  This is called after a question is submitted, so that the next
-    ///  question can set its own incorrect answers.
     @MainActor
-    func clearIncorrectAnswers() {
-        log.debug("Clearing the shuffled incorrect answers.")
+    /// Resets the state of the question to default
+    ///
+    /// The hints have been reset back to 0 for the new question.
+    func resetQuestionState() {
+        log.debug("Clearing the shuffled incorrect answers, and hidden answers.")
         answersLeftToHide = nil
+        hiddenAnswers = []
     }
     
     /// Returns true if there are already three hidden answers
@@ -208,6 +208,21 @@ extension TriviaQuestionsViewModel {
             log.error("Failed to reset the token. \(error)")
         }
     }
+    
+    /// Updates to the next question.
+    @MainActor
+    func nextQuestion() {
+        log.debug("Updating to next question.")
+        guard currentQuestionIndex < questions.count - 1 else {
+            withAnimation {
+                isTriviaRoundOver = true
+            }
+            log.debug("Reached end of questions. Trivia is over.")
+            return
+        }
+        currentQuestionIndex += 1
+        log.debug("Current question index is: \(self.currentQuestionIndex)")
+    }
 }
 
 // MARK: - Private
@@ -234,28 +249,5 @@ private extension TriviaQuestionsViewModel {
         log.debug("The answer was incorrect.")
         triviaResult.wrongQuestions.append(currentQuestion)
         return false
-    }
-    
-    /// Updates to the next question.
-    @MainActor
-    func nextQuestion() {
-        log.debug("Updating to next question.")
-        guard currentQuestionIndex < questions.count - 1 else {
-            withAnimation {
-                isTriviaRoundOver = true
-            }
-            log.debug("Reached end of questions. Trivia is over.")
-            return
-        }
-        currentQuestionIndex += 1
-        log.debug("Current question index is: \(self.currentQuestionIndex)")
-    }
-    
-    
-    /// Resets the hidden answers for the next question.
-    @MainActor
-    func clearHiddenAnswers() {
-        log.debug("Clearing the hidden answers.")
-        hiddenAnswers = []
     }
 }
