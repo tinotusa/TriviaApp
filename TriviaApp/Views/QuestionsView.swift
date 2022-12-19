@@ -26,48 +26,64 @@ struct QuestionsView: View {
                 }
         case .loaded:
             loadedView
-        case .error(let error):
-            // TODO: error view
-            VStack {
-                Text(error.localizedDescription)
-            }
-            .alert(
-                "Something went wrong.",
-                isPresented: $viewModel.showingAlert,
-                presenting: viewModel.alert
-            ) { alertDetails in
-                switch alertDetails.type {
-                case .seenAllQuestions:
-                    Button("Reset questions") {
-                        Task {
-                            await viewModel.resetQuestions()
+        case .error:
+            ErrorView(title: "Something went wrong.", detail: viewModel.alert != nil ? viewModel.alert!.message : "Something went wrong") {
+                if let alertDetails = viewModel.alert {
+                    switch alertDetails.type {
+                    case .seenAllQuestions:
+                        Button("Reset questions") {
+                            Task {
+                                await viewModel.resetQuestions()
+                            }
                         }
-                    }
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
-                    }
-                case .noResults:
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
-                    }
-                case .serverStatus:
-                    Button("Retry") {
-                        Task {
-                            await viewModel.getQuestions()
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
                         }
-                    }
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
-                    }
-                default:
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
+                    case .noResults:
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
+                        }
+                    case .serverStatus:
+                        Button("Retry") {
+                            Task {
+                                await viewModel.getQuestions()
+                            }
+                        }
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
+                        }
+                    default:
+                        Button("Cancel", role: .cancel) {
+                            dismiss()
+                        }
                     }
                 }
-            } message: { alertDetails in
-                Text(alertDetails.message)
             }
         }
+    }
+}
+
+// MARK: - Subviews
+private extension QuestionsView {
+    func header(questionType: String) -> some View {
+        HStack {
+            Button {
+                showingQuitConfirmationDialog = true
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.title3)
+            }
+            .foregroundColor(.red)
+            
+            Spacer()
+            
+            Button("Hint") {
+                viewModel.showHint()
+            }
+            .foregroundColor(.blue)
+            .disabled(questionType == "boolean" || viewModel.hintsDisabled)
+        }
+        .bodyStyle()
     }
     
     var loadedView: some View {
@@ -75,36 +91,16 @@ struct QuestionsView: View {
             if !viewModel.isQuizOver {
                 if let question = viewModel.currentQuestion {
                     VStack {
-                        // TODO: move to own view
-                        HStack {
-                            Button {
-                                showingQuitConfirmationDialog = true
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .font(.title3)
-                            }
-                            Spacer()
-                            Button("Hint") {
-                                viewModel.showHint()
-                            }
-                            .disabled(question.type == "boolean" || viewModel.hintsDisabled)
-                        }
-                        Spacer()
-                        Text(question.question)
-                        // TODO: add question card view
-                        ForEach(question.allAnswers, id: \.self) { answer in
-                            Button {
-                                viewModel.selectedAnswer = answer
-                                hapticsManager.buttonPressHaptic()
-                            } label: {
-                                Text(answer)
-                            }
-                            .disabled(viewModel.isAnswerHidden(answer: answer))
-                        }
+                        header(questionType: question.type)
                         
-                        Spacer()
+                        QuestionView(
+                            question: question,
+                            hiddenAnswers: $viewModel.hiddenAnswers,
+                            selectedAnswer: $viewModel.selectedAnswer,
+                            isHiddenAnswer: viewModel.isAnswerHidden
+                        )
                         
-                        Button("Continue") {
+                        ContinueButton(isDisabled: !viewModel.hasSelectedAnswer) {
                             let isCorrect = viewModel.submitAnswer()
                             if isCorrect {
                                 hapticsManager.correctAnswerHaptic()
@@ -112,13 +108,15 @@ struct QuestionsView: View {
                         }
                         .disabled(!viewModel.hasSelectedAnswer)
                     }
+                    .bodyStyle()
                     .padding()
                 }
             } else {
                 QuizResultsView(quizResult: viewModel.quizResult)
-                .transition(.move(edge: .bottom))
+                    .transition(.move(edge: .bottom))
             }
         }
+        .background(Color.background)
         .confirmationDialog("Quit trivia round", isPresented: $showingQuitConfirmationDialog) {
             Button("Quit", role: .destructive) {
                 dismiss()
@@ -134,11 +132,6 @@ struct QuestionsView: View {
 }
 
 struct QuestionsView_Previews: PreviewProvider {
-    static var questions: [TriviaQuestion] {
-        let result: QuestionsResponse = Bundle.main.loadJSON(filename: "exampleQuestions")
-        return result.results
-    }
-    
     static var previews: some View {
         QuestionsView(triviaConfig: .default)
             .environmentObject(HapticsManager())
