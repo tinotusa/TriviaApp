@@ -15,20 +15,43 @@ struct QuizResultsView: View {
     var body: some View {
         VStack {
             Text("Score: \(quizResult.score) (\(quizResult.percentage.formatted(.percent)))")
+                .mediumBodyStyle()
             
-            Button("Continue") {
+            if !quizResult.isPerfectScore {
+                WrongQuestionsView(questions: quizResult.wrongQuestions)
+            } else {
+                Text("Congrats.\nYou got every question right!\n😊")
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            ContinueButton(isDisabled: false) {
                 dismiss()
             }
         }
+        .padding()
+        .bodyStyle()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background)
         .onAppear {
-            hapticsManager.triviaOverHaptics()
+            if quizResult.percentage > 50.0 {
+                hapticsManager.triviaOverHaptics()
+            }
         }
     }
 }
 
 struct QuizResultsView_Previews: PreviewProvider {
+    static var questions = Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results
     static var previews: some View {
-        QuizResultsView(quizResult: .init(questions: []))
-            .environmentObject(HapticsManager())
+        QuizResultsView(
+            quizResult: .init(
+                score: 3,
+                questions: questions,
+                wrongQuestions: [questions[0], questions[3], questions[4]]
+                
+            )
+        )
+        .environmentObject(HapticsManager())
     }
 }
