@@ -37,7 +37,9 @@ struct TriviaQuestion: Codable, Hashable {
         var allAnswers = incorrectAnswers
         allAnswers.append(correctAnswer)
         allAnswers.shuffle()
-        
+        if type == "boolean" {
+            allAnswers = allAnswers.sorted()
+        }
         self.allAnswers = allAnswers
     }
 }
