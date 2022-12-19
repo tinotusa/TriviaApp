@@ -22,7 +22,7 @@ struct TriviaResult {
         return Double(score) / Double(questions.count)
     }
     
-    /// A boolean value indicating whether the quiz has any wrong answers.
+    /// A boolean value indicating whether the trivia round had any wrong answers.
     var isPerfectScore: Bool {
         wrongQuestions.isEmpty
     }

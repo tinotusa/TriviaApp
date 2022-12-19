@@ -19,7 +19,7 @@ struct ButtonStyles: View {
             Button {
                 isDisabled.toggle()
             } label: {
-                Text("Start quiz")
+                Text("Start trivia")
                     .startButtonStyle()
                     .mediumBodyStyle()
             }

@@ -88,7 +88,7 @@ private extension QuestionsView {
     
     var loadedView: some View {
         Group {
-            if !viewModel.isQuizOver {
+            if !viewModel.isTriviaRoundOver {
                 if let question = viewModel.currentQuestion {
                     VStack {
                         header(questionType: question.type)
@@ -112,7 +112,7 @@ private extension QuestionsView {
                     .padding()
                 }
             } else {
-                TriviaResultsView(triviaResult: viewModel.quizResult)
+                TriviaResultsView(triviaResult: viewModel.triviaResult)
                     .transition(.move(edge: .bottom))
             }
         }

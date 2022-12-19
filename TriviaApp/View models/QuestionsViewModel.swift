@@ -15,12 +15,12 @@ final class QuestionsViewModel: ObservableObject {
     @Published private(set) var viewLoadingState = ViewLoadingState.loading
     /// The current question's index.
     @Published private(set) var currentQuestionIndex = 0
-    /// A boolean value indicating whether the trivia quiz is over.
-    @Published private(set) var isQuizOver = false
-    /// The questions of the trivia quiz.
+    /// A boolean value indicating whether the trivia round is over.
+    @Published private(set) var isTriviaRoundOver = false
+    /// The questions of the trivia round.
     @Published private(set) var questions: [TriviaQuestion] = []
     /// The results of the trivia round.
-    @Published private(set) var quizResult: TriviaResult = .init(questions: [])
+    @Published private(set) var triviaResult: TriviaResult = .init(questions: [])
     /// The currently selected answer.
     @Published var selectedAnswer: String? = nil
     /// The answers that are currently hidden.
@@ -75,7 +75,7 @@ extension QuestionsViewModel {
     @MainActor
     var currentQuestion: TriviaQuestion? {
         guard currentQuestionIndex < questions.count else {
-            isQuizOver = true
+            isTriviaRoundOver = true
             log.debug("Current question index is out of bounds. index: \(self.currentQuestionIndex)")
             return nil
         }
@@ -173,7 +173,7 @@ extension QuestionsViewModel {
         do {
             triviaAPI.triviaConfig = triviaConfig
             self.questions = try await triviaAPI.getQuestions()
-            quizResult.questions = self.questions
+            triviaResult.questions = self.questions
             viewLoadingState = .loaded
             log.debug("Successfully loaded \(self.questions.count) questions.")
         } catch let error as TriviaAPI.TriviaAPIError {
@@ -218,7 +218,7 @@ private extension QuestionsViewModel {
     func checkAnswer(answer: String) -> Bool {
         log.debug("Checking the answer.")
         guard currentQuestionIndex < questions.count else {
-            isQuizOver = true
+            isTriviaRoundOver = true
             log.debug("Tried to check answer when question index was out of bounds. index: \(self.currentQuestionIndex)")
             return false
         }
@@ -227,11 +227,11 @@ private extension QuestionsViewModel {
         let isCorrect = currentQuestion.correctAnswer == answer
         if isCorrect {
             log.debug("The answer was correct.")
-            quizResult.score += 1
+            triviaResult.score += 1
             return true
         }
         log.debug("The answer was incorrect.")
-        quizResult.wrongQuestions.append(currentQuestion)
+        triviaResult.wrongQuestions.append(currentQuestion)
         return false
     }
     
@@ -241,9 +241,9 @@ private extension QuestionsViewModel {
         log.debug("Updating to next question.")
         guard currentQuestionIndex < questions.count - 1 else {
             withAnimation {
-                isQuizOver = true
+                isTriviaRoundOver = true
             }
-            log.debug("Reached end of questions. Quiz is over.")
+            log.debug("Reached end of questions. Trivia is over.")
             return
         }
         currentQuestionIndex += 1

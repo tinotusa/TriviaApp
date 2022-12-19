@@ -41,7 +41,7 @@ struct TriviaResultsView: View {
     }
 }
 
-struct QuizResultsView_Previews: PreviewProvider {
+struct TriviaResultsView_Previews: PreviewProvider {
     static var questions = Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results
     static var previews: some View {
         TriviaResultsView(
