@@ -1,5 +1,5 @@
 //
-//  QuestionsViewModel.swift
+//  TriviaQuestionsViewModel.swift
 //  TriviaApp
 //
 //  Created by Tino on 13/12/2022.
@@ -10,7 +10,7 @@ import os
 import SwiftUI
 
 /// View model for the TriviaQuestionsView.
-final class QuestionsViewModel: ObservableObject {
+final class TriviaQuestionsViewModel: ObservableObject {
     /// The loading state of the view.
     @Published private(set) var viewLoadingState = ViewLoadingState.loading
     /// The current question's index.
@@ -51,7 +51,7 @@ final class QuestionsViewModel: ObservableObject {
     }
 }
 
-extension QuestionsViewModel {
+extension TriviaQuestionsViewModel {
     /// Alert details of the view.
     struct Alert {
         /// The error message of the alert
@@ -70,7 +70,7 @@ extension QuestionsViewModel {
     }
 }
 
-extension QuestionsViewModel {
+extension TriviaQuestionsViewModel {
     /// The current question.
     @MainActor
     var currentQuestion: TriviaQuestion? {
@@ -165,7 +165,7 @@ extension QuestionsViewModel {
 }
 
 // MARK: - Trivia api functions
-extension QuestionsViewModel {
+extension TriviaQuestionsViewModel {
     /// Fetches some questions of opentdb based on the given trivia config.
     @MainActor
     func getQuestions() async {
@@ -210,7 +210,7 @@ extension QuestionsViewModel {
 }
 
 // MARK: - Private
-private extension QuestionsViewModel {
+private extension TriviaQuestionsViewModel {
     /// Checks the answer with the current question.
     /// - Parameter answer: The answer to check with.
     /// - Returns: True if the answer is correct, false otherwise.

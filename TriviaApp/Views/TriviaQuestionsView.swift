@@ -9,12 +9,12 @@ import SwiftUI
 
 struct TriviaQuestionsView: View {
     @EnvironmentObject private var hapticsManager: HapticsManager
-    @StateObject private var viewModel: QuestionsViewModel
+    @StateObject private var viewModel: TriviaQuestionsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showingQuitConfirmationDialog = false
     
     init(triviaConfig: TriviaAPI.TriviaConfig) {
-        _viewModel = StateObject(wrappedValue: QuestionsViewModel(triviaConfig: triviaConfig))
+        _viewModel = StateObject(wrappedValue: TriviaQuestionsViewModel(triviaConfig: triviaConfig))
     }
     
     var body: some View {
