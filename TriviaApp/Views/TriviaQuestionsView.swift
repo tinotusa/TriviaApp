@@ -57,6 +57,10 @@ struct TriviaQuestionsView: View {
                             dismiss()
                         }
                     }
+                } else {
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
                 }
             }
         }
@@ -91,15 +95,24 @@ private extension TriviaQuestionsView {
             if !viewModel.isTriviaRoundOver {
                 if let question = viewModel.currentQuestion {
                     VStack {
-                        header(questionType: question.type)
-                        
-                        QuestionView(
+                        let questionView = QuestionView(
                             question: question,
                             hiddenAnswers: $viewModel.hiddenAnswers,
                             selectedAnswer: $viewModel.selectedAnswer,
                             isHiddenAnswer: viewModel.isAnswerHidden
                         )
                         
+                        header(questionType: question.type)
+                        
+                        ViewThatFits(in: .vertical) {
+                            questionView
+                            
+                            ScrollView(showsIndicators: false) {
+                                questionView
+                            }
+                        }
+                    }
+                    .safeAreaInset(edge: .bottom) {
                         ContinueButton(isDisabled: !viewModel.hasSelectedAnswer) {
                             let isCorrect = viewModel.submitAnswer()
                             if isCorrect {
