@@ -21,4 +21,9 @@ struct QuizResult {
         if score == 0 { return 0 }
         return Double(score) / Double(questions.count)
     }
+    
+    /// A boolean value indicating whether the quiz has any wrong answers.
+    var isPerfectScore: Bool {
+        wrongQuestions.isEmpty
+    }
 }
