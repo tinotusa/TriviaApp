@@ -9,8 +9,15 @@ import Foundation
 import SwiftUI
 import os
 
+protocol TriviaAPIProtocol {
+    var triviaConfig: TriviaAPI.TriviaConfig { get set }
+    func getQuestions() async throws -> [TriviaQuestion]
+    func resetToken() async throws
+//    func requestToken() async throws
+}
+
 /// API wrapper for [Opentdb](https://opentdb.com).
-final class TriviaAPI {
+final class TriviaAPI: TriviaAPIProtocol {
     /// The current sessions token.
     var sessionToken: String? {
         didSet {
