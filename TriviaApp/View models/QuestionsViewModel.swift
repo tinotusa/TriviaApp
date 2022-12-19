@@ -20,7 +20,7 @@ final class QuestionsViewModel: ObservableObject {
     /// The questions of the trivia quiz.
     @Published private(set) var questions: [TriviaQuestion] = []
     /// The results of the trivia round.
-    @Published private(set) var quizResult: QuizResult = .init(questions: [])
+    @Published private(set) var quizResult: TriviaResult = .init(questions: [])
     /// The currently selected answer.
     @Published var selectedAnswer: String? = nil
     /// The answers that are currently hidden.

@@ -10,7 +10,7 @@ import SwiftUI
 struct QuizResultsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var hapticsManager: HapticsManager
-    let quizResult: QuizResult
+    let quizResult: TriviaResult
     
     var body: some View {
         VStack {
