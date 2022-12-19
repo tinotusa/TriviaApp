@@ -9,7 +9,7 @@ import Foundation
 import os
 import SwiftUI
 
-/// View model for the QuestionsView.
+/// View model for the TriviaQuestionsView.
 final class QuestionsViewModel: ObservableObject {
     /// The loading state of the view.
     @Published private(set) var viewLoadingState = ViewLoadingState.loading

@@ -1,5 +1,5 @@
 //
-//  QuestionsView.swift
+//  TriviaQuestionsView.swift
 //  TriviaApp
 //
 //  Created by Tino on 13/12/2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuestionsView: View {
+struct TriviaQuestionsView: View {
     @EnvironmentObject private var hapticsManager: HapticsManager
     @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
@@ -64,7 +64,7 @@ struct QuestionsView: View {
 }
 
 // MARK: - Subviews
-private extension QuestionsView {
+private extension TriviaQuestionsView {
     func header(questionType: String) -> some View {
         HStack {
             Button {
@@ -131,9 +131,9 @@ private extension QuestionsView {
     }
 }
 
-struct QuestionsView_Previews: PreviewProvider {
+struct TriviaQuestionsView_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionsView(triviaConfig: .default)
+        TriviaQuestionsView(triviaConfig: .default)
             .environmentObject(HapticsManager())
     }
 }

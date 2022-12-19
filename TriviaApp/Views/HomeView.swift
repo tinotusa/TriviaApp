@@ -22,7 +22,7 @@ struct HomeView: View {
             .background(Color.background)
         }
         .fullScreenCover(isPresented: $showingQuestionsView) {
-            QuestionsView(triviaConfig: viewModel.triviaConfig)
+            TriviaQuestionsView(triviaConfig: viewModel.triviaConfig)
         }
         .sheet(isPresented: $showingCreditsSheet) {
             CreditsView()
