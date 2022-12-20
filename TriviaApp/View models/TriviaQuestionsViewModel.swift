@@ -59,8 +59,6 @@ extension TriviaQuestionsViewModel {
         let message: String
         /// The type of the alert
         let type: AlertType
-        /// A unique id for the alert.
-        let id = UUID()
         
         enum AlertType {
             case noResults
@@ -75,9 +73,8 @@ extension TriviaQuestionsViewModel {
     /// The current question.
     @MainActor
     var currentQuestion: TriviaQuestion? {
-        guard currentQuestionIndex < questions.count else {
+        if !isValidQuestionIndex {
             isTriviaRoundOver = true
-            log.debug("Current question index is out of bounds. index: \(self.currentQuestionIndex)")
             return nil
         }
         let question = questions[currentQuestionIndex]
@@ -95,7 +92,7 @@ extension TriviaQuestionsViewModel {
     }
     
     /// Checks the current answer and moves on to the next question.
-    /// - Returns: True if the submitted answer was correct, false otherwise.
+    /// - Returns: `true` if the submitted answer was correct; `false` otherwise.
     @MainActor
     func submitAnswer() -> Bool {
         log.debug("Submitting answer.")
@@ -105,37 +102,35 @@ extension TriviaQuestionsViewModel {
         }
         let isCorrect = checkAnswer(answer: selectedAnswer)
         nextQuestion()
-        self.selectedAnswer = nil
         resetQuestionState()
         log.debug("Successfully submitted an answer")
         return isCorrect
     }
     
     /// Hides one of the incorrect answers
+    /// - Returns: `true` if a hint was shown; `false` otherwise.
     @MainActor
-    func showHint() {
+    func showHint() -> Bool {
         log.debug("Showing a hint")
-        guard let answersLeftToHide, !answersLeftToHide.isEmpty else {
-            log.debug("Cannot have more hints.")
-            return
-        }
         guard let question = currentQuestion else {
             log.error("Error. No current question.")
-            return
+            return false
         }
         if question.type == "boolean" {
             log.debug("Cannot show hint for a boolean question.")
-            return
+            return false
         }
-        if let answerToHide = self.answersLeftToHide?.removeFirst() {
+        if let answersLeftToHide, !answersLeftToHide.isEmpty {
+            let answerToHide = self.answersLeftToHide!.removeFirst()
             hiddenAnswers.append(answerToHide)
             if answerToHide == selectedAnswer {
                 selectedAnswer = nil
             }
             log.debug("Hidden the incorrect answer: \(answerToHide)")
-        } else {
-            log.error("There are no answers to hide.")
+            return true
         }
+        log.debug("Cannot have more hints.")
+        return false
     }
     
     /// Returns true if the given answer is hidden.
@@ -145,12 +140,14 @@ extension TriviaQuestionsViewModel {
         hiddenAnswers.contains(answer)
     }
     
-    @MainActor
+    
     /// Resets the state of the question to default
     ///
     /// The hints have been reset back to 0 for the new question.
+    @MainActor
     func resetQuestionState() {
         log.debug("Clearing the shuffled incorrect answers, and hidden answers.")
+        selectedAnswer = nil
         answersLeftToHide = nil
         hiddenAnswers = []
     }
@@ -196,16 +193,21 @@ extension TriviaQuestionsViewModel {
         }
     }
     
+    
+    
     /// Tries to reset the api token.
     ///
     ///  This will also reset the view's loading state to loading.
+    /// - Returns: `true` if the questions where reset; `false` otherwise.
     @MainActor
-    func resetQuestions() async {
+    func resetQuestions() async -> Bool {
         do {
             try await triviaAPI.resetToken()
             viewLoadingState = .loading
+            return true
         } catch {
             log.error("Failed to reset the token. \(error)")
+            return false
         }
     }
     
@@ -233,13 +235,12 @@ private extension TriviaQuestionsViewModel {
     @MainActor
     func checkAnswer(answer: String) -> Bool {
         log.debug("Checking the answer.")
-        guard currentQuestionIndex < questions.count else {
-            isTriviaRoundOver = true
-            log.debug("Tried to check answer when question index was out of bounds. index: \(self.currentQuestionIndex)")
+        
+        guard let currentQuestion = currentQuestion else {
+            log.error("No current question.")
             return false
         }
         
-        let currentQuestion = questions[currentQuestionIndex]
         let isCorrect = currentQuestion.correctAnswer == answer
         if isCorrect {
             log.debug("The answer was correct.")
@@ -249,5 +250,18 @@ private extension TriviaQuestionsViewModel {
         log.debug("The answer was incorrect.")
         triviaResult.wrongQuestions.append(currentQuestion)
         return false
+    }
+    
+    /// Checks that the current index is valid.
+    ///
+    /// An index is valid if it is between 0 ..< questions.count
+    /// - Returns: `true` if the index is value; `false` otherwise.
+    var isValidQuestionIndex: Bool {
+        let isValid = currentQuestionIndex < questions.count
+        if !isValid {
+            log.error("Error: Index \(self.currentQuestionIndex) is not valid. should be in range of 0 ..< \(self.questions.count).")
+            return false
+        }
+        return true
     }
 }

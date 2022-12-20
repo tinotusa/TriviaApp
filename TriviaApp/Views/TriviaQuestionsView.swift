@@ -78,7 +78,7 @@ private extension TriviaQuestionsView {
             Spacer()
             
             Button("Hint") {
-                viewModel.showHint()
+                _ = viewModel.showHint()
             }
             .foregroundColor(.blue)
             .disabled(questionType == "boolean" || viewModel.hintsDisabled)
