@@ -19,7 +19,7 @@ struct TriviaResult {
     /// The score as a percentage.
     var percentage: Double {
         if score == 0 { return 0 }
-        return Double(score) / Double(questions.count)
+        return round(Double(score) / Double(questions.count) * 100) / 100.0
     }
     
     /// A boolean value indicating whether the trivia round had any wrong answers.
