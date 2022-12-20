@@ -193,8 +193,6 @@ extension TriviaQuestionsViewModel {
         }
     }
     
-    
-    
     /// Tries to reset the api token.
     ///
     ///  This will also reset the view's loading state to loading.
