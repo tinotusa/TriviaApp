@@ -23,9 +23,10 @@ struct CustomStepper: View {
     
     var body: some View {
         HStack {
-            CustomStepperButton(.plus) {
+            CustomStepperButton(.increment) {
                 updateValue(by: 1)
             }
+            .disabled(isDisabled(.increment))
             
             TextField("Value", text: $stringValue)
                 .onReceive(Just(stringValue)) { newValue in
@@ -45,9 +46,11 @@ struct CustomStepper: View {
                 .labelsHidden()
                 .keyboardType(.numberPad)
                 .accessibilityIdentifier("Stepper textField")
-            CustomStepperButton(.minus) {
+            
+            CustomStepperButton(.decrement) {
                 updateValue(by: -1)
             }
+            .disabled(isDisabled(.decrement))
         }
         .bodyStyle()
     }
@@ -60,6 +63,18 @@ private extension CustomStepper {
         self.value += amount
         self.value = min(maxValue, max(self.value, minValue))
         stringValue = "\(self.value)"
+    }
+    
+    /// Checks to see if a stepper button has reached it's min or max value,
+    /// and returns `true` if it has.
+    ///
+    /// - Parameter label: The label to check for.
+    /// - Returns: `true` is that label has hit its min or max value; `false` otherwise.
+    func isDisabled(_ label: CustomStepperButton.ButtonLabel) -> Bool {
+        switch label {
+        case .decrement: return value == minValue
+        case .increment: return value == maxValue
+        }
     }
 }
 
