@@ -20,13 +20,13 @@ struct CreditsView: View {
                 
                 Spacer()
             }
-            
+            .accessibilityIdentifier("Close button")
             ScrollView {
                 VStack(alignment: .leading) {
                     Text("Acknowledgements")
                         .modifier(TextStyle(font: .sfCompactRoundedMedium, fontSize: 35, color: .text))
                         .minimumScaleFactor(0.7)
-                    
+                        .accessibilityIdentifier("Acknowledgements title")
                     creditRow(url: URL(string: "https://opentdb.com")!)
                     creditRow(url: URL(string: "https://opengameart.org")!)
                     creditRow(url: URL(string: "https://pixabay.com")!)
