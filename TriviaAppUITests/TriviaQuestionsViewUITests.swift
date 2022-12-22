@@ -73,7 +73,7 @@ final class TriviaQuestionsViewUITests: XCTestCase {
         }
         let continueButton = app.buttons["Continue button"]
         XCTAssertTrue(continueButton.exists, "Expected the continue button on TriviaResultsView to exist.")
-        XCTAssertTrue(continueButton.isEnabled, "Expected the continue button to be enabled.")
+        continueButton.tap()
     }
 }
 
@@ -102,7 +102,6 @@ private extension TriviaQuestionsViewUITests {
     func tapContinueButton() {
         let continueButton = app.buttons["Continue button"]
         XCTAssertTrue(continueButton.exists, "Expected continue button to exist")
-        XCTAssertTrue(continueButton.isEnabled, "Expected continue button to be enabled so that the quiz can continue.")
         continueButton.tap()
     }
 }

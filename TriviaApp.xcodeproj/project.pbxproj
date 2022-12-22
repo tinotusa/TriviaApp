@@ -132,6 +132,7 @@
 		21F84C342953FACB00493CA0 /* StartTriviaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTriviaButton.swift; sourceTree = "<group>"; };
 		21F84C362954100200493CA0 /* TriviaResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaResultTests.swift; sourceTree = "<group>"; };
 		21F84C38295466BF00493CA0 /* TriviaQuestionsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewUITests.swift; sourceTree = "<group>"; };
+		21F84C3A2954940200493CA0 /* TriviaAppTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TriviaAppTestPlan.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +279,7 @@
 				21CCB35B29509607008762B0 /* TriviaQuestionsViewModelTests.swift */,
 				21CCB35D2950A355008762B0 /* MockTriviaAPI.swift */,
 				21F84C362954100200493CA0 /* TriviaResultTests.swift */,
+				21F84C3A2954940200493CA0 /* TriviaAppTestPlan.xctestplan */,
 			);
 			path = TriviaAppTests;
 			sourceTree = "<group>";
