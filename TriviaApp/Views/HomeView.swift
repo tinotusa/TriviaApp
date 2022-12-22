@@ -66,6 +66,7 @@ private extension HomeView {
             Button("Credits") {
                 showingCreditsSheet = true
             }
+            .accessibilityIdentifier("Credits button")
         }
     }
     
