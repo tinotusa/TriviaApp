@@ -11,9 +11,6 @@ struct CustomStepperButton: View {
     private let label: ButtonLabel
     private let action: () -> Void
     
-    @State private var timer: Timer?
-    @State private var isLongPressing = false
-    
     @Environment(\.isEnabled) private var isEnabled
     
     init(_ label: ButtonLabel, action: @escaping () -> Void) {
@@ -23,15 +20,7 @@ struct CustomStepperButton: View {
     
     var body: some View {
         Button {
-            print("in button")
-            if isLongPressing {
-                isLongPressing.toggle()
-                timer?.invalidate()
-                timer = nil
-            } else {
-                print("button action")
-                action()
-            }
+            action()
         } label: {
             Image(systemName: label.imageName)
                 .frame(minWidth: Constants.size, minHeight: Constants.size)
@@ -45,16 +34,6 @@ struct CustomStepperButton: View {
                         .offset(y: Constants.yOffset)
                 }
         }
-        .simultaneousGesture(
-            LongPressGesture()
-                .onEnded { _ in
-                    isLongPressing = true
-                    self.timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-                        print("this is a thing")
-                        action()
-                    }
-                }
-         )
         .accessibilityIdentifier(label == .increment ? "Stepper increment" : "Stepper decrement")
     }
 }
