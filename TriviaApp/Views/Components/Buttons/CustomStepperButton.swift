@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CustomStepperButton: View {
-    let label: ButtonLabel
-    let action: () -> Void
+    private let label: ButtonLabel
+    private let action: () -> Void
     
-    private let verticalPadding = 4.0
-    private let cornerRadius = 10.0
+    @State private var timer: Timer?
+    @State private var isLongPressing = false
     
     init(_ label: ButtonLabel, action: @escaping () -> Void) {
         self.label = label
@@ -21,44 +21,84 @@ struct CustomStepperButton: View {
     
     var body: some View {
         Button {
-            action()
+            if isLongPressing {
+                isLongPressing.toggle()
+                timer?.invalidate()
+            } else {
+                action()
+            }
         } label: {
-            Text(label.label)
-                .padding(.horizontal)
-                .padding(.vertical, verticalPadding)
+            Image(systemName: label.imageName)
+                .frame(minWidth: Constants.size, minHeight: Constants.size)
                 .foregroundColor(.buttonText)
                 .bodyStyle()
                 .background(Color.customYellow)
-                .cornerRadius(cornerRadius)
+                .cornerRadius(Constants.cornerRadius)
                 .background {
-                    RoundedRectangle(cornerRadius: cornerRadius)
+                    RoundedRectangle(cornerRadius: Constants.cornerRadius)
                         .foregroundColor(.darkYellow)
-                        .offset(y: 4)
+                        .offset(y: Constants.yOffset)
                 }
         }
-        .accessibilityIdentifier(label == .plus ? "Stepper increment" : "Stepper decrement")
+        .simultaneousGesture(
+            LongPressGesture()
+                .onChanged { _ in
+                    print("gesture changed")
+                }
+                .onEnded { _ in
+                    isLongPressing = true
+                    print("in gesture end")
+                    self.timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+                        action()
+                    }
+                }
+         )
+        .accessibilityIdentifier(label == .increment ? "Stepper increment" : "Stepper decrement")
     }
 }
 
 extension CustomStepperButton {
     enum ButtonLabel {
-        case plus
-        case minus
+        case increment
+        case decrement
         
-        var label: String {
+        var imageName: String {
             switch self {
-            case .minus: return "-"
-            case .plus: return "+"
+            case .increment: return "plus"
+            case .decrement: return "minus"
             }
         }
     }
     
+    enum Constants {
+        static let cornerRadius = 10.0
+        static let size = 40.0
+        static let yOffset = 4.0
+    }
 }
 
 struct CustomStepperButton_Previews: PreviewProvider {
     static var previews: some View {
-        CustomStepperButton(.plus) {
-            
+        HStack {
+            // enabled buttons
+            VStack {
+                CustomStepperButton(.increment) {
+                    
+                }
+                CustomStepperButton(.increment) {
+                    
+                }
+            }
+            // Disabled buttons
+            VStack {
+                CustomStepperButton(.decrement) {
+                    
+                }
+                CustomStepperButton(.decrement) {
+                    
+                }
+            }
+            .disabled(true)
         }
     }
 }
