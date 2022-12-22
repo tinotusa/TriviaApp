@@ -14,6 +14,8 @@ struct CustomStepperButton: View {
     @State private var timer: Timer?
     @State private var isLongPressing = false
     
+    @Environment(\.isEnabled) private var isEnabled
+    
     init(_ label: ButtonLabel, action: @escaping () -> Void) {
         self.label = label
         self.action = action
@@ -21,34 +23,34 @@ struct CustomStepperButton: View {
     
     var body: some View {
         Button {
+            print("in button")
             if isLongPressing {
                 isLongPressing.toggle()
                 timer?.invalidate()
+                timer = nil
             } else {
+                print("button action")
                 action()
             }
         } label: {
             Image(systemName: label.imageName)
                 .frame(minWidth: Constants.size, minHeight: Constants.size)
-                .foregroundColor(.buttonText)
+                .foregroundColor(!isEnabled ? .darkGray : .buttonText)
                 .bodyStyle()
-                .background(Color.customYellow)
+                .background(!isEnabled ? Color.customGray : Color.customYellow)
                 .cornerRadius(Constants.cornerRadius)
                 .background {
                     RoundedRectangle(cornerRadius: Constants.cornerRadius)
-                        .foregroundColor(.darkYellow)
+                        .foregroundColor(!isEnabled ? Color.darkGray : .darkYellow)
                         .offset(y: Constants.yOffset)
                 }
         }
         .simultaneousGesture(
             LongPressGesture()
-                .onChanged { _ in
-                    print("gesture changed")
-                }
                 .onEnded { _ in
                     isLongPressing = true
-                    print("in gesture end")
                     self.timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+                        print("this is a thing")
                         action()
                     }
                 }
@@ -58,10 +60,12 @@ struct CustomStepperButton: View {
 }
 
 extension CustomStepperButton {
+    /// The labels for the different types of stepper buttons.
     enum ButtonLabel {
         case increment
         case decrement
         
+        /// The SF symbol name for the label.
         var imageName: String {
             switch self {
             case .increment: return "plus"
@@ -70,28 +74,32 @@ extension CustomStepperButton {
         }
     }
     
+    /// Constants for this view.
     enum Constants {
+        /// The corner radius of the button.
         static let cornerRadius = 10.0
+        /// The size(width and height) of the button.
         static let size = 40.0
+        /// The y offset of the background shadow effect.
         static let yOffset = 4.0
     }
 }
 
 struct CustomStepperButton_Previews: PreviewProvider {
     static var previews: some View {
-        HStack {
+        VStack {
             // enabled buttons
-            VStack {
+            HStack {
                 CustomStepperButton(.increment) {
                     
                 }
-                CustomStepperButton(.increment) {
+                CustomStepperButton(.decrement) {
                     
                 }
             }
             // Disabled buttons
-            VStack {
-                CustomStepperButton(.decrement) {
+            HStack {
+                CustomStepperButton(.increment) {
                     
                 }
                 CustomStepperButton(.decrement) {
