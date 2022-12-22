@@ -106,4 +106,19 @@ final class HomeViewUITests: XCTestCase {
         let startButton = app.buttons["Start Trivia"]
         XCTAssertTrue(startButton.isEnabled, "Expected the start trivia button to be enabled.")
     }
+    
+    func testTapCreditsButton() {
+        let creditsButton = app.buttons["Credits button"]
+        XCTAssertTrue(creditsButton.exists, "Expected the credits button to exist.")
+        creditsButton.tap()
+        let acknowledgements = app.staticTexts["Acknowledgements title"]
+        XCTAssertTrue(acknowledgements.exists, "Expected acknowledgements title to exist.")
+        
+        let closeButton = app.buttons["Close button"]
+        XCTAssertTrue(closeButton.exists, "Expected close button to exist in the sheet")
+        closeButton.tap()
+        
+        let triviaTitle = app.staticTexts["Trivia"]
+        XCTAssertTrue(triviaTitle.exists, "Expected the trivia title to exist since credit sheet closed.")
+    }
 }
