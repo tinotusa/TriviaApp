@@ -16,11 +16,11 @@ struct TriviaResult {
         }
     }
     /// All the questions that were asked.
-    var questions: [TriviaQuestion]
+    var questions: Set<TriviaQuestion>
     /// The questions that were answered incorrectly.
-    var wrongQuestions: [TriviaQuestion] = []
+    var wrongQuestions: Set<TriviaQuestion> = []
     
-    init(score: Int = 0, questions: [TriviaQuestion], wrongQuestions: [TriviaQuestion] = []) {
+    init(score: Int = 0, questions: Set<TriviaQuestion>, wrongQuestions: Set<TriviaQuestion> = []) {
         self.score = score
         self.questions = questions
         self.wrongQuestions = wrongQuestions

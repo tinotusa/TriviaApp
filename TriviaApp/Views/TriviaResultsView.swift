@@ -47,7 +47,7 @@ struct TriviaResultsView_Previews: PreviewProvider {
         TriviaResultsView(
             triviaResult: .init(
                 score: 3,
-                questions: questions,
+                questions: Set(questions),
                 wrongQuestions: [questions[0], questions[3], questions[4]]
                 
             )

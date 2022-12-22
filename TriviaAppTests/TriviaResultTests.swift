@@ -6,30 +6,38 @@
 //
 
 import XCTest
+@testable import TriviaApp
 
 final class TriviaResultTests: XCTestCase {
-
+    var questions: Set<TriviaQuestion>!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        questions = Set(Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testDefaultInit() throws {
+        let result = TriviaResult(questions: questions)
+        XCTAssertEqual(result.score, 0, "Expected trivia results score to be 0")
+        XCTAssertEqual(result.percentage, 0, "Expected trivia results percentage to be 0")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testPercentage() throws {
+        let score = Int.random(in: 0 ..< questions.count)
+        let expectedPercentage = Double(score) / Double(questions.count)
+        let result = TriviaResult(score: score, questions: questions)
+        let percentage = result.percentage
+        XCTAssertEqual(percentage, expectedPercentage, "Expected trivia results percentage to be \(expectedPercentage), not \(percentage)")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testScore() throws {
+        let result = TriviaResult(score: questions.count, questions: questions)
+        XCTAssertTrue(result.isPerfectScore, "Expected the result to have a perfect score.")
     }
-
+    
+    func testInvalidScore() throws {
+        let result = TriviaResult(score: -1, questions: questions)
+        let result2 = TriviaResult(score: 100, questions: questions)
+        XCTAssertEqual(result.score, 0, "Expected the result to have a score of 0.")
+        XCTAssertEqual(result2.score, questions.count, "Expected the result to have a score of \(questions.count).")
+    }
 }

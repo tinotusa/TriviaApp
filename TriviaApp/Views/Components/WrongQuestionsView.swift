@@ -12,7 +12,11 @@ import SwiftUI
 /// This is shown in the TriviaResultsView
 struct WrongQuestionsView: View {
     /// The incorrectly answered questions.
-    var questions: [TriviaQuestion]
+    private let questions: [TriviaQuestion]
+    
+    init(questions: Set<TriviaQuestion>) {
+        self.questions = Array(questions)
+    }
     
     var body: some View {
         VStack {
@@ -54,6 +58,6 @@ struct WrongQuestionsView_Previews: PreviewProvider {
     static let questions = Array(Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results[0..<3])
     
     static var previews: some View {
-        WrongQuestionsView(questions: questions)
+        WrongQuestionsView(questions: Set(questions))
     }
 }

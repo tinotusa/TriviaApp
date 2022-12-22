@@ -170,7 +170,7 @@ extension TriviaQuestionsViewModel {
         do {
             triviaAPI.triviaConfig = triviaConfig
             self.questions = try await triviaAPI.getQuestions()
-            triviaResult.questions = self.questions
+            triviaResult.questions = Set(self.questions)
             viewLoadingState = .loaded
             log.debug("Successfully loaded \(self.questions.count) questions.")
         } catch let error as TriviaAPI.TriviaAPIError {
@@ -246,7 +246,7 @@ private extension TriviaQuestionsViewModel {
             return true
         }
         log.debug("The answer was incorrect.")
-        triviaResult.wrongQuestions.append(currentQuestion)
+        triviaResult.wrongQuestions.insert(currentQuestion)
         return false
     }
     

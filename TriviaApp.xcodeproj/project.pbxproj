@@ -56,6 +56,7 @@
 		21F045C5294834F300388F83 /* TriviaQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C4294834F300388F83 /* TriviaQuestionsView.swift */; };
 		21F045C72948392A00388F83 /* TriviaQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */; };
 		21F84C352953FACB00493CA0 /* StartTriviaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C342953FACB00493CA0 /* StartTriviaButton.swift */; };
+		21F84C372954100200493CA0 /* TriviaResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C362954100200493CA0 /* TriviaResultTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,7 @@
 		21F045C4294834F300388F83 /* TriviaQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsView.swift; sourceTree = "<group>"; };
 		21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewModel.swift; sourceTree = "<group>"; };
 		21F84C342953FACB00493CA0 /* StartTriviaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTriviaButton.swift; sourceTree = "<group>"; };
+		21F84C362954100200493CA0 /* TriviaResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaResultTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +275,7 @@
 				21CB4BF0293CB4C9005865BE /* TriviaAppTests.swift */,
 				21CCB35B29509607008762B0 /* TriviaQuestionsViewModelTests.swift */,
 				21CCB35D2950A355008762B0 /* MockTriviaAPI.swift */,
+				21F84C362954100200493CA0 /* TriviaResultTests.swift */,
 			);
 			path = TriviaAppTests;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				21CB4BF1293CB4C9005865BE /* TriviaAppTests.swift in Sources */,
 				21CCB35E2950A355008762B0 /* MockTriviaAPI.swift in Sources */,
 				21CCB35C29509607008762B0 /* TriviaQuestionsViewModelTests.swift in Sources */,
+				21F84C372954100200493CA0 /* TriviaResultTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
