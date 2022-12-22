@@ -46,11 +46,8 @@ private extension HomeView {
             
             questionTypeRow
             
-            Button {
+            StartTriviaButton {
                 showingQuestionsView = true
-            } label: {
-                Text("Start Trivia")
-                    .startButtonStyle()
             }
             .disabled(viewModel.startDisabled)
         }

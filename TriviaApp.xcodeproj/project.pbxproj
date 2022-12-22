@@ -55,6 +55,7 @@
 		21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EE4D2E293EEC030032711E /* TriviaAPI.swift */; };
 		21F045C5294834F300388F83 /* TriviaQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C4294834F300388F83 /* TriviaQuestionsView.swift */; };
 		21F045C72948392A00388F83 /* TriviaQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */; };
+		21F84C352953FACB00493CA0 /* StartTriviaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C342953FACB00493CA0 /* StartTriviaButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +127,7 @@
 		21EE4D2E293EEC030032711E /* TriviaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaAPI.swift; sourceTree = "<group>"; };
 		21F045C4294834F300388F83 /* TriviaQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsView.swift; sourceTree = "<group>"; };
 		21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewModel.swift; sourceTree = "<group>"; };
+		21F84C342953FACB00493CA0 /* StartTriviaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTriviaButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				21077D92294EE37F009581DF /* CustomStepper.swift */,
 				21077D9B294F4070009581DF /* QuestionView.swift */,
 				21CCB35929506823008762B0 /* WrongQuestionsView.swift */,
+				21F84C342953FACB00493CA0 /* StartTriviaButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				21889C3F294984D20044567D /* Bundle+loadJSON.swift in Sources */,
 				21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */,
 				21077D8E294EE193009581DF /* AnswerButton.swift in Sources */,
+				21F84C352953FACB00493CA0 /* StartTriviaButton.swift in Sources */,
 				21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */,
 				21077D78294EAC49009581DF /* Color+Extensions.swift in Sources */,
 				21077D91294EE1D9009581DF /* ContinueButton.swift in Sources */,
