@@ -1,0 +1,57 @@
+{
+  "configurations" : [
+    {
+      "id" : "6680B8CC-6887-4D0D-9995-4A6D8A255404",
+      "name" : "Configuration 1",
+      "options" : {
+        "addressSanitizer" : {
+          "enabled" : true
+        },
+        "commandLineArgumentEntries" : [
+
+        ]
+      }
+    },
+    {
+      "id" : "7239EBCF-2252-4C57-BCFF-9DB3B6944DDD",
+      "name" : "Configuration 2",
+      "options" : {
+        "addressSanitizer" : {
+          "enabled" : false
+        },
+        "commandLineArgumentEntries" : [
+
+        ],
+        "threadSanitizerEnabled" : true
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-testing-quiz"
+      }
+    ],
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TriviaApp.xcodeproj",
+        "identifier" : "21CB4BEB293CB4C9005865BE",
+        "name" : "TriviaAppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TriviaApp.xcodeproj",
+        "identifier" : "21CB4BF5293CB4C9005865BE",
+        "name" : "TriviaAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
