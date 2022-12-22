@@ -24,6 +24,6 @@ struct TriviaResult {
     
     /// A boolean value indicating whether the trivia round had any wrong answers.
     var isPerfectScore: Bool {
-        wrongQuestions.isEmpty
+        score == questions.count
     }
 }
