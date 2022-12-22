@@ -42,4 +42,8 @@ struct TriviaQuestion: Codable, Hashable {
         }
         self.allAnswers = allAnswers
     }
+    
+    static var examples: [Self] {
+        Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results
+    }
 }

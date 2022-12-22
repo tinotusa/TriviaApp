@@ -8,15 +8,30 @@
 import SwiftUI
 
 struct QuestionView: View {
-    let question: TriviaQuestion
-    @Binding var hiddenAnswers: [String]
-    @Binding var selectedAnswer: String?
-    let isHiddenAnswer: (String) -> Bool
+    private let question: TriviaQuestion
+    @Binding private var hiddenAnswers: [String]
+    @Binding private var selectedAnswer: String?
+    private let isHiddenAnswer: (String) -> Bool
+    private let questionType: TriviaAPI.TriviaType
+    
+    init(
+        question: TriviaQuestion,
+        hiddenAnswers: Binding<[String]>,
+        selectedAnswer: Binding<String?> = .constant(nil),
+        isHiddenAnswer: @escaping (String) -> Bool
+    ) {
+        self.question = question
+        _hiddenAnswers = hiddenAnswers
+        _selectedAnswer = selectedAnswer
+        self.isHiddenAnswer = isHiddenAnswer
+        questionType = .init(rawValue: question.type)!
+    }
     
     var body: some View {
         VStack {
             Spacer()
-            
+            Text(questionType.title)
+                .accessibilityIdentifier("Question type label")
             Text(question.question)
                 .multilineTextAlignment(.center)
             
@@ -24,7 +39,7 @@ struct QuestionView: View {
             
             Spacer()
             
-            ForEach(question.allAnswers, id: \.self) { answer in
+            ForEach(Array(question.allAnswers.enumerated()), id: \.0) { (index, answer) in
                 AnswerButton(
                     answer: answer,
                     isDisabled: isAnswerHidden(answer: answer),
@@ -32,6 +47,7 @@ struct QuestionView: View {
                 ) {
                     selectedAnswer = answer
                 }
+                .accessibilityIdentifier("Answer button\(index)")
                 .disabled(isAnswerHidden(answer: answer))
             }
             

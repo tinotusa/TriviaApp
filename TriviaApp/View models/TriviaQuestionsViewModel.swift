@@ -12,15 +12,15 @@ import SwiftUI
 /// View model for the TriviaQuestionsView.
 final class TriviaQuestionsViewModel: ObservableObject {
     /// The loading state of the view.
-    @Published private(set) var viewLoadingState = ViewLoadingState.loading
+    @Published var viewLoadingState = ViewLoadingState.loading
     /// The current question's index.
     @Published private(set) var currentQuestionIndex = 0
     /// A boolean value indicating whether the trivia round is over.
     @Published private(set) var isTriviaRoundOver = false
     /// The questions of the trivia round.
-    @Published private(set) var questions: [TriviaQuestion] = []
+    @Published var questions: [TriviaQuestion] = []
     /// The results of the trivia round.
-    @Published private(set) var triviaResult: TriviaResult = .init(questions: [])
+    @Published var triviaResult: TriviaResult = .init(questions: [])
     /// The currently selected answer.
     @Published var selectedAnswer: String? = nil
     /// The answers that are currently hidden.

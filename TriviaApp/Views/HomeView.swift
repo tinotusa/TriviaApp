@@ -49,6 +49,7 @@ private extension HomeView {
             StartTriviaButton {
                 showingQuestionsView = true
             }
+            .accessibilityIdentifier("Start trivia")
             .disabled(viewModel.startDisabled)
         }
         .frame(maxHeight: .infinity)

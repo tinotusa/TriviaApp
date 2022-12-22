@@ -19,6 +19,7 @@ struct ContinueButton: View {
                 .continueButtonStyle(isDisabled: isDisabled)
                 .mediumBodyStyle()
         }
+        .accessibilityIdentifier("Continue button")
         .disabled(isDisabled)
     }
 }

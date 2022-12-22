@@ -57,6 +57,7 @@
 		21F045C72948392A00388F83 /* TriviaQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */; };
 		21F84C352953FACB00493CA0 /* StartTriviaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C342953FACB00493CA0 /* StartTriviaButton.swift */; };
 		21F84C372954100200493CA0 /* TriviaResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C362954100200493CA0 /* TriviaResultTests.swift */; };
+		21F84C39295466BF00493CA0 /* TriviaQuestionsViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C38295466BF00493CA0 /* TriviaQuestionsViewUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +131,7 @@
 		21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewModel.swift; sourceTree = "<group>"; };
 		21F84C342953FACB00493CA0 /* StartTriviaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTriviaButton.swift; sourceTree = "<group>"; };
 		21F84C362954100200493CA0 /* TriviaResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaResultTests.swift; sourceTree = "<group>"; };
+		21F84C38295466BF00493CA0 /* TriviaQuestionsViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,6 +287,7 @@
 			children = (
 				2138A8EA295304A1002CB70D /* HomeViewUITests.swift */,
 				21CB4BFC293CB4C9005865BE /* TriviaAppUITestsLaunchTests.swift */,
+				21F84C38295466BF00493CA0 /* TriviaQuestionsViewUITests.swift */,
 			);
 			path = TriviaAppUITests;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21CB4BFD293CB4C9005865BE /* TriviaAppUITestsLaunchTests.swift in Sources */,
+				21F84C39295466BF00493CA0 /* TriviaQuestionsViewUITests.swift in Sources */,
 				2138A8EB295304A1002CB70D /* HomeViewUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

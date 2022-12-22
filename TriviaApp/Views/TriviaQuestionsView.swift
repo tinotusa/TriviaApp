@@ -15,6 +15,7 @@ struct TriviaQuestionsView: View {
     
     init(triviaConfig: TriviaAPI.TriviaConfig) {
         _viewModel = StateObject(wrappedValue: TriviaQuestionsViewModel(triviaConfig: triviaConfig))
+        
     }
     
     var body: some View {
@@ -22,7 +23,13 @@ struct TriviaQuestionsView: View {
         case .loading:
             LoadingView()
                 .task {
-                    await viewModel.getQuestions()
+                    if CommandLine.arguments.contains("-testing-quiz") {
+                        viewModel.questions = TriviaQuestion.examples
+                        viewModel.viewLoadingState = .loaded
+                        viewModel.triviaResult.questions = Set(viewModel.questions)
+                    } else {
+                        await viewModel.getQuestions()
+                    }
                 }
         case .loaded:
             loadedView
@@ -65,7 +72,7 @@ struct TriviaQuestionsView: View {
 
 // MARK: - Subviews
 private extension TriviaQuestionsView {
-    func header(questionType: String) -> some View {
+    func header(question: TriviaQuestion) -> some View {
         HStack {
             Button {
                 showingQuitConfirmationDialog = true
@@ -74,6 +81,7 @@ private extension TriviaQuestionsView {
                     .font(.title3)
             }
             .foregroundColor(.red)
+            .accessibilityIdentifier("Quit trivia")
             
             Spacer()
             
@@ -81,7 +89,8 @@ private extension TriviaQuestionsView {
                 _ = viewModel.showHint()
             }
             .foregroundColor(.blue)
-            .disabled(questionType == "boolean" || viewModel.hintsDisabled)
+            .disabled(question.type == "boolean" || viewModel.hintsDisabled)
+            .accessibilityIdentifier("Hint button")
         }
         .bodyStyle()
     }
@@ -98,7 +107,7 @@ private extension TriviaQuestionsView {
                             isHiddenAnswer: viewModel.isAnswerHidden
                         )
                         
-                        header(questionType: question.type)
+                        header(question: question)
                         
                         ViewThatFits(in: .vertical) {
                             questionView
@@ -130,9 +139,11 @@ private extension TriviaQuestionsView {
             Button("Quit", role: .destructive) {
                 dismiss()
             }
+            .accessibilityIdentifier("Confirmation quit")
             Button("Continue", role: .cancel) {
                 
             }
+            .accessibilityIdentifier("Confirmation continue")
         } message: {
             Text("Are you sure you want to quit this trivia round?")
         }
