@@ -52,6 +52,7 @@ private extension HomeView {
                 Text("Start Trivia")
                     .startButtonStyle()
             }
+            .disabled(viewModel.startDisabled)
         }
         .frame(maxHeight: .infinity)
         .overlay(alignment: .topLeading) {
@@ -76,10 +77,13 @@ private extension HomeView {
             Spacer()
             Picker("Category", selection: $viewModel.triviaConfig.category) {
                 ForEach(TriviaAPI.TriviaCategory.allCases) { category in
-                    Text(category.title)
+                    let title = category.title
+                    Text(title)
                         .tag(category)
+                        .accessibilityIdentifier(title)
                 }
             }
+            .accessibilityIdentifier("Category Picker")
         }
         .bodyStyle()
     }
@@ -102,6 +106,7 @@ private extension HomeView {
                     Text(difficulty.title)
                 }
             }
+            .accessibilityIdentifier("Difficulty Picker")
         }
         .bodyStyle()
     }
@@ -115,10 +120,10 @@ private extension HomeView {
                     Text(type.title)
                 }
             }
+            .accessibilityIdentifier("Question type picker")
         }
         .bodyStyle()
     }
-    
 }
 
 struct HomeView_Previews: PreviewProvider {

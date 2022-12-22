@@ -12,4 +12,8 @@ import os
 final class HomeViewModel: ObservableObject {
     @Published var triviaConfig = TriviaAPI.TriviaConfig.default
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "HomeViewModel")
+    
+    var startDisabled: Bool {
+        triviaConfig.numberOfQuestions == 0
+    }
 }
