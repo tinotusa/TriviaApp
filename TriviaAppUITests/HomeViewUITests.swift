@@ -8,7 +8,7 @@
 import XCTest
 
 final class HomeViewUITests: XCTestCase {
-    var app: XCUIApplication!
+    let app = TriviaAppApp()
     
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -19,10 +19,16 @@ final class HomeViewUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testSetTriviaSettings() throws {
-        
-        let collectionViewsQuery = XCUIApplication().collectionViews
-        collectionViewsQuery/*@START_MENU_TOKEN@*/.buttons["History"]/*[[".cells.buttons[\"History\"]",".buttons[\"History\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-        collectionViewsQuery/*@START_MENU_TOKEN@*/.buttons["Books"]/*[[".cells.buttons[\"Books\"]",".buttons[\"Books\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeUp()
+    func testSettingTriviaProperties() throws {
+        try app.triviaCategoryPicker().select(.art)
+        try app.triviaCategoryPicker().select(.videoGames)
+        for _ in 0 ..< 5 {
+            try app.numberOfQuestionsButton(.increment).tap()
+        }
+        for _ in 0 ..< 5 {
+            try app.numberOfQuestionsButton(.decrement).tap()
+        }
+        try app.difficultyPicker().select(.hard)
+        try app.questionTypePicker().select(.any)
     }
 }

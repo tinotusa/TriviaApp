@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CustomStepper: View {
     @Binding var value: Int
@@ -27,6 +28,12 @@ struct CustomStepper: View {
             }
             
             TextField("Value", text: $stringValue)
+                .onReceive(Just(stringValue)) { newValue in
+                    let filteredValue = newValue.filter { Set("0123456789").contains($0) }
+                    if filteredValue != newValue {
+                        self.stringValue = filteredValue
+                    }
+                }
                 .onChange(of: stringValue) { newValue in
                     if let value = Int(newValue) {
                         self.value = min(maxValue, max(minValue, value))
@@ -37,7 +44,7 @@ struct CustomStepper: View {
                 .frame(maxWidth: 30)
                 .labelsHidden()
                 .keyboardType(.numberPad)
-                
+                .accessibilityIdentifier("Stepper textField")
             CustomStepperButton(.minus) {
                 updateValue(by: -1)
             }

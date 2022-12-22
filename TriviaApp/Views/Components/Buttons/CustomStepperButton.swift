@@ -36,6 +36,7 @@ struct CustomStepperButton: View {
                         .offset(y: 4)
                 }
         }
+        .accessibilityIdentifier(label == .plus ? "Stepper increment" : "Stepper decrement")
     }
 }
 
