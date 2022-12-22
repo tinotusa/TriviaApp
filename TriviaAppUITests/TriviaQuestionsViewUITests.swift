@@ -37,7 +37,7 @@ final class TriviaQuestionsViewUITests: XCTestCase {
     func testTapQuitButton() {
         let quitButton = app.buttons["Quit trivia"]
         quitButton.tap()
-        let quitConfirmationDialogButton = app.buttons["Confirmation Quit"]
+        let quitConfirmationDialogButton = app.buttons["Confirmation quit"]
         XCTAssertTrue(quitConfirmationDialogButton.exists, "Expected the quit confirmation dialog button to exist after tapping quit trivia button.")
         quitConfirmationDialogButton.tap()
         let startTriviaButton = app.buttons["Start trivia"]
