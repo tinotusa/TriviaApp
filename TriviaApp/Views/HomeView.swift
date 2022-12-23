@@ -15,50 +15,51 @@ struct HomeView: View {
     
     // MARK: - Body
     var body: some View {
-        ViewThatFits(in: .vertical) {
-            menuOptions
-            ScrollView(showsIndicators: false) {
-                menuOptions
+        menuOptions
+            .fullScreenCover(isPresented: $showingQuestionsView) {
+                QuestionsView(triviaConfig: viewModel.triviaConfig)
             }
-            .background(Color.background)
-        }
-        .fullScreenCover(isPresented: $showingQuestionsView) {
-            QuestionsView(triviaConfig: viewModel.triviaConfig)
-        }
-        .sheet(isPresented: $showingCreditsSheet) {
-            CreditsView()
-                .presentationDragIndicator(.visible)
-        }
+            .sheet(isPresented: $showingCreditsSheet) {
+                CreditsView()
+                    .presentationDragIndicator(.visible)
+            }
     }
 }
 
 // MARK: - Subviews
 private extension HomeView {
     var menuOptions: some View {
-        VStack {
-            Text("Trivia")
-                .titleStyle()
-            
-            categoryRow
-            
-            questionAmountRow
-            
-            difficultyRow
-            
-            questionTypeRow
-            
-            StartTriviaButton {
-                showingQuestionsView = true
+        GeometryReader { proxy in
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    Text("Trivia")
+                        .titleStyle()
+                    
+                    categoryRow
+
+                    questionAmountRow
+
+                    difficultyRow
+
+                    questionTypeRow
+
+                    StartTriviaButton {
+                        showingQuestionsView = true
+                    }
+                    .accessibilityIdentifier("Start trivia")
+                    .disabled(viewModel.startDisabled)
+                }
+                .frame(maxWidth: proxy.size.width)
+                .frame(maxHeight: proxy.size.height)
+                .padding()
             }
-            .accessibilityIdentifier("Start trivia")
-            .disabled(viewModel.startDisabled)
+            .scrollDismissesKeyboard(.immediately)
+            .background(Color.background)
+            .safeAreaInset(edge: .top) {
+                    header
+                    .padding()
+            }
         }
-        .frame(maxHeight: .infinity)
-        .overlay(alignment: .topLeading) {
-            header
-        }
-        .padding()
-        .background(Color.background)
     }
     
     var header: some View {
