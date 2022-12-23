@@ -19,10 +19,10 @@ struct AnswerButton: View {
             action()
         } label: {
             Text(answer)
+                .foregroundColor(.buttonText)
                 .frame(maxWidth: .infinity)
                 .modifier(AnswerButtonStyle(isDisabled: isDisabled, isSelected: isSelected))
         }
-        
         .disabled(isDisabled)
     }
 }
