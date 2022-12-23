@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
 struct QuestionView: View {
-    private let question: TriviaQuestion
+    private let question: Question
     @Binding private var hiddenAnswers: [String]
     @Binding private var selectedAnswer: String?
     private let isHiddenAnswer: (String) -> Bool
-    private let questionType: TriviaAPI.TriviaType
+    private let questionType: TriviaType
     
     init(
-        question: TriviaQuestion,
+        question: Question,
         hiddenAnswers: Binding<[String]>,
         selectedAnswer: Binding<String?> = .constant(nil),
         isHiddenAnswer: @escaping (String) -> Bool
@@ -74,7 +75,7 @@ struct QuestionView_Previews: PreviewProvider {
         @State private var isHiddenAnswer: (String) -> Bool = { _ in
             true
         }
-        @State private var questions: [TriviaQuestion] = []
+        @State private var questions: [Question] = []
         
         var body: some View {
             QuestionView(

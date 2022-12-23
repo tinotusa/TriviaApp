@@ -1,5 +1,5 @@
 //
-//  TriviaQuestionsViewModel.swift
+//  QuestionsViewModel.swift
 //  TriviaApp
 //
 //  Created by Tino on 13/12/2022.
@@ -8,9 +8,10 @@
 import Foundation
 import os
 import SwiftUI
+import SwiftOpenTDB
 
-/// View model for the TriviaQuestionsView.
-final class TriviaQuestionsViewModel: ObservableObject {
+/// View model for the QuestionsView.
+final class QuestionsViewModel: ObservableObject {
     /// The loading state of the view.
     @Published var viewLoadingState = ViewLoadingState.loading
     /// The current question's index.
@@ -18,7 +19,7 @@ final class TriviaQuestionsViewModel: ObservableObject {
     /// A boolean value indicating whether the trivia round is over.
     @Published private(set) var isTriviaRoundOver = false
     /// The questions of the trivia round.
-    @Published var questions: [TriviaQuestion] = []
+    @Published var questions: [Question] = []
     /// The results of the trivia round.
     @Published var triviaResult: TriviaResult = .init(questions: [])
     /// The currently selected answer.
@@ -26,11 +27,11 @@ final class TriviaQuestionsViewModel: ObservableObject {
     /// The answers that are currently hidden.
     @Published var hiddenAnswers = [String]()
     /// The config for the trivia.
-    private let triviaConfig: TriviaAPI.TriviaConfig
+    private let triviaConfig: TriviaConfig
     /// Answers to hide when hint is pressed.
     private var answersLeftToHide: [String]?
     /// The trivia api.
-    private var triviaAPI: TriviaAPIProtocol
+    private var triviaAPI = OpenTDB.shared
     
     /// A boolean value indicating whether an alert is being shown.
     @Published var showingAlert = false
@@ -46,13 +47,12 @@ final class TriviaQuestionsViewModel: ObservableObject {
     
     /// Creates the view model.
     /// - Parameter triviaConfig: The config for the trivia.
-    init(triviaConfig: TriviaAPI.TriviaConfig, triviaAPI: TriviaAPIProtocol = TriviaAPI.shared) {
+    init(triviaConfig: TriviaConfig) {
         self.triviaConfig = triviaConfig
-        self.triviaAPI = triviaAPI
     }
 }
 
-extension TriviaQuestionsViewModel {
+extension QuestionsViewModel {
     /// Alert details of the view.
     struct Alert {
         /// The error message of the alert
@@ -69,10 +69,10 @@ extension TriviaQuestionsViewModel {
     }
 }
 
-extension TriviaQuestionsViewModel {
+extension QuestionsViewModel {
     /// The current question.
     @MainActor
-    var currentQuestion: TriviaQuestion? {
+    var currentQuestion: Question? {
         if !isValidQuestionIndex {
             isTriviaRoundOver = true
             return nil
@@ -162,7 +162,7 @@ extension TriviaQuestionsViewModel {
 }
 
 // MARK: - Trivia api functions
-extension TriviaQuestionsViewModel {
+extension QuestionsViewModel {
     /// Fetches some questions of opentdb based on the given trivia config.
     @MainActor
     func getQuestions() async {
@@ -173,7 +173,7 @@ extension TriviaQuestionsViewModel {
             triviaResult.questions = Set(self.questions)
             viewLoadingState = .loaded
             log.debug("Successfully loaded \(self.questions.count) questions.")
-        } catch let error as TriviaAPI.TriviaAPIError {
+        } catch let error as OpenTDBError {
             switch error {
             case .noResults:
                 alert = .init(message: "No results found.", type: .noResults)
@@ -226,7 +226,7 @@ extension TriviaQuestionsViewModel {
 }
 
 // MARK: - Private
-private extension TriviaQuestionsViewModel {
+private extension QuestionsViewModel {
     /// Checks the answer with the current question.
     /// - Parameter answer: The answer to check with.
     /// - Returns: True if the answer is correct, false otherwise.

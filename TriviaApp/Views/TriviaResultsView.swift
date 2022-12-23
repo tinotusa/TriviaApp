@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
 struct TriviaResultsView: View {
     @Environment(\.dismiss) private var dismiss

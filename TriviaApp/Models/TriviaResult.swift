@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftOpenTDB
 
 /// Results of a particular trivia round.
 struct TriviaResult {
@@ -16,11 +17,11 @@ struct TriviaResult {
         }
     }
     /// All the questions that were asked.
-    var questions: Set<TriviaQuestion>
+    var questions: Set<Question>
     /// The questions that were answered incorrectly.
-    var wrongQuestions: Set<TriviaQuestion> = []
+    var wrongQuestions: Set<Question> = []
     
-    init(score: Int = 0, questions: Set<TriviaQuestion>, wrongQuestions: Set<TriviaQuestion> = []) {
+    init(score: Int = 0, questions: Set<Question>, wrongQuestions: Set<Question> = []) {
         self.score = score
         self.questions = questions
         self.wrongQuestions = wrongQuestions

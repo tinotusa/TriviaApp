@@ -82,7 +82,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-testing-quiz"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

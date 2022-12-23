@@ -7,10 +7,11 @@
 
 import Foundation
 import os
+import SwiftOpenTDB
 
 /// View model for HomeView.
 final class HomeViewModel: ObservableObject {
-    @Published var triviaConfig = TriviaAPI.TriviaConfig.default
+    @Published var triviaConfig = TriviaConfig.default
     private let log = Logger(subsystem: "com.tinotusa.TriviaApp", category: "HomeViewModel")
     
     var startDisabled: Bool {

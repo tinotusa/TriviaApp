@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
@@ -22,7 +23,7 @@ struct HomeView: View {
             .background(Color.background)
         }
         .fullScreenCover(isPresented: $showingQuestionsView) {
-            TriviaQuestionsView(triviaConfig: viewModel.triviaConfig)
+            QuestionsView(triviaConfig: viewModel.triviaConfig)
         }
         .sheet(isPresented: $showingCreditsSheet) {
             CreditsView()
@@ -75,7 +76,7 @@ private extension HomeView {
             Text("Category")
             Spacer()
             Picker("Category", selection: $viewModel.triviaConfig.category) {
-                ForEach(TriviaAPI.TriviaCategory.allCases) { category in
+                ForEach(TriviaCategory.allCases) { category in
                     let title = category.title
                     Text(title)
                         .tag(category)
@@ -101,7 +102,7 @@ private extension HomeView {
             Text("Difficulty")
             Spacer()
             Picker("Difficulty", selection: $viewModel.triviaConfig.difficulty) {
-                ForEach(TriviaAPI.TriviaDifficulty.allCases) { difficulty in
+                ForEach(TriviaDifficulty.allCases) { difficulty in
                     Text(difficulty.title)
                 }
             }
@@ -115,7 +116,7 @@ private extension HomeView {
             Text("Question type")
             Spacer()
             Picker("Question type", selection: $viewModel.triviaConfig.triviaType) {
-                ForEach(TriviaAPI.TriviaType.allCases) { type in
+                ForEach(TriviaType.allCases) { type in
                     Text(type.title)
                 }
             }

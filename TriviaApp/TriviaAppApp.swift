@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
 @main
 struct TriviaAppApp: App {
@@ -14,7 +15,7 @@ struct TriviaAppApp: App {
     
     init() {
         if !sessionToken.isEmpty {
-            TriviaAPI.shared.sessionToken = sessionToken
+            OpenTDB.shared.sessionToken = sessionToken
         }
     }
     

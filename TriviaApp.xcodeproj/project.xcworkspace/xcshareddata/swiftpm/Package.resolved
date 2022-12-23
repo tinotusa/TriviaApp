@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swiftopentdb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tinotusa/SwiftOpenTDB",
+      "state" : {
+        "branch" : "main",
+        "revision" : "38d556be2e2882886f9c313195efa3cc266678a2"
+      }
+    }
+  ],
+  "version" : 2
+}

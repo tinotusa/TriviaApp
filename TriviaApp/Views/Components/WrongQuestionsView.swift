@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
 /// A list of the questions the user answered incorrectly.
 ///
 /// This is shown in the TriviaResultsView
 struct WrongQuestionsView: View {
     /// The incorrectly answered questions.
-    private let questions: [TriviaQuestion]
+    private let questions: [Question]
     
-    init(questions: Set<TriviaQuestion>) {
+    init(questions: Set<Question>) {
         self.questions = Array(questions)
     }
     

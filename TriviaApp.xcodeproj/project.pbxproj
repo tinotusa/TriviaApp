@@ -20,6 +20,7 @@
 		21077D9A294F3B6C009581DF /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D99294F3B6C009581DF /* ErrorView.swift */; };
 		21077D9C294F4070009581DF /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21077D9B294F4070009581DF /* QuestionView.swift */; };
 		2138A8EB295304A1002CB70D /* HomeViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2138A8EA295304A1002CB70D /* HomeViewUITests.swift */; };
+		214EDEC52955AE5300776C96 /* SwiftOpenTDB in Frameworks */ = {isa = PBXBuildFile; productRef = 214EDEC42955AE5300776C96 /* SwiftOpenTDB */; };
 		2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3CB294C17FF004DEA9C /* HapticsManager.swift */; };
 		2162F3D0294C37E6004DEA9C /* correct-choice.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2162F3CF294C37E6004DEA9C /* correct-choice.wav */; };
 		2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2162F3D4294C5E69004DEA9C /* AudioManager.swift */; };
@@ -29,7 +30,6 @@
 		21889C3A29497D8F0044567D /* TriviaResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21889C3929497D8F0044567D /* TriviaResult.swift */; };
 		21889C3C294984B10044567D /* exampleQuestions.json in Resources */ = {isa = PBXBuildFile; fileRef = 21889C3B294984B10044567D /* exampleQuestions.json */; };
 		21889C3F294984D20044567D /* Bundle+loadJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21889C3E294984D20044567D /* Bundle+loadJSON.swift */; };
-		21CAC46B295318FD00574736 /* TriviaAPI+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */; };
 		21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB4BDF293CB4C6005865BE /* TriviaAppApp.swift */; };
 		21CB4BE2293CB4C6005865BE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB4BE1293CB4C6005865BE /* ContentView.swift */; };
 		21CB4BE4293CB4C9005865BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21CB4BE3293CB4C9005865BE /* Assets.xcassets */; };
@@ -43,16 +43,8 @@
 		21CCB35E2950A355008762B0 /* MockTriviaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CCB35D2950A355008762B0 /* MockTriviaAPI.swift */; };
 		21D47A4C29481E6A00D10E18 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 21D47A4B29481E6A00D10E18 /* TODO.md */; };
 		21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A4D29481EFC00D10E18 /* HomeViewModel.swift */; };
-		21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A502948309000D10E18 /* TriviaAPI+Error.swift */; };
-		21D47A552948312200D10E18 /* TriviaAPI+Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */; };
-		21D47A572948313C00D10E18 /* TriviaAPI+TriviaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */; };
-		21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */; };
-		21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5A2948319900D10E18 /* TriviaQuestion.swift */; };
-		21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5D294831CF00D10E18 /* TokenResponse.swift */; };
-		21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D47A5F294831E800D10E18 /* QuestionsResponse.swift */; };
 		21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D7A745294D7ED900A9B8D2 /* CreditsView.swift */; };
 		21D7A748294DE2EA00A9B8D2 /* ViewLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D7A747294DE2EA00A9B8D2 /* ViewLoadingState.swift */; };
-		21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EE4D2E293EEC030032711E /* TriviaAPI.swift */; };
 		21F045C5294834F300388F83 /* TriviaQuestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C4294834F300388F83 /* TriviaQuestionsView.swift */; };
 		21F045C72948392A00388F83 /* TriviaQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */; };
 		21F84C352953FACB00493CA0 /* StartTriviaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F84C342953FACB00493CA0 /* StartTriviaButton.swift */; };
@@ -116,17 +108,8 @@
 		21CCB35D2950A355008762B0 /* MockTriviaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTriviaAPI.swift; sourceTree = "<group>"; };
 		21D47A4B29481E6A00D10E18 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		21D47A4D29481EFC00D10E18 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		21D47A502948309000D10E18 /* TriviaAPI+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Error.swift"; sourceTree = "<group>"; };
-		21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Category.swift"; sourceTree = "<group>"; };
-		21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Difficulty.swift"; sourceTree = "<group>"; };
-		21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+TriviaType.swift"; sourceTree = "<group>"; };
-		21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TriviaAPI+Config.swift"; sourceTree = "<group>"; };
-		21D47A5A2948319900D10E18 /* TriviaQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestion.swift; sourceTree = "<group>"; };
-		21D47A5D294831CF00D10E18 /* TokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponse.swift; sourceTree = "<group>"; };
-		21D47A5F294831E800D10E18 /* QuestionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsResponse.swift; sourceTree = "<group>"; };
 		21D7A745294D7ED900A9B8D2 /* CreditsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsView.swift; sourceTree = "<group>"; };
 		21D7A747294DE2EA00A9B8D2 /* ViewLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadingState.swift; sourceTree = "<group>"; };
-		21EE4D2E293EEC030032711E /* TriviaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaAPI.swift; sourceTree = "<group>"; };
 		21F045C4294834F300388F83 /* TriviaQuestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsView.swift; sourceTree = "<group>"; };
 		21F045C62948392A00388F83 /* TriviaQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaQuestionsViewModel.swift; sourceTree = "<group>"; };
 		21F84C342953FACB00493CA0 /* StartTriviaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTriviaButton.swift; sourceTree = "<group>"; };
@@ -140,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				214EDEC52955AE5300776C96 /* SwiftOpenTDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,34 +315,9 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		21D47A4F2948306E00D10E18 /* TriviaAPI */ = {
-			isa = PBXGroup;
-			children = (
-				21D47A5C294831B600D10E18 /* Opentdb models */,
-				21EE4D2E293EEC030032711E /* TriviaAPI.swift */,
-				21D47A502948309000D10E18 /* TriviaAPI+Error.swift */,
-				21D47A52294830E600D10E18 /* TriviaAPI+Category.swift */,
-				21D47A542948312200D10E18 /* TriviaAPI+Difficulty.swift */,
-				21D47A562948313C00D10E18 /* TriviaAPI+TriviaType.swift */,
-				21D47A582948316D00D10E18 /* TriviaAPI+Config.swift */,
-				21D47A5A2948319900D10E18 /* TriviaQuestion.swift */,
-			);
-			path = TriviaAPI;
-			sourceTree = "<group>";
-		};
-		21D47A5C294831B600D10E18 /* Opentdb models */ = {
-			isa = PBXGroup;
-			children = (
-				21D47A5D294831CF00D10E18 /* TokenResponse.swift */,
-				21D47A5F294831E800D10E18 /* QuestionsResponse.swift */,
-			);
-			path = "Opentdb models";
-			sourceTree = "<group>";
-		};
 		21EE4D2D293EEBF40032711E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				21D47A4F2948306E00D10E18 /* TriviaAPI */,
 				2162F3CB294C17FF004DEA9C /* HapticsManager.swift */,
 				2162F3D4294C5E69004DEA9C /* AudioManager.swift */,
 			);
@@ -381,6 +340,9 @@
 			dependencies = (
 			);
 			name = TriviaApp;
+			packageProductDependencies = (
+				214EDEC42955AE5300776C96 /* SwiftOpenTDB */,
+			);
 			productName = TriviaApp;
 			productReference = 21CB4BDC293CB4C6005865BE /* TriviaApp.app */;
 			productType = "com.apple.product-type.application";
@@ -453,6 +415,9 @@
 				Base,
 			);
 			mainGroup = 21CB4BD3293CB4C6005865BE;
+			packageReferences = (
+				214EDEC32955AE5200776C96 /* XCRemoteSwiftPackageReference "SwiftOpenTDB" */,
+			);
 			productRefGroup = 21CB4BDD293CB4C6005865BE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -504,7 +469,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				21077D9C294F4070009581DF /* QuestionView.swift in Sources */,
-				21D47A572948313C00D10E18 /* TriviaAPI+TriviaType.swift in Sources */,
 				21889C3F294984D20044567D /* Bundle+loadJSON.swift in Sources */,
 				21CB4C1A293CBE40005865BE /* HomeView.swift in Sources */,
 				21077D8E294EE193009581DF /* AnswerButton.swift in Sources */,
@@ -516,14 +480,9 @@
 				21CB4BE0293CB4C6005865BE /* TriviaAppApp.swift in Sources */,
 				21D47A4E29481EFC00D10E18 /* HomeViewModel.swift in Sources */,
 				2162F3CC294C17FF004DEA9C /* HapticsManager.swift in Sources */,
-				21D47A552948312200D10E18 /* TriviaAPI+Difficulty.swift in Sources */,
 				21889C372949793E0044567D /* TriviaResultsView.swift in Sources */,
-				21D47A5B2948319900D10E18 /* TriviaQuestion.swift in Sources */,
-				21D47A60294831E800D10E18 /* QuestionsResponse.swift in Sources */,
 				21077D7B294EACF5009581DF /* TextStyles.swift in Sources */,
 				21F045C5294834F300388F83 /* TriviaQuestionsView.swift in Sources */,
-				21CAC46B295318FD00574736 /* TriviaAPI+Category.swift in Sources */,
-				21D47A592948316D00D10E18 /* TriviaAPI+Config.swift in Sources */,
 				21077D96294EFBDF009581DF /* CustomStepperButton.swift in Sources */,
 				21889C3A29497D8F0044567D /* TriviaResult.swift in Sources */,
 				21D7A746294D7ED900A9B8D2 /* CreditsView.swift in Sources */,
@@ -531,12 +490,9 @@
 				21F045C72948392A00388F83 /* TriviaQuestionsViewModel.swift in Sources */,
 				21077D98294F3AE8009581DF /* LoadingView.swift in Sources */,
 				21D7A748294DE2EA00A9B8D2 /* ViewLoadingState.swift in Sources */,
-				21D47A512948309000D10E18 /* TriviaAPI+Error.swift in Sources */,
 				21077D93294EE37F009581DF /* CustomStepper.swift in Sources */,
-				21D47A5E294831CF00D10E18 /* TokenResponse.swift in Sources */,
 				2162F3D5294C5E69004DEA9C /* AudioManager.swift in Sources */,
 				21CCB35A29506823008762B0 /* WrongQuestionsView.swift in Sources */,
-				21EE4D2F293EEC030032711E /* TriviaAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,6 +821,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		214EDEC32955AE5200776C96 /* XCRemoteSwiftPackageReference "SwiftOpenTDB" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tinotusa/SwiftOpenTDB";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		214EDEC42955AE5300776C96 /* SwiftOpenTDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 214EDEC32955AE5200776C96 /* XCRemoteSwiftPackageReference "SwiftOpenTDB" */;
+			productName = SwiftOpenTDB;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 21CB4BD4293CB4C6005865BE /* Project object */;
 }

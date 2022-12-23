@@ -1,5 +1,5 @@
 //
-//  TriviaQuestionsViewModelTests.swift
+//  QuestionsViewModelTests.swift
 //  TriviaAppTests
 //
 //  Created by Tino on 19/12/2022.
@@ -8,13 +8,13 @@
 import XCTest
 @testable import TriviaApp
 
-final class TriviaQuestionsViewModelTests: XCTestCase {
-    var viewModel: TriviaQuestionsViewModel!
+final class QuestionsViewModelTests: XCTestCase {
+    var viewModel: QuestionsViewModel!
     var mockTriviaAPI: MockTriviaAPI!
     
     override func setUp() {
         mockTriviaAPI = MockTriviaAPI(triviaConfig: .default)
-        viewModel = TriviaQuestionsViewModel(triviaConfig: .default, triviaAPI: mockTriviaAPI)
+        viewModel = QuestionsViewModel(triviaConfig: .default, triviaAPI: mockTriviaAPI)
     }
 
     override func tearDownWithError() throws {
@@ -113,7 +113,7 @@ final class TriviaQuestionsViewModelTests: XCTestCase {
 }
 
 // MARK: - submitAnswer tests
-extension TriviaQuestionsViewModelTests {
+extension QuestionsViewModelTests {
     func testSubmitWithNilAnswer() async {
         let success = await viewModel.submitAnswer()
         XCTAssertFalse(success, "Expected false since no answer has been set.")
@@ -144,7 +144,7 @@ extension TriviaQuestionsViewModelTests {
 }
 
 // MARK: - showHint tests
-extension TriviaQuestionsViewModelTests {
+extension QuestionsViewModelTests {
     func testShowHint() async throws {
         await viewModel.getQuestions()
         let question = await viewModel.currentQuestion
@@ -171,7 +171,7 @@ extension TriviaQuestionsViewModelTests {
 }
 
 // MARK: - getQuestions tests
-extension TriviaQuestionsViewModelTests {
+extension QuestionsViewModelTests {
     func testGetQuestions() async {
         await viewModel.getQuestions()
         XCTAssertEqual(viewModel.questions.count, 10, "Expected to get 10 questions back.")

@@ -10,16 +10,16 @@ import Foundation
 
 /// Mock TriviaAPI used for testing.
 final class MockTriviaAPI: TriviaAPIProtocol {
-    var triviaConfig: TriviaAPI.TriviaConfig
+    var triviaConfig: TriviaConfig
     var getQuestionsError: TriviaAPI.TriviaAPIError?
     var otherError: Error?
     var resetTokenError: TriviaAPI.TriviaAPIError?
     
-    init(triviaConfig: TriviaAPI.TriviaConfig) {
+    init(triviaConfig: TriviaConfig) {
         self.triviaConfig = triviaConfig
     }
     
-    func getQuestions() async throws -> [TriviaQuestion] {
+    func getQuestions() async throws -> [Question] {
         if let getQuestionsError {
             throw getQuestionsError
         }

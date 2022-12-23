@@ -9,7 +9,7 @@ import XCTest
 @testable import TriviaApp
 
 final class TriviaResultTests: XCTestCase {
-    var questions: Set<TriviaQuestion>!
+    var questions: Set<Question>!
     
     override func setUpWithError() throws {
         questions = Set(Bundle.main.loadJSON(QuestionsResponse.self, filename: "exampleQuestions").results)

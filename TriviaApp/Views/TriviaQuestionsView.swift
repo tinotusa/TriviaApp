@@ -1,20 +1,21 @@
 //
-//  TriviaQuestionsView.swift
+//  QuestionsView.swift
 //  TriviaApp
 //
 //  Created by Tino on 13/12/2022.
 //
 
 import SwiftUI
+import SwiftOpenTDB
 
-struct TriviaQuestionsView: View {
+struct QuestionsView: View {
     @EnvironmentObject private var hapticsManager: HapticsManager
-    @StateObject private var viewModel: TriviaQuestionsViewModel
+    @StateObject private var viewModel: QuestionsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showingQuitConfirmationDialog = false
     
-    init(triviaConfig: TriviaAPI.TriviaConfig) {
-        _viewModel = StateObject(wrappedValue: TriviaQuestionsViewModel(triviaConfig: triviaConfig))
+    init(triviaConfig: TriviaConfig) {
+        _viewModel = StateObject(wrappedValue: QuestionsViewModel(triviaConfig: triviaConfig))
         
     }
     
@@ -24,7 +25,7 @@ struct TriviaQuestionsView: View {
             LoadingView()
                 .task {
                     if CommandLine.arguments.contains("-testing-quiz") {
-                        viewModel.questions = TriviaQuestion.examples
+                        viewModel.questions = Question.examples
                         viewModel.viewLoadingState = .loaded
                         viewModel.triviaResult.questions = Set(viewModel.questions)
                     } else {
@@ -71,8 +72,8 @@ struct TriviaQuestionsView: View {
 }
 
 // MARK: - Subviews
-private extension TriviaQuestionsView {
-    func header(question: TriviaQuestion) -> some View {
+private extension QuestionsView {
+    func header(question: Question) -> some View {
         HStack {
             Button {
                 showingQuitConfirmationDialog = true
@@ -151,9 +152,9 @@ private extension TriviaQuestionsView {
     }
 }
 
-struct TriviaQuestionsView_Previews: PreviewProvider {
+struct QuestionsView_Previews: PreviewProvider {
     static var previews: some View {
-        TriviaQuestionsView(triviaConfig: .default)
+        QuestionsView(triviaConfig: .default)
             .environmentObject(HapticsManager())
     }
 }

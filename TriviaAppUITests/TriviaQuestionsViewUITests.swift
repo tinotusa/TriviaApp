@@ -1,5 +1,5 @@
 //
-//  TriviaQuestionsViewUITests.swift
+//  QuestionsViewUITests.swift
 //  TriviaAppUITests
 //
 //  Created by Tino on 22/12/2022.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class TriviaQuestionsViewUITests: XCTestCase {
+final class QuestionsViewUITests: XCTestCase {
     let app = XCUIApplication()
     
     override func setUpWithError() throws {
@@ -78,7 +78,7 @@ final class TriviaQuestionsViewUITests: XCTestCase {
 }
 
 // MARK: Helper functions
-private extension TriviaQuestionsViewUITests {
+private extension QuestionsViewUITests {
     enum TriviaType: String {
         case multiple = "Multiple choice"
         case boolean = "True or false"
