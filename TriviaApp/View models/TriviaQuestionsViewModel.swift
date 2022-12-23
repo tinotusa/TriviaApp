@@ -10,6 +10,16 @@ import os
 import SwiftUI
 import SwiftOpenTDB
 
+protocol OpenTDBProtocol {
+    var triviaConfig: TriviaConfig { get set }
+    func getQuestions() async throws -> [Question]
+    func resetToken() async throws
+}
+
+extension OpenTDB: OpenTDBProtocol {
+    
+}
+
 /// View model for the QuestionsView.
 final class QuestionsViewModel: ObservableObject {
     /// The loading state of the view.
@@ -31,7 +41,7 @@ final class QuestionsViewModel: ObservableObject {
     /// Answers to hide when hint is pressed.
     private var answersLeftToHide: [String]?
     /// The trivia api.
-    private var triviaAPI = OpenTDB.shared
+    private var openTDB: OpenTDBProtocol
     
     /// A boolean value indicating whether an alert is being shown.
     @Published var showingAlert = false
@@ -47,8 +57,9 @@ final class QuestionsViewModel: ObservableObject {
     
     /// Creates the view model.
     /// - Parameter triviaConfig: The config for the trivia.
-    init(triviaConfig: TriviaConfig) {
+    init(triviaConfig: TriviaConfig, openTDB: OpenTDBProtocol = OpenTDB.shared) {
         self.triviaConfig = triviaConfig
+        self.openTDB = openTDB
     }
 }
 
@@ -168,8 +179,8 @@ extension QuestionsViewModel {
     func getQuestions() async {
         log.debug("Getting questions based on config \(self.triviaConfig)")
         do {
-            triviaAPI.triviaConfig = triviaConfig
-            self.questions = try await triviaAPI.getQuestions()
+            openTDB.triviaConfig = triviaConfig
+            self.questions = try await openTDB.getQuestions()
             triviaResult.questions = Set(self.questions)
             viewLoadingState = .loaded
             log.debug("Successfully loaded \(self.questions.count) questions.")
@@ -200,7 +211,7 @@ extension QuestionsViewModel {
     @MainActor
     func resetQuestions() async -> Bool {
         do {
-            try await triviaAPI.resetToken()
+            try await openTDB.resetToken()
             viewLoadingState = .loading
             return true
         } catch {

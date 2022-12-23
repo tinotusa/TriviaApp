@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import SwiftOpenTDB
 @testable import TriviaApp
 
 /// Mock TriviaAPI used for testing.
-final class MockTriviaAPI: TriviaAPIProtocol {
+final class MockOpenTDB: OpenTDBProtocol {
     var triviaConfig: TriviaConfig
-    var getQuestionsError: TriviaAPI.TriviaAPIError?
+    var getQuestionsError: OpenTDBError?
     var otherError: Error?
-    var resetTokenError: TriviaAPI.TriviaAPIError?
+    var resetTokenError: OpenTDBError?
     
     init(triviaConfig: TriviaConfig) {
         self.triviaConfig = triviaConfig

@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import SwiftOpenTDB
 @testable import TriviaApp
 
 final class TriviaResultTests: XCTestCase {

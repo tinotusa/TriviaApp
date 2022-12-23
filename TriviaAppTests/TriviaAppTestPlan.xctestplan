@@ -28,7 +28,9 @@
   ],
   "defaultOptions" : {
     "commandLineArgumentEntries" : [
-
+      {
+        "argument" : "-testing-quiz"
+      }
     ],
     "testExecutionOrdering" : "random",
     "testTimeoutsEnabled" : true

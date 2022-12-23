@@ -6,15 +6,16 @@
 //
 
 import XCTest
+import SwiftOpenTDB
 @testable import TriviaApp
 
 final class QuestionsViewModelTests: XCTestCase {
     var viewModel: QuestionsViewModel!
-    var mockTriviaAPI: MockTriviaAPI!
+    var mockOpenTDB: MockOpenTDB!
     
     override func setUp() {
-        mockTriviaAPI = MockTriviaAPI(triviaConfig: .default)
-        viewModel = QuestionsViewModel(triviaConfig: .default, triviaAPI: mockTriviaAPI)
+        mockOpenTDB = MockOpenTDB(triviaConfig: .default)
+        viewModel = QuestionsViewModel(triviaConfig: .default, openTDB: mockOpenTDB)
     }
 
     override func tearDownWithError() throws {
@@ -97,7 +98,7 @@ final class QuestionsViewModelTests: XCTestCase {
     }
     
     func testResetQuestionThrows() async {
-        mockTriviaAPI.resetTokenError = .invalidAPIResponse(code: TriviaAPI.ResponseCode(rawValue: 4)!)
+        mockOpenTDB.resetTokenError = .invalidAPIResponse(code: ResponseCode(rawValue: 4)!)
         let didSuccessfullyReset = await viewModel.resetQuestions()
         XCTAssertFalse(didSuccessfullyReset, "Expected false since mock trivia api has error set.")
     }
@@ -178,35 +179,35 @@ extension QuestionsViewModelTests {
     }
     
     func testGetQuestionsThrowingNoResults() async throws {
-        mockTriviaAPI.getQuestionsError = .noResults
+        mockOpenTDB.getQuestionsError = .noResults
         await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .noResults)
     }
     
     func testGetQuestionsThrowingSeenAllQuestions() async throws {
-        mockTriviaAPI.getQuestionsError = .seenAllQuestions
+        mockOpenTDB.getQuestionsError = .seenAllQuestions
         await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .seenAllQuestions)
     }
     
     func testGetQuestionsThrowingServerStatus() async throws {
-        mockTriviaAPI.getQuestionsError = .serverStatus(code: 404)
+        mockOpenTDB.getQuestionsError = .serverStatus(code: 404)
         await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .serverStatus)
     }
     
     func testGetQuestionsThrowingOther() async throws {
-        mockTriviaAPI.getQuestionsError = .invalidParameter
+        mockOpenTDB.getQuestionsError = .invalidParameter
         await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .other)
     }
     
     func testGetQuestionsThrowingUnknownError() async throws {
-        mockTriviaAPI.otherError = NSError(domain: "some domain", code: -1)
+        mockOpenTDB.otherError = NSError(domain: "some domain", code: -1)
         await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .other)
