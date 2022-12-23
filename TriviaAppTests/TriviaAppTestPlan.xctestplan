@@ -28,16 +28,13 @@
   ],
   "defaultOptions" : {
     "commandLineArgumentEntries" : [
-      {
-        "argument" : "-testing-quiz"
-      }
+
     ],
     "testExecutionOrdering" : "random",
     "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:TriviaApp.xcodeproj",
         "identifier" : "21CB4BEB293CB4C9005865BE",
