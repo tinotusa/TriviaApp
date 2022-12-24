@@ -34,14 +34,14 @@ final class QuestionsViewModelTests: XCTestCase {
         XCTAssertNil(question, "Expected current question to return nil.")
     }
     
-    func testCurrentQuestion() async {
-        await viewModel.getQuestions()
+    func testCurrentQuestion() async throws {
+        try await viewModel.getQuestions()
         let question  = await viewModel.currentQuestion
         XCTAssertNotNil(question, "Expected to have a non nil answer.")
     }
     
     func testIsAnswerHidden() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         _ = await viewModel.currentQuestion
         _ = await viewModel.showHint()
         _ = await viewModel.showHint()
@@ -53,7 +53,7 @@ final class QuestionsViewModelTests: XCTestCase {
     }
     
     func testIsAnswerHiddenWithNoExtraHintsLeft() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         _ = await viewModel.currentQuestion
         _ = await viewModel.showHint()
         _ = await viewModel.showHint()
@@ -64,7 +64,7 @@ final class QuestionsViewModelTests: XCTestCase {
     }
     
     func testBooleanQuestionsHaveNoHints() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         await viewModel.nextQuestion()
         await viewModel.nextQuestion() // this question is a boolean
         _ = await viewModel.currentQuestion
@@ -74,7 +74,7 @@ final class QuestionsViewModelTests: XCTestCase {
     }
     
     func testClearIncorrectAnswers() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         _ = await viewModel.currentQuestion
         _ = await viewModel.showHint()
         XCTAssertEqual(viewModel.hiddenAnswers.count, 1, "Expected to have 1 hidden answer.")
@@ -82,8 +82,8 @@ final class QuestionsViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.hiddenAnswers.isEmpty, "Expected to have empty hidden answers.")
     }
     
-    func testNextQuestion() async {
-        await viewModel.getQuestions()
+    func testNextQuestion() async throws {
+        try await viewModel.getQuestions()
         _ = await viewModel.currentQuestion
         await viewModel.nextQuestion()
         let question = await viewModel.currentQuestion
@@ -103,8 +103,8 @@ final class QuestionsViewModelTests: XCTestCase {
         XCTAssertFalse(didSuccessfullyReset, "Expected false since mock trivia api has error set.")
     }
     
-    func testEndOfTrivia() async {
-        await viewModel.getQuestions()
+    func testEndOfTrivia() async throws {
+        try await viewModel.getQuestions()
         for _ in viewModel.questions {
             await viewModel.nextQuestion()
         }
@@ -126,16 +126,16 @@ extension QuestionsViewModelTests {
         XCTAssertFalse(isSuccessful, "Expected question submission to be false.")
     }
     
-    func testSubmitWithCorrectAnswer() async {
-        await viewModel.getQuestions()
+    func testSubmitWithCorrectAnswer() async throws {
+        try await viewModel.getQuestions()
         viewModel.selectedAnswer = "Mike Harrington"
         let success = await viewModel.submitAnswer()
         XCTAssertTrue(success, "Expected true since the answer is correct.")
         XCTAssertEqual(viewModel.triviaResult.score, 1, "Expected trivia result score to be 1.")
     }
     
-    func testSubmitWithIncorrectAnswer() async {
-        await viewModel.getQuestions()
+    func testSubmitWithIncorrectAnswer() async throws {
+        try await viewModel.getQuestions()
         viewModel.selectedAnswer = "not correct"
         XCTAssertTrue(viewModel.hasSelectedAnswer, "Expected selected answer to be true.")
         let success = await viewModel.submitAnswer()
@@ -147,7 +147,7 @@ extension QuestionsViewModelTests {
 // MARK: - showHint tests
 extension QuestionsViewModelTests {
     func testShowHint() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let question = await viewModel.currentQuestion
         XCTAssertNotNil(question)
         XCTAssertFalse(viewModel.hintsDisabled, "Expected hints to not be disabled.")
@@ -161,7 +161,7 @@ extension QuestionsViewModelTests {
     }
     
     func testShowHintRemovesSelectedAnswer() async throws {
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let question = await viewModel.currentQuestion
         viewModel.selectedAnswer = question!.incorrectAnswers.first!
         _ = await viewModel.showHint()
@@ -173,42 +173,42 @@ extension QuestionsViewModelTests {
 
 // MARK: - getQuestions tests
 extension QuestionsViewModelTests {
-    func testGetQuestions() async {
-        await viewModel.getQuestions()
+    func testGetQuestions() async throws {
+        try await viewModel.getQuestions()
         XCTAssertEqual(viewModel.questions.count, 10, "Expected to get 10 questions back.")
     }
     
     func testGetQuestionsThrowingNoResults() async throws {
         mockOpenTDB.getQuestionsError = .noResults
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .noResults)
     }
     
     func testGetQuestionsThrowingSeenAllQuestions() async throws {
         mockOpenTDB.getQuestionsError = .seenAllQuestions
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .seenAllQuestions)
     }
     
     func testGetQuestionsThrowingServerStatus() async throws {
         mockOpenTDB.getQuestionsError = .serverStatus(code: 404)
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .serverStatus)
     }
     
     func testGetQuestionsThrowingOther() async throws {
         mockOpenTDB.getQuestionsError = .invalidParameter
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .other)
     }
     
     func testGetQuestionsThrowingUnknownError() async throws {
         mockOpenTDB.otherError = NSError(domain: "some domain", code: -1)
-        await viewModel.getQuestions()
+        try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .other)
     }

@@ -16,7 +16,6 @@ struct QuestionsView: View {
     
     init(triviaConfig: TriviaConfig) {
         _viewModel = StateObject(wrappedValue: QuestionsViewModel(triviaConfig: triviaConfig))
-        
     }
     
     var body: some View {
@@ -29,43 +28,46 @@ struct QuestionsView: View {
                         viewModel.viewLoadingState = .loaded
                         viewModel.triviaResult.questions = Set(viewModel.questions)
                     } else {
-                        await viewModel.getQuestions()
+                        await viewModel.loadData()
                     }
                 }
         case .loaded:
-            loadedView
-        case .error:
-            ErrorView(title: "Something went wrong.", detail: viewModel.alert != nil ? viewModel.alert!.message : "Something went wrong") {
-                if let alertDetails = viewModel.alert {
-                    switch alertDetails.type {
+            if let alert = viewModel.alert, viewModel.showingAlert {
+                ErrorView(title: "Something went wrong.", detail: alert.message) {
+                    switch alert.type {
                     case .seenAllQuestions:
                         Button("Reset questions") {
                             Task {
                                 await viewModel.resetQuestions()
                             }
                         }
-                        Button("Cancel", role: .cancel) {
-                            dismiss()
-                        }
-                    case .noResults:
-                        Button("Cancel", role: .cancel) {
-                            dismiss()
-                        }
                     case .serverStatus:
                         Button("Retry") {
                             Task {
-                                await viewModel.getQuestions()
+                                await viewModel.loadData()
                             }
                         }
-                        Button("Cancel", role: .cancel) {
-                            dismiss()
+                    case .emptyToken:
+                        Button("Reset questions") {
+                            Task {
+                                await viewModel.resetQuestions()
+                            }
                         }
                     default:
                         Button("Cancel", role: .cancel) {
                             dismiss()
                         }
                     }
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
                 }
+            } else {
+                loadedView
+            }
+        case .error:
+            ErrorView(title: "Something went wrong.", detail: viewModel.alert != nil ? viewModel.alert!.message : "Something went wrong") {
+                
             }
         }
     }

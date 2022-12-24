@@ -11,6 +11,12 @@ import SwiftOpenTDB
 
 /// Mock TriviaAPI used for testing.
 final class MockOpenTDB: OpenTDBProtocol {
+    var sessionToken: String?
+    
+    func requestToken() async throws {
+        
+    }
+    
     var triviaConfig: TriviaConfig
     var getQuestionsError: OpenTDBError?
     var otherError: Error?

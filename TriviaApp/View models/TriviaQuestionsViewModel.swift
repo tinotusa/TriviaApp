@@ -11,9 +11,11 @@ import SwiftUI
 import SwiftOpenTDB
 
 protocol OpenTDBProtocol {
+    var sessionToken: String? { get set }
     var triviaConfig: TriviaConfig { get set }
     func getQuestions() async throws -> [Question]
     func resetToken() async throws
+    func requestToken() async throws
 }
 
 extension OpenTDB: OpenTDBProtocol {
@@ -75,6 +77,7 @@ extension QuestionsViewModel {
             case noResults
             case seenAllQuestions
             case serverStatus
+            case emptyToken
             case other
         }
     }
@@ -174,31 +177,57 @@ extension QuestionsViewModel {
 
 // MARK: - Trivia api functions
 extension QuestionsViewModel {
+    @MainActor
+    func loadData() async {
+        log.debug("Loading data.")
+        if openTDB.sessionToken == nil {
+            do {
+                try await openTDB.requestToken()
+            } catch {
+                viewLoadingState = .error(error: error)
+                log.error("Failed to load data. \(error)")
+            }
+        }
+        do {
+            try await getQuestions()
+            viewLoadingState = .loaded
+            log.debug("Successfully loaded data.")
+        } catch {
+            viewLoadingState = .error(error: error)
+            log.error("Failed to get questions. \(error)")
+        }
+    }
+    
     /// Fetches some questions of opentdb based on the given trivia config.
     @MainActor
-    func getQuestions() async {
+    func getQuestions() async throws {
         log.debug("Getting questions based on config \(self.triviaConfig)")
         do {
             openTDB.triviaConfig = triviaConfig
             self.questions = try await openTDB.getQuestions()
             triviaResult.questions = Set(self.questions)
-            viewLoadingState = .loaded
-            log.debug("Successfully loaded \(self.questions.count) questions.")
+            log.debug("Successfully got \(self.questions.count) questions.")
         } catch let error as OpenTDBError {
             switch error {
             case .noResults:
                 alert = .init(message: "No results found.", type: .noResults)
+                log.error("Failed to get questions. no results found.")
             case .seenAllQuestions:
                 alert = .init(message: "Seen all questions for this category.", type: .seenAllQuestions)
+                log.error("Failed to get questions. seen all questions")
             case .serverStatus(let code):
                 alert = .init(message: "Invalid server status: \(code)", type: .serverStatus)
+                log.error("Failed to get questions. server status error code: \(code).")
+            case .noSessionToken:
+                log.debug("Failed to get questions. no session token. Will request a token.")
+                try await getQuestions()
+            case .emptyToken:
+                alert  = .init(message: "Cannot load anymore questions in this category. You have seen all of them", type: .emptyToken)
             default:
+                log.error("TriviaAPI Error. Unknown error: \(error)")
                 alert = .init(message: "Something went wrong", type: .other)
             }
-            viewLoadingState = .error(error: error)
-            log.error("TriviaAPI Error. Failed to get questions. \(error)")
         } catch {
-            viewLoadingState = .error(error: error)
             log.error("Failed to get questions. \(error)")
             alert = .init(message: "Something went wrong\n\(error.localizedDescription)", type: .other)
         }
@@ -212,7 +241,9 @@ extension QuestionsViewModel {
     func resetQuestions() async -> Bool {
         do {
             try await openTDB.resetToken()
+            UserDefaults.standard.setValue(openTDB.sessionToken, forKey: "sessionToken")
             viewLoadingState = .loading
+            alert = nil
             return true
         } catch {
             log.error("Failed to reset the token. \(error)")
