@@ -207,29 +207,24 @@ extension QuestionsViewModel {
             self.questions = try await openTDB.getQuestions()
             triviaResult.questions = Set(self.questions)
             log.debug("Successfully got \(self.questions.count) questions.")
-        } catch let error as OpenTDBError {
+        } catch let error as TriviaAPIResponseError {
             switch error {
             case .noResults:
                 alert = .init(message: "No results found.", type: .noResults)
                 log.error("Failed to get questions. no results found.")
-            case .seenAllQuestions:
-                alert = .init(message: "Seen all questions for this category.", type: .seenAllQuestions)
-                log.error("Failed to get questions. seen all questions")
-            case .serverStatus(let code):
-                alert = .init(message: "Invalid server status: \(code)", type: .serverStatus)
-                log.error("Failed to get questions. server status error code: \(code).")
-            case .noSessionToken:
+            case .tokenNotFound:
                 log.debug("Failed to get questions. no session token. Will request a token.")
                 try await getQuestions()
             case .emptyToken:
                 alert  = .init(message: "Cannot load anymore questions in this category. You have seen all of them", type: .emptyToken)
+                log.debug("Failed to get questions. The session token is empty. It needs to be reset.")
             default:
                 log.error("TriviaAPI Error. Unknown error: \(error)")
-                alert = .init(message: "Something went wrong", type: .other)
+                alert = .init(message: "Unknown error", type: .other)
             }
         } catch {
             log.error("Failed to get questions. \(error)")
-            alert = .init(message: "Something went wrong\n\(error.localizedDescription)", type: .other)
+            alert = .init(message: error.localizedDescription, type: .other)
         }
     }
     
