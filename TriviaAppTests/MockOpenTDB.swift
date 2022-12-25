@@ -18,7 +18,8 @@ final class MockOpenTDB: OpenTDBProtocol {
     }
     
     var triviaConfig: TriviaConfig
-    var getQuestionsError: OpenTDBError?
+    var getQuestionsResponseError: TriviaAPIResponseError?
+    var getQuestionsServerError: OpenTDBError?
     var otherError: Error?
     var resetTokenError: OpenTDBError?
     
@@ -27,8 +28,10 @@ final class MockOpenTDB: OpenTDBProtocol {
     }
     
     func getQuestions() async throws -> [Question] {
-        if let getQuestionsError {
-            throw getQuestionsError
+        if let getQuestionsResponseError {
+            throw getQuestionsResponseError
+        } else if let getQuestionsServerError {
+            throw getQuestionsServerError
         }
         if let otherError {
             throw otherError

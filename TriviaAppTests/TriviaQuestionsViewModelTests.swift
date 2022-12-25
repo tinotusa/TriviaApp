@@ -179,28 +179,21 @@ extension QuestionsViewModelTests {
     }
     
     func testGetQuestionsThrowingNoResults() async throws {
-        mockOpenTDB.getQuestionsError = .noResults
+        mockOpenTDB.getQuestionsResponseError = .noResults
         try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .noResults)
     }
     
-    func testGetQuestionsThrowingSeenAllQuestions() async throws {
-        mockOpenTDB.getQuestionsError = .seenAllQuestions
-        try await viewModel.getQuestions()
-        let alert = try XCTUnwrap(viewModel.alert)
-        XCTAssertEqual(alert.type, .seenAllQuestions)
-    }
-    
     func testGetQuestionsThrowingServerStatus() async throws {
-        mockOpenTDB.getQuestionsError = .serverStatus(code: 404)
+        mockOpenTDB.getQuestionsServerError = .serverStatus(code: 404)
         try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
-        XCTAssertEqual(alert.type, .serverStatus)
+        XCTAssertEqual(alert.type, .other)
     }
     
     func testGetQuestionsThrowingOther() async throws {
-        mockOpenTDB.getQuestionsError = .invalidParameter
+        mockOpenTDB.getQuestionsResponseError = .invalidParameter
         try await viewModel.getQuestions()
         let alert = try XCTUnwrap(viewModel.alert)
         XCTAssertEqual(alert.type, .other)
