@@ -183,6 +183,7 @@ extension QuestionsViewModel {
         if openTDB.sessionToken == nil {
             do {
                 try await openTDB.requestToken()
+                log.debug("Successfully requested a token.")
             } catch {
                 viewLoadingState = .error(error: error)
                 log.error("Failed to load data. \(error)")
@@ -214,6 +215,7 @@ extension QuestionsViewModel {
                 log.error("Failed to get questions. no results found.")
             case .tokenNotFound:
                 log.debug("Failed to get questions. no session token. Will request a token.")
+                try await requestNewToken()
                 try await getQuestions()
             case .emptyToken:
                 alert  = .init(message: "Cannot load anymore questions in this category. You have seen all of them", type: .emptyToken)
@@ -226,6 +228,14 @@ extension QuestionsViewModel {
             log.error("Failed to get questions. \(error)")
             alert = .init(message: error.localizedDescription, type: .other)
         }
+    }
+    
+    /// Tries to request for a new token.
+    func requestNewToken() async throws {
+        log.debug("Requesting new token token.")
+        try await openTDB.requestToken()
+        UserDefaults.standard.setValue(openTDB.sessionToken, forKey: "sessionToken")
+        log.debug("Successfully got token. new token: \(self.openTDB.sessionToken ?? "Nil token")")
     }
     
     /// Tries to reset the api token.
